@@ -1,11 +1,15 @@
-# LULU355-beep GitHub Pages 部署
+# ChildLab 2.4 七类测试手动分类版
 
-1. 在 GitHub 新建公开仓库，名称必须为：`LULU355-beep.github.io`
-2. 将本文件夹内的 `index.html` 与 `.nojekyll` 上传到仓库根目录。
-3. 进入仓库 Settings → Pages。
-4. Source 选择 `Deploy from a branch`。
-5. Branch 选择 `main`，目录选择 `/(root)`，点击 Save。
-6. 等待 GitHub Pages 完成部署。
+上传到 `LULU355-beep.github.io` 仓库根目录：
+- index.html
+- sw.js
+- .nojekyll
 
-公开网址：
-https://lulu355-beep.github.io/
+功能变化：
+1. 取消三类任务自动识别。
+2. 提供无声动画、故事音频、拖拽拼图和四项可自定义测试。
+3. 多项目视频可在分析过程中点击项目按钮，点击时的视频时间作为新分段起点。
+4. 报告、IndexedDB和Excel按手动项目分类。
+5. 保留15秒快速启动、MediaPipe、OpenCV、音频、触控/录屏交互、VAK评分及本地存储功能。
+
+部署后请强制刷新；如Service Worker缓存旧版，可刷新两次或清除站点缓存。
