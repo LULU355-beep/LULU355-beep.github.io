@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>儿童VAK多模态智能分析实验室｜任务识别与触控响应</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="preconnect" href="https://docs.opencv.org" crossorigin>
+<link rel="dns-prefetch" href="//docs.opencv.org">
+<link rel="preconnect" href="https://cdn.sheetjs.com" crossorigin>
+
+<title>VAK儿童学习风格多模态智能分析</title>
 <style>
 :root{--pri:#4361ee;--v:#4cc9f0;--a:#f72585;--k:#4ade80;--bg:#f4f6fc;--card:#fff;--txt:#1a1a2e;--txt2:#6b7280;--bdr:#e5e7eb;--shd:0 4px 24px rgba(0,0,0,.06);--rad:14px}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -20,6 +26,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .upload-box p{color:var(--txt2);font-size:14px}
 .upload-box .fmt{display:inline-block;margin-top:10px;padding:4px 14px;background:#f0f1f5;border-radius:20px;font-size:12px;color:var(--txt2)}
 .upload-box input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.test-upload-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.test-upload{position:relative;border:2px dashed var(--bdr);border-radius:18px;background:var(--card);padding:22px 18px;min-height:172px;cursor:pointer;transition:.2s;box-shadow:var(--shd);overflow:hidden}
+.test-upload:hover,.test-upload.over{border-color:var(--pri);transform:translateY(-2px);background:#f8f9ff}
+.test-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.test-upload .tu-ico{font-size:30px;margin-bottom:8px}.test-upload h3{font-size:16px;margin-bottom:5px}.test-upload p{font-size:12px;color:var(--txt2);line-height:1.7}.test-upload .tu-file{margin-top:12px;padding:8px 10px;border-radius:10px;background:#f4f6ff;color:#4f46e5;font-size:12px;font-weight:750;word-break:break-all}
+.test-upload.ready{border-color:#22c55e}.test-upload.ready .tu-file{background:#ecfdf3;color:#15803d}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 30px;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;transition:.2s}
 .btn-p{background:linear-gradient(135deg,#4361ee,#3a0ca3);color:#fff;box-shadow:0 4px 16px rgba(67,97,238,.3)}
 .btn-p:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(67,97,238,.4)}
@@ -168,22 +180,44 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 .segment-card .tag{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}.tag.visual{background:#dff7fb;color:#087f8c}.tag.auditory{background:#ffe3ef;color:#b42364}.tag.kinesthetic{background:#e2f8e7;color:#26753b}.tag.unknown{background:#eef0f4;color:#667085}
 .segment-card h4{margin:9px 0 5px}.segment-meta{font-size:12px;color:var(--txt2);line-height:1.8}
 .screen-setup{display:none}.screen-setup.show{display:block}.screen-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:20px;align-items:start}.screen-canvas-wrap{position:relative;background:#0f172a;border-radius:22px;overflow:hidden;min-height:250px}.screen-canvas-wrap canvas{display:block;width:100%;height:auto;cursor:crosshair}.screen-tip{font-size:12px;color:var(--txt2);line-height:1.85}.screen-status{padding:12px 14px;border-radius:15px;background:#f3f4ff;border:1px solid #dcdfff;font-weight:700;color:#40489a}.screen-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.btn-ghost{border:1px solid #d7d9e8;background:#fff;color:#344054}.btn-warn{border:1px solid #fed7aa;background:#fff7ed;color:#9a3412}
+.mode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}.mode-option{border:1px solid #dfe3f5;background:rgba(255,255,255,.86);border-radius:16px;padding:12px 13px;cursor:pointer;transition:.2s;text-align:left;color:#344054}.mode-option:hover{border-color:#818cf8;transform:translateY(-1px)}.mode-option.active{border-color:#6366f1;background:linear-gradient(145deg,#eef2ff,#fdf4ff);box-shadow:0 8px 24px rgba(79,70,229,.12)}.mode-option b{display:block;font-size:13px}.mode-option span{display:block;font-size:11px;color:var(--txt2);margin-top:3px;line-height:1.5}.mode-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:#eef2ff;color:#4338ca;font-size:11px;font-weight:800;margin-top:10px}.mode-badge.recording{background:#ecfeff;color:#0e7490}.mode-badge.camera{background:#f0fdf4;color:#15803d}.screen-mode-help{margin-top:10px;padding:11px 13px;border-radius:14px;background:#f8fafc;border:1px solid #e2e8f0;font-size:12px;color:#475569;line-height:1.7}.interaction-note{display:flex;gap:9px;align-items:flex-start;padding:11px 13px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:12px;line-height:1.7;margin-top:10px}
+
 .live-task{font-size:18px;font-weight:800;color:#4f46e5}.live-sub{font-size:11px;color:var(--txt2);margin-top:3px}.touch-pulse{display:inline-block;width:9px;height:9px;border-radius:50%;background:#94a3b8;margin-right:7px}.touch-pulse.on{background:#ff8b7b;box-shadow:0 0 0 6px rgba(255,139,123,.15)}
 .history-list{display:grid;gap:12px}.history-item{display:grid;grid-template-columns:1fr auto;gap:15px;align-items:center;padding:17px;border-radius:18px;background:linear-gradient(145deg,#fff,#f8f9ff);border:1px solid var(--bdr)}.history-title{font-weight:800}.history-meta{font-size:12px;color:var(--txt2);margin-top:4px}.history-actions{display:flex;gap:7px}.empty-state{text-align:center;padding:45px 20px;color:var(--txt2)}
 .badge-auto{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#e9fbf7;color:#087f73;font-size:11px;font-weight:800}.badge-local{background:#f0edff;color:#5b45c8}
 @media(max-width:900px){.screen-grid{grid-template-columns:1fr}.nav-inner{align-items:flex-start}.nav-actions{justify-content:flex-end}.hero{padding:30px 24px}.metrics-col{width:100%}}
-@media(max-width:620px){.nav{padding:11px 13px}.brand-mark{width:38px;height:38px}.nav h1{font-size:13px}.nav p{display:none}.nav-mini{padding:7px 9px}.hero{border-radius:23px}.card{padding:20px}.screen-actions .btn{width:100%;justify-content:center}.history-item{grid-template-columns:1fr}.history-actions{flex-wrap:wrap}}
+@media(max-width:620px){.mode-grid{grid-template-columns:1fr}.nav{padding:11px 13px}.brand-mark{width:38px;height:38px}.nav h1{font-size:13px}.nav p{display:none}.nav-mini{padding:7px 9px}.hero{border-radius:23px}.card{padding:20px}.screen-actions .btn{width:100%;justify-content:center}.history-item{grid-template-columns:1fr}.history-actions{flex-wrap:wrap}}
 @media print{.hero,.screen-setup,#viewHistory,.nav-actions{display:none!important}}
+
+
+.analysis-runtime{margin-top:13px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.runtime-left{flex:1;min-width:260px}.runtime-hint{font-size:12px;color:var(--txt2);line-height:1.7;margin-bottom:8px}
+.init-steps{display:flex;gap:7px;flex-wrap:wrap}.init-step{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;background:#eef1f7;color:#667085;font-size:11px;font-weight:700;border:1px solid #e2e8f0}
+.init-step::before{content:'';width:7px;height:7px;border-radius:50%;background:#a7b0c0}.init-step.loading{background:#eef2ff;color:#4338ca;border-color:#c7d2fe}.init-step.loading::before{background:#6366f1;animation:sp .8s linear infinite;border:2px solid #c7d2fe;border-top-color:#4338ca;width:9px;height:9px}
+.init-step.ok{background:#ecfdf3;color:#16794c;border-color:#bbf7d0}.init-step.ok::before{background:#22c55e}.init-step.warn{background:#fff7ed;color:#b45309;border-color:#fed7aa}.init-step.warn::before{background:#f59e0b}.init-step.error{background:#fef2f2;color:#b42318;border-color:#fecaca}.init-step.error::before{background:#ef4444}
+.analysis-error{display:none;margin-top:12px;padding:12px 14px;border-radius:12px;background:#fff1f2;color:#be123c;border:1px solid #fecdd3;font-size:13px;line-height:1.7}.analysis-error.show{display:block}
+.btn-cancel{background:#fff;color:#9f1239;border:1px solid #fecdd3;padding:9px 15px;border-radius:10px;font-weight:700;cursor:pointer}.btn-cancel:hover{background:#fff1f2}
+.canvas-performance{position:absolute;right:12px;top:10px;background:rgba(15,23,42,.72);color:#dbeafe;padding:4px 10px;border-radius:7px;font-size:11px;backdrop-filter:blur(5px)}
+@media(max-width:760px){.analysis-runtime{align-items:stretch}.btn-cancel{width:100%}}
+
+
+.manual-task-box{border:1px solid #dbe4ff;background:linear-gradient(135deg,#f8faff,#fff8f3);border-radius:16px;padding:16px}
+.task-mode-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.task-mode-btn{border:1px solid #d6def7;background:#fff;color:#34405f;border-radius:12px;padding:10px 14px;font-weight:750;cursor:pointer;transition:.2s}.task-mode-btn.active{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(79,70,229,.18)}
+.task-config-grid{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(320px,1.6fr);gap:14px;align-items:start}.custom-task-grid{display:grid;grid-template-columns:repeat(2,minmax(150px,1fr));gap:10px}.mini-field label{display:block;font-size:12px;font-weight:750;color:#56617a;margin-bottom:5px}.mini-field input,.mini-field select{width:100%;border:1px solid #dbe2ef;border-radius:10px;background:#fff;padding:10px 11px;color:#18223a}
+.manual-task-note{margin-top:12px;padding:10px 12px;border-left:4px solid #6366f1;border-radius:9px;background:#f2f4ff;color:#556079;font-size:12px;line-height:1.7}
+.task-button-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.task-switch-btn{border:1px solid #dce3f2;background:#fff;color:#33405c;border-radius:10px;padding:8px 9px;font-size:12px;font-weight:750;cursor:pointer;text-align:left;transition:.18s}.task-switch-btn:hover{transform:translateY(-1px);border-color:#9aa8ff}.task-switch-btn.active{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 5px 15px rgba(79,70,229,.18)}.task-switch-btn:disabled{cursor:not-allowed;opacity:.46;transform:none}.manual-task-clock{margin-top:8px;padding:8px 10px;border-radius:9px;background:#f7f8fc;color:#647089;font-size:11px;line-height:1.6}
+.task-legend{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.task-legend span{padding:4px 9px;border-radius:999px;background:#eef2ff;color:#4f46e5;font-size:11px;font-weight:700}
+@media(max-width:760px){.task-config-grid{grid-template-columns:1fr}.custom-task-grid{grid-template-columns:1fr}.task-button-grid{grid-template-columns:1fr}}
 
 </style>
 </head>
 <body>
-<div class="nav"><div class="nav-inner"><div class="brand"><div class="brand-mark">🪁</div><div><h1>儿童 VAK 多模态智能分析实验室</h1><p>MediaPipe · OpenCV.js · 音频特征 · 屏幕触控时序 · 本地实验数据库</p></div></div><div class="nav-actions"><button class="nav-mini" onclick="showView('viewUpload')">新建分析</button><button class="nav-mini" id="historyNavBtn">本机记录</button></div></div></div>
+<div class="nav"><div class="nav-inner"><div class="brand"><div class="brand-mark">🪁</div><div><h1>VAK儿童学习风格多模态智能分析</h1><p>MediaPipe · OpenCV.js · 实体拍摄/录屏双模式 · 交互时序 · 本地实验数据库</p></div></div><div class="nav-actions"><button class="nav-mini" onclick="showView('viewUpload')">新建分析</button><button class="nav-mini" id="historyNavBtn">本机记录</button></div></div></div>
 <div class="wrap">
 
 <!-- 上传 -->
 <div id="viewUpload" class="view active">
-<div class="hero"><span class="hero-kicker">✦ ChildLab 2.0 · 浏览器本地智能分析</span><h2>把儿童的观看、聆听与操作行为，转化为可复核的多模态实验数据</h2><p>系统自动识别无声动画观看、故事音频聆听与拖拽拼图操作三类任务，并结合面部、姿态、音频、屏幕变化与手指—屏幕接触线索生成分段量表。</p><div class="stage-row"><span class="stage-pill"><b>1</b>上传视频</span><span class="stage-pill"><b>2</b>确认屏幕区域</span><span class="stage-pill"><b>3</b>智能分段分析</span><span class="stage-pill"><b>4</b>保存与导出</span></div></div>
+<div class="hero"><span class="hero-kicker">✦ ChildLab 2.4 · 七类测试手动分类版</span><h2>把儿童的观看、聆听与操作行为，转化为可复核的多模态实验数据</h2><p>系统兼容实体平板拍摄、电脑录屏和带摄像头画中画的视频。测试项目不再由算法自动判断，而由研究者手动选择；系统按你的选择，将逐时点数据、交互事件、VAK结果和Excel工作表归入对应测试项目。</p><p style="margin-top:8px"><strong>快速启动机制：</strong>点击开始后先启动视频、Canvas/OpenCV基础运动和音频分析；FaceMesh与BlazePose在后台预热并自动热接入。正常本地视频将在15秒内开始运行，网络较慢时不会被模型下载阻塞。</p><div class="stage-row"><span class="stage-pill"><b>1</b>上传视频</span><span class="stage-pill"><b>2</b>确认屏幕区域</span><span class="stage-pill"><b>3</b>手动切换测试</span><span class="stage-pill"><b>4</b>保存与导出</span></div></div>
 <div class="tech-strip" aria-label="技术组件状态">
 <div id="tech-mp" class="tech-badge loading"><span class="dot"></span><span>MediaPipe 加载中</span></div>
 <div id="tech-cv" class="tech-badge loading"><span class="dot"></span><span>OpenCV.js 加载中</span></div>
@@ -191,12 +225,10 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <div id="tech-audio" class="tech-badge loading"><span class="dot"></span><span>音频分析待启动</span></div>
 <div id="tech-db" class="tech-badge loading"><span class="dot"></span><span>本地数据库初始化中</span></div>
 </div>
-<div class="upload-box" id="uploadBox">
-<div class="ico">&#127909;</div>
-<h2 id="uploadTitle">上传儿童行为视频</h2>
-<p id="uploadDesc">点击或拖拽视频文件到此区域，系统将在浏览器本地完成分析</p>
-<div class="fmt">推荐 H.264 MP4 / WebM；MOV 取决于浏览器解码能力</div>
-<input type="file" id="fileInput" accept="video/mp4,video/webm,video/quicktime,video/*">
+<div class="test-upload-grid" id="multiUploadGrid">
+<label class="test-upload" data-test-code="visual"><div class="tu-ico">👁️</div><h3>无声动画观看</h3><p>上传观看无声动画的视频；系统会将该视频全部归入视觉测试。</p><div class="tu-file" id="fileName_visual">未选择视频</div><input type="file" id="fileInput_visual" data-test-code="visual" accept="video/mp4,video/webm,video/quicktime,video/*"></label>
+<label class="test-upload" data-test-code="auditory"><div class="tu-ico">👂</div><h3>故事音频聆听</h3><p>上传聆听故事音频的视频；系统会将该视频全部归入听觉测试。</p><div class="tu-file" id="fileName_auditory">未选择视频</div><input type="file" id="fileInput_auditory" data-test-code="auditory" accept="video/mp4,video/webm,video/quicktime,video/*"></label>
+<label class="test-upload" data-test-code="kinesthetic"><div class="tu-ico">✋</div><h3>拖拽拼图操作</h3><p>上传拖拽拼图操作的视频；系统会将该视频全部归入动觉测试。</p><div class="tu-file" id="fileName_kinesthetic">未选择视频</div><input type="file" id="fileInput_kinesthetic" data-test-code="kinesthetic" accept="video/mp4,video/webm,video/quicktime,video/*"></label>
 </div>
 
 <div class="card form-card">
@@ -204,11 +236,19 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <div class="form-grid">
 <div class="field"><label for="participantId">匿名儿童编号</label><input id="participantId" type="text" placeholder="例如：C001"><small>不建议填写真实姓名。</small></div>
 <div class="field"><label for="ageGroup">年龄组</label><select id="ageGroup"><option value="">请选择</option><option>幼儿园小班</option><option>幼儿园中班</option><option>幼儿园大班</option><option>小学一年级</option><option>小学二年级</option><option>小学三年级</option><option>其他</option></select></div>
-<div class="field"><label>任务识别方式</label><div class="screen-status"><span class="badge-auto">AI 自动分段</span> 无声动画 / 故事音频 / 拖拽拼图</div><small>根据音频能量、屏幕运动、触控事件与上肢运动的滑动窗口特征自动判断。</small></div>
-<div class="field"><label>触控响应时间</label><div class="screen-status"><span class="badge-auto">视频估算</span> 刺激变化 → 指尖接触屏幕</div><small>采用屏幕 ROI、Pose 手指关键点与 OpenCV 屏幕变化联合估算，并输出置信度。</small></div>
+<div class="field full"><label>视频采集模式</label><div class="mode-grid" id="captureModeGrid">
+<button type="button" class="mode-option active" data-mode="auto"><b>✨ 自动判断</b><span>优先识别实体屏幕；识别不到边框时自动切换为整帧录屏。</span></button>
+<button type="button" class="mode-option" data-mode="screen-recording"><b>🖥️ 录屏 / 画中画</b><span>适合电脑录屏、PPT演示、视频会议画中画和鼠标拖拽。</span></button>
+<button type="button" class="mode-option" data-mode="camera-touch"><b>📱 实体平板拍摄</b><span>适合画面同时拍到儿童手部、设备边框和真实触屏动作。</span></button>
+</div><small>你提供的拼图视频属于“录屏 / 画中画”模式：系统会屏蔽摄像头人像区域，用局部目标位移估算交互开始。</small></div>
+<div class="field full"><label>测试项目分类方式</label><div class="manual-task-box">
+<div class="task-legend"><span>无声动画观看</span><span>故事音频聆听</span><span>拖拽拼图操作</span></div>
+<div class="manual-task-note">三项测试同时纳入本次报告：每个上传槽位固定对应一个测试项目，系统会依次分析三个视频，并输出三者合并后的综合 VAK 报告。</div>
+</div><small>任务类别来自上传槽位，不再依赖分析过程中的手动切换，避免拖拽拼图被误归入无声动画。</small></div>
+<div class="field"><label>交互响应时间</label><div class="screen-status"><span class="badge-auto">双模式估算</span> 实体触控或录屏交互</div><small>实体拍摄：刺激变化 → 指尖接触；录屏模式：任务画面稳定 → 首次拖拽/点击反馈。</small></div>
 <div class="field full"><label for="notes">实验备注</label><textarea id="notes" placeholder="可记录拍摄角度、遮挡情况、任务材料或异常事件。"></textarea></div>
 <div class="field full"><label class="check-row"><input id="consentCheck" type="checkbox"><span>已获得监护人或机构授权，同意将该视频用于教育观察或研究分析。</span></label></div>
-<div class="field full"><label class="check-row"><input id="singleCheck" type="checkbox"><span>视频中只有一名主要分析对象；画面同时包含儿童和任务屏幕，且面部、上肢及屏幕在大部分时间内可见。</span></label></div>
+<div class="field full"><label class="check-row"><input id="singleCheck" type="checkbox"><span>视频中只有一名主要分析对象。实体拍摄应尽量同时拍到儿童与设备；录屏或画中画视频应能看到任务内容及主要儿童面部窗口。</span></label></div>
 </div>
 <div class="privacy-box"><strong>隐私与结果边界：</strong>视频只在当前浏览器中处理，不上传服务器。系统输出的是当前任务中的视觉、听觉、动觉行为通道倾向，不作为医学诊断、学习能力评价或固定标签的唯一依据。</div>
 </div>
@@ -216,10 +256,12 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <div id="screenSetup" class="card screen-setup">
 <h3>🖥️ 屏幕区域智能标定</h3>
 <div class="screen-grid"><div class="screen-canvas-wrap"><canvas id="screenPreviewCanvas" width="960" height="540"></canvas></div><div>
-<div id="screenStatus" class="screen-status">上传视频后，系统将自动识别平板或显示屏四角。</div>
-<p class="screen-tip" style="margin-top:12px">触控响应时间的计算需要先确认屏幕范围。自动识别失败时，点击“手动标定”，再按左上 → 右上 → 右下 → 左下依次点击四个角。</p>
-<div class="screen-actions"><button type="button" id="autoScreenBtn" class="btn btn-p">✨ 自动识别屏幕</button><button type="button" id="manualScreenBtn" class="btn btn-ghost">✋ 手动标定四角</button><button type="button" id="clearScreenBtn" class="btn btn-warn">清除标定</button></div>
-<div class="method-note">屏幕区域仅用于任务分类、屏幕变化和触控时序分析；原视频不会上传服务器。</div>
+<div id="screenStatus" class="screen-status">上传视频后，系统将自动判断实体屏幕或整帧录屏。</div>
+<div id="screenModeHint" class="mode-badge">等待视频模式判断</div>
+<p class="screen-tip" style="margin-top:12px">实体平板视频需要确认设备四角；电脑录屏或画中画视频无需寻找实体边框，可直接使用“整帧录屏模式”。录屏中的摄像头人像区域会被自动排除，避免把面部运动误判为拖拽。</p>
+<div class="screen-actions"><button type="button" id="autoScreenBtn" class="btn btn-p">✨ 自动判断模式</button><button type="button" id="fullFrameBtn" class="btn btn-ghost">🖥️ 使用整帧录屏</button><button type="button" id="manualScreenBtn" class="btn btn-ghost">✋ 手动标定四角</button><button type="button" id="clearScreenBtn" class="btn btn-warn">清除标定</button></div>
+<div class="screen-mode-help"><strong>本次适配重点：</strong>对于你上传的 WPS 拼图录屏，系统会将整帧作为任务屏幕，自动屏蔽右上方人物画中画，并根据拼图图片的连续局部位移识别拖拽操作。</div>
+<div class="method-note">屏幕区域仅用于屏幕变化、触控/交互时序和画质分析；测试项目名称由研究者手动选择，原视频不会上传服务器。</div>
 </div></div></div>
 <div style="text-align:center;margin-top:18px"><button id="startBtn" class="btn btn-p" disabled>&#9654; 开始浏览器端多模态分析</button></div>
 <div id="errBox" class="err"></div>
@@ -227,9 +269,9 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <h3>&#128218; 研究背景与技术说明</h3>
 <div style="font-size:14px;color:var(--txt2);line-height:1.9">
 <p><strong>MediaPipe：</strong>FaceMesh 追踪含虹膜在内的面部关键点，用于 EAR、注视相对坐标和头部姿态近似值；BlazePose 追踪 33 个身体关键点，用于归一化运动能量 MI、上肢轨迹和频域分析。</p>
-<p style="margin-top:8px"><strong>OpenCV.js：</strong>自动检测屏幕四边形、执行透视校正、计算屏幕内容变化和画面清晰度，并与 MediaPipe 手指关键点共同估算触控时刻。</p><p style="margin-top:8px"><strong>音频与任务识别：</strong>Web Audio API 提取音频 RMS/dBFS；系统综合音频能量、屏幕运动、触控占比和上肢活动，按时间窗口自动分类三类诱发任务。</p><p style="margin-top:8px"><strong>记忆存储：</strong>分析报告、任务分段、触控事件与逐时点数据保存在浏览器 IndexedDB 中，可在“本机记录”页面查看与汇总导出。</p>
+<p style="margin-top:8px"><strong>OpenCV.js：</strong>自动检测实体屏幕四边形；对录屏视频使用整帧工作区，屏蔽人物画中画后计算局部目标位移、屏幕内容变化和画面清晰度。实体拍摄与 MediaPipe 手指关键点联合估算触控，录屏则估算拖拽或点击反馈开始时刻。</p><p style="margin-top:8px"><strong>音频与手动分类：</strong>Web Audio API 继续提取音频 RMS/dBFS 作为实验行为指标；测试项目类别完全依据研究者的手动选择，系统按切换时间建立测试时间轴，不再用算法自动推断任务名称。</p><p style="margin-top:8px"><strong>记忆存储：</strong>分析报告、任务分段、交互事件与逐时点数据保存在浏览器 IndexedDB 中，可在“本机记录”页面查看与汇总导出。</p>
 <p style="margin-top:8px"><strong>双循环：</strong>requestAnimationFrame 负责流畅绘制视频与骨架，独立处理循环按约 100 ms 间隔执行模型推理；最终频率换算使用视频真实时间戳。</p>
-<div class="method-note">评分中的 50% / 30% / 20% 权重及 0.75 混合倾向阈值属于初始启发式参数，需在后续真实样本中校准。</div>
+<div class="method-note">评分中的 50% / 30% / 20% 权重属于初始启发式参数，需在后续真实样本中校准。</div>
 </div>
 </div>
 </div>
@@ -240,7 +282,7 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <div class="canvas-col">
 <div class="canvas-wrap">
 <canvas id="mainCanvas"></canvas>
-<div class="canvas-label">帧 <span id="frameNum">0</span> / <span id="frameTotal">0</span> | 时间 <span id="curTime">0.0</span>s</div>
+<div class="canvas-label">帧 <span id="frameNum">0</span> / <span id="frameTotal">0</span> | 时间 <span id="curTime">0.0</span>s</div><div class="canvas-performance" id="canvasPerformance">等待视频信息</div>
 </div>
 <div class="pbar-wrap">
 <div class="pbar-track"><div class="pbar-fill" id="pbarFill"></div></div>
@@ -248,6 +290,10 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <span id="pbarText"><span class="spin"></span>正在初始化...</span>
 <span id="pbarPct">0%</span>
 </div>
+<div class="analysis-runtime">
+<div class="runtime-left"><div class="runtime-hint" id="runtimeHint">系统将先读取视频，再分别初始化人脸模型、姿态模型、OpenCV 与音频分析；某个辅助组件不可用时会自动降级，不再无限停留。</div><div class="init-steps"><span class="init-step" id="stepVideo">视频</span><span class="init-step" id="stepFace">FaceMesh</span><span class="init-step" id="stepPose">BlazePose</span><span class="init-step" id="stepCv">OpenCV</span><span class="init-step" id="stepAudio">音频</span></div></div>
+<button type="button" class="btn-cancel" id="cancelAnalysisBtn">取消本次分析</button>
+</div><div class="analysis-error" id="analysisErrBox"></div>
 </div>
 </div>
 <div class="metrics-col">
@@ -267,7 +313,7 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <div class="m-row"><span>画面清晰度</span><span class="val" id="mSharp">--</span></div>
 <div class="m-row"><span>帧间运动像素</span><span class="val" id="mCvMotion">--</span></div>
 <div class="m-row"><span>实际采样频率</span><span class="val" id="mActualHz">--</span></div></div>
-<div class="m-card"><h4>🧩 智能任务与触控</h4><div class="live-task" id="mTask">等待识别...</div><div class="live-sub" id="mTaskConf">滑动窗口正在准备</div><div class="m-row"><span><i id="touchPulse" class="touch-pulse"></i>屏幕接触</span><span class="val" id="mTouch">未检测</span></div><div class="m-row"><span>最近响应时间</span><span class="val" id="mResponse">--</span></div><div class="m-row"><span>音频电平</span><span class="val" id="mAudio">--</span></div></div>
+<div class="m-card"><h4>🗂 手动测试分类</h4><div class="live-task" id="mTask">等待开始...</div><div class="live-sub" id="mTaskConf">项目类别由研究者手动选择</div><div id="liveTaskButtons" class="task-button-grid"></div><div id="manualTaskClock" class="manual-task-clock">多项目模式：测试发生变化时点击对应按钮，当前视频时间将成为新分段起点。</div><div class="m-row"><span><i id="touchPulse" class="touch-pulse"></i>触控 / 屏幕交互</span><span class="val" id="mTouch">未检测</span></div><div class="m-row"><span>最近响应时间</span><span class="val" id="mResponse">--</span></div><div class="m-row"><span>音频电平</span><span class="val" id="mAudio">--</span></div></div>
 <div class="m-card vak-bars"><h4>VAK 实时相对评分</h4>
 <div class="vak-bar-g"><div class="lbl"><span style="color:var(--v)">视觉 V</span><span id="vLive">0%</span></div><div class="vak-bar"><div class="fill fill-v" id="vBar" style="width:0"></div></div></div>
 <div class="vak-bar-g"><div class="lbl"><span style="color:var(--a)">听觉 A</span><span id="aLive">0%</span></div><div class="vak-bar"><div class="fill fill-a" id="aBar" style="width:0"></div></div></div>
@@ -281,8 +327,8 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <div id="viewReport" class="view">
 <div id="verdict" class="verdict fade-in"><div class="vl">当前任务中的学习行为通道倾向</div><div class="vs" id="rStyle">--</div><div class="vc" id="rConf">--</div></div>
 <div class="card fade-in"><h3>&#128249; 视频与分析信息</h3><div class="vinfo-g" id="rVideoInfo"></div></div>
-<div class="card fade-in"><h3>🧩 三类任务智能分段</h3><div id="taskSegmentSummary" class="segment-grid"></div><div class="table-wrap" style="margin-top:14px"><table class="data-table"><thead><tr><th>序号</th><th>任务类别</th><th>开始</th><th>结束</th><th>时长</th><th>识别置信度</th><th>V/A/K 相对得分</th><th>触控次数</th></tr></thead><tbody id="taskSegmentBody"></tbody></table></div><div class="table-note">任务类别由视频中的音频能量、屏幕内容变化、指尖接触和上肢运动联合推断；建议结合实验流程时间点进行复核。</div></div>
-<div class="card fade-in"><h3>👆 平板触控响应时间</h3><div class="vinfo-g" id="touchSummary"></div><div class="table-wrap" style="margin-top:14px"><table class="data-table"><thead><tr><th>事件</th><th>任务</th><th>刺激出现时间</th><th>触控时间</th><th>响应时长</th><th>识别置信度</th><th>判定依据</th></tr></thead><tbody id="touchEventBody"></tbody></table></div><div class="table-note">该数值为基于视频画面的估算值：刺激时刻由屏幕从稳定状态进入显著变化识别，触控时刻由手指关键点进入屏幕区域并获得屏幕变化支持识别。摄像角度、遮挡、帧率与反光会影响误差。</div></div>
+<div class="card fade-in"><h3>🗂 测试项目手动分类与时间轴</h3><div id="taskSegmentSummary" class="segment-grid"></div><div class="table-wrap" style="margin-top:14px"><table class="data-table"><thead><tr><th>序号</th><th>任务类别</th><th>开始</th><th>结束</th><th>时长</th><th>分类来源</th><th>V/A/K 相对得分</th><th>交互次数</th></tr></thead><tbody id="taskSegmentBody"></tbody></table></div><div class="table-note">测试项目类别由研究者手动选择；每次切换按钮的当前视频时间作为新分段起点。建议在分析时严格按照实验流程及时切换。</div></div>
+<div class="card fade-in"><h3>👆 触控 / 屏幕交互响应时间</h3><div class="vinfo-g" id="touchSummary"></div><div class="table-wrap" style="margin-top:14px"><table class="data-table"><thead><tr><th>事件</th><th>任务</th><th>模式</th><th>刺激/任务就绪</th><th>交互开始</th><th>响应时长</th><th>操作间隔</th><th>识别置信度</th><th>判定依据</th></tr></thead><tbody id="touchEventBody"></tbody></table></div><div class="table-note">实体拍摄依据手指接近/进入屏幕并获得画面变化支持；录屏依据排除人物画中画后的局部目标连续位移或点击反馈。所有时长均为视频估算值，受帧率、编码和画面结构影响。</div></div>
 <div class="card fade-in"><h3>&#128202; VAK 三维度相对评分</h3>
 <div class="radar-row"><canvas id="radarCanvas" width="300" height="300"></canvas>
 <div class="radar-scores">
@@ -294,7 +340,7 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <div class="card fade-in"><h3>✅ 数据质量与结果有效性</h3><div class="quality-grid" id="rQuality"></div></div>
 <div class="card fade-in"><h3>📋 实验识别数据量表</h3>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>维度</th><th>行为指标</th><th>数值</th><th>单位</th><th>数据来源</th><th>解释与限制</th></tr></thead><tbody id="metricTableBody"></tbody></table></div>
-<div class="table-note">触控响应时间由视频中的屏幕变化与手指接触事件自动估算。Excel 将导出任务分段、触控事件、逐时点 EAR、注视坐标、Yaw/Pitch/Roll、MI、上肢轨迹、音频与屏幕指标。</div>
+<div class="table-note">系统会根据手动选择导出七类测试项目的分段和独立数据工作表，并同时导出实体触控/录屏交互事件、EAR、注视坐标、Yaw/Pitch/Roll、MI、上肢轨迹、音频、局部运动区域与屏幕指标。</div>
 </div>
 <div class="card fade-in"><h3>&#128269; 多模态行为指标概览</h3><div class="mg" id="rMetrics"></div></div>
 <div class="card fade-in"><h3>&#129504; 行为倾向解读</h3><div id="rExplain"></div></div>
@@ -306,23 +352,23 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 
 <!-- 本机历史记录 -->
 <div id="viewHistory" class="view">
-<div class="hero"><span class="hero-kicker">◌ IndexedDB · 浏览器本地保存</span><h2>实验记忆库</h2><p>每次分析完成后，系统将匿名编号、任务分段、触控事件、VAK 汇总和逐时点数据保存在当前浏览器。更换设备、清除浏览器数据或使用无痕模式会导致记录不可用。</p></div>
+<div class="hero"><span class="hero-kicker">◌ IndexedDB · 浏览器本地保存</span><h2>实验记忆库</h2><p>每次分析完成后，系统将匿名编号、任务分段、交互事件、VAK 汇总和逐时点数据保存在当前浏览器。更换设备、清除浏览器数据或使用无痕模式会导致记录不可用。</p></div>
 <div class="card"><h3>🗂️ 已保存分析记录</h3><div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px"><button id="refreshHistoryBtn" class="btn btn-p">刷新记录</button><button id="exportHistoryBtn" class="btn btn-e">导出全部记录 Excel</button><button id="clearHistoryBtn" class="btn btn-warn">清空本机记录</button></div><div id="historyList" class="history-list"><div class="empty-state">正在读取本机记录...</div></div></div>
 </div>
 
 <script>
 /* 脚本加载检测 */
 var _mpScriptsLoaded={face:false,pose:false};
-function _onMPLoad(n){_mpScriptsLoaded[n]=true;console.log('[VAK] '+n+' 脚本已加载');}
+function _onMPLoad(n){_mpScriptsLoaded[n]=true;console.log('[VAK] '+n+' 脚本已加载');try{updateStaticLibraryStatus()}catch(_){}}
 function _onMPError(n){console.error('[VAK] '+n+' 脚本加载失败');}
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/face_mesh.js" crossorigin="anonymous" onload="_onMPLoad('face')" onerror="_onMPError('face')"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/pose.js" crossorigin="anonymous" onload="_onMPLoad('pose')" onerror="_onMPError('pose')"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/face_mesh.js" crossorigin="anonymous" onload="_onMPLoad('face')" onerror="_onMPError('face')"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/pose.js" crossorigin="anonymous" onload="_onMPLoad('pose')" onerror="_onMPError('pose')"></script>
 <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
-<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script defer src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script>
 /* ======================================================================
-   VAK 浏览器分析系统 1.1
+   VAK 浏览器分析系统 2.3
    MediaPipe：面部与姿态关键点
    OpenCV.js：画面清晰度与帧间运动辅助质量指标
    SheetJS：多工作表 XLSX 导出
@@ -331,17 +377,21 @@ const LEFT_EYE=[33,160,158,133,153,144], RIGHT_EYE=[263,387,385,362,373,380];
 const JOINT_IDX=[11,12,13,14,15,16,23,24,25,26], ARM_IDX=[15,16,13,14];
 const STYLE_NAMES={visual:'视觉通道',auditory:'听觉通道',kinesthetic:'动觉通道'};
 const CONFIG={
-    version:'VAK-CHILDLAB-2.0-MP-CV-AUDIO-TOUCH',
+    version:'VAK-CHILDLAB-2.4-MANUAL-TASKS',
     targetSampleHz:10,
-    processIntervalMs:100,
+    processIntervalMs:125,
+    performance:{analysisMaxWidth:720,compatAnalysisMaxWidth:640,stableFrameStepSec:.25,renderMaxWidth:1280,frameTimeoutMs:9000,roiTimeoutMs:2600,metadataTimeoutMs:10000,modelInitTimeoutMs:45000,watchdogMs:18000,startDeadlineMs:15000,modelJoinNoticeMs:12000},
     mixedThreshold:.75,
     yawEventDelta:3,
     yawEventCooldownSec:.30,
-    blink:{close:.20,open:.25,minClosedSec:.05,maxClosedSec:.80,minGapSec:.15},
-    quality:{minDurationSec:5,minSamples:20,minFaceRate:40,minPoseRate:40},
+    blink:{close:.20,open:.25,minClosedSec:0,maxClosedSec:.80,minGapSec:.25},
+    quality:{minDurationSec:5,minSamples:20,minFaceRate:35,minPoseRate:30,recordingMinFaceRate:25},
     weights:{visual:[.50,.30,.20],auditory:[.50,.30,.20],kinesthetic:[.50,.30,.20]},
     scales:{gazeVar:.0015,yawRate:6,yawStd:8,yawAbs:10,mi:.80,arm:.80},
-    cv:{width:360,diffThreshold:22,screenMotionThreshold:1.35,stimulusThreshold:2.4},task:{windowSec:3,minSegmentSec:1.2,smoothSamples:5},touch:{nearPxRatio:.035,minContactSamples:2,maxResponseSec:8,minResponseSec:.10,stimulusCooldownSec:.65}
+    cv:{width:360,diffThreshold:18,screenMotionThreshold:.60,stimulusThreshold:2.4,localMotionThreshold:.18,quietThreshold:.28},
+    task:{windowSec:3.2,minSegmentSec:1.2,smoothSamples:7,recentInteractionSec:5.5},
+    touch:{nearPxRatio:.035,minContactSamples:2,maxResponseSec:12,minResponseSec:.10,stimulusCooldownSec:.65},
+    recording:{warmupSec:.65,stableSec:.65,minInteractionSamples:1,endQuietSamples:2,minGapSec:1.10,faceMaskPadX:1.05,faceMaskPadY:1.35,maxMaskArea:.34}
 };
 
 const SKEL=[
@@ -356,21 +406,25 @@ const SCOLORS={L:{line:'#00DDFF',dot:'#00FFFF',glow:'rgba(0,221,255,0.25)'},R:{l
 const JNAMES={0:'Nose',11:'L.Shoulder',12:'R.Shoulder',13:'L.Elbow',14:'R.Elbow',15:'L.Wrist',16:'R.Wrist',23:'L.Hip',24:'R.Hip',25:'L.Knee',26:'R.Knee',27:'L.Ankle',28:'R.Ankle'};
 
 function emptyState(){return{
-    file:null,running:false,finished:false,currentReport:null,
-    participant:{id:'',ageGroup:'',taskType:'自动识别',notes:''},
+    file:null,multiFiles:{visual:null,auditory:null,kinesthetic:null},running:false,finished:false,currentReport:null,
+    participant:{id:'',ageGroup:'',taskType:'手动分类',notes:'',taskMode:'multi',taskLabels:{}},
     earArr:[],gazeXArr:[],gazeYArr:[],gazeXPxArr:[],gazeYPxArr:[],yawArr:[],pitchArr:[],rollArr:[],
     miArr:[],armTrajArr:[],miTimes:[],cvSharpArr:[],cvMotionArr:[],screenMotionArr:[],audioDbArr:[],sampleTimes:[],sampleRows:[],featureRows:[],
-    blinkCount:0,blinkClosed:false,blinkCloseStart:null,lastBlinkTime:-Infinity,
+    blinkCount:0,blinkClosed:false,blinkCloseStart:null,blinkClosedSamples:0,lastBlinkTime:-Infinity,prevEAR:null,earOpenBaseline:null,
     yawChanges:[],prevYaw:null,lastYawEventTime:-Infinity,
     prevPoseLM:null,renderPrevPoseLM:null,prevPoseTime:null,
     faceFrames:0,poseFrames:0,sampledFrames:0,faceValidSeconds:0,poseValidSeconds:0,lastSampleTime:null,lastFaceOK:false,lastPoseOK:false,
+    faceRoiBox:null,faceRoiHits:0,faceRoiAttempts:0,faceRoiSource:'未触发',faceNoHitStreak:0,faceFullHits:0,faceFullMisses:0,faceModelTimeouts:0,
     trailL:[],trailR:[],TRAIL_LEN:50,lastFaceLM:null,lastPoseLM:null,lastFrameData:{ear:null,yaw:null,mi:null,faceOK:false,poseOK:false,visJ:0,sharpness:null,cvMotion:null},
-    videoDuration:0,videoWidth:0,videoHeight:0,fileName:'',objectUrl:null,previewUrl:null,screenQuad:null,manualScreenPoints:[],manualScreenMode:false,screenDetectedBy:'',
-    openCvUsed:false,openCvReady:false,openCvMessage:'等待加载',
-    libraryStatus:{face:false,pose:false,opencv:false,xlsx:false,audio:false,db:false},audioReady:false,audioMessage:'待启动',taskSegments:[],touchEvents:[],stimulusEvents:[],pendingStimulus:null,lastStimulusTime:-Infinity,screenQuietCount:0,touchContact:false,touchCandidateCount:0,lastFingerPoint:null,lastFingerTime:null,currentTask:'未知片段',currentTaskConfidence:0,lastTaskLabels:[]
+    videoDuration:0,videoWidth:0,videoHeight:0,analysisWidth:0,analysisHeight:0,renderWidth:0,renderHeight:0,fileName:'',objectUrl:null,previewUrl:null,screenQuad:null,manualScreenPoints:[],manualScreenMode:false,screenDetectedBy:'',videoInfos:[],activeTestCode:null,globalTimeOffset:0,
+    cancelRequested:false,runtimeVideo:null,runtimeCancel:null,lastFrameCompletedWall:0,frameErrorCount:0,startupElapsedMs:null,fastStartMode:true,modelsJoinedAt:null,
+    captureModePreference:'auto',captureMode:'auto',screenExclusionBox:null,screenModeConfidence:0,
+    openCvUsed:false,openCvReady:false,openCvMessage:'等待加载',perfProfile:null,analysisMode:'realtime',detectFrameIndex:0,processMsArr:[],
+    libraryStatus:{face:false,pose:false,opencv:false,xlsx:false,audio:false,db:false},audioReady:false,audioMessage:'待启动',taskSegments:[],touchEvents:[],interactionEvents:[],stimulusEvents:[],pendingStimulus:null,lastStimulusTime:-Infinity,screenQuietCount:0,touchContact:false,touchCandidateCount:0,lastFingerPoint:null,lastFingerTime:null,currentTask:'visual',currentTaskConfidence:100,lastTaskLabels:[],manualTaskMode:'multi',manualSelectedTask:'visual',taskLabels:{other1:'其他测试一',other2:'其他测试二',other3:'其他测试三',other4:'其他测试四'},taskSwitches:[],
+    interactionActive:false,interactionCandidateCount:0,interactionQuietCount:0,interactionStartTime:null,lastInteractionEnd:null,lastInteractionEvidenceTime:-Infinity,lastInteractionEvent:null,initialTaskReadyTime:null,initialQuietStart:null,recordingInteractionSeen:false
 };}
 let G=emptyState();
-let _faceMesh=null,_poseDet=null,_mpReady=false,_cvReady=false,_cvPrevGray=null,_cvPrevScreenGray=null;
+let _faceMesh=null,_poseDet=null,_mpReady=false,_faceReady=false,_poseReady=false,_mpInitPromise=null,_backgroundWarmupStarted=false,_faceSendQueue=Promise.resolve(),_poseSendQueue=Promise.resolve(),_cvReady=false,_cvPrevGray=null,_cvPrevScreenGray=null,_fastMetricCanvas=null,_fastMetricCtx=null,_fastPrevGray=null,_faceRoiCanvas=null,_faceRoiCtx=null;
 let _audioCtx=null,_audioSource=null,_audioAnalyser=null,_audioGain=null,_audioBuffer=null;
 let _dbPromise=null,_previewVideo=null;
 
@@ -386,14 +440,62 @@ function expScore(x,scale){return clamp(100*(1-Math.exp(-Math.max(0,x)/Math.max(
 function safeFileName(s){return String(s||'VAK').replace(/[\\/:*?"<>|]/g,'_').slice(0,80)}
 function validNumber(v){const n=Number(v);return Number.isFinite(n)?n:null}
 
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+function withTimeout(promise,ms,label='操作'){
+    return new Promise((resolve,reject)=>{let done=false;const timer=setTimeout(()=>{if(!done){done=true;reject(new Error(label+'超时'))}},ms);Promise.resolve(promise).then(v=>{if(!done){done=true;clearTimeout(timer);resolve(v)}}).catch(e=>{if(!done){done=true;clearTimeout(timer);reject(e)}})})
+}
+function setInitStep(id,state,text){const n=el(id);if(!n)return;n.className='init-step '+(state||'');if(text)n.textContent=text}
+function resetInitSteps(){[['stepVideo','视频'],['stepFace','FaceMesh'],['stepPose','BlazePose'],['stepCv','OpenCV'],['stepAudio','音频']].forEach(([id,t])=>setInitStep(id,'',t));const box=el('analysisErrBox');if(box){box.textContent='';box.classList.remove('show')}}
+function showAnalysisError(message){const box=el('analysisErrBox');if(box){box.textContent=message;box.classList.add('show')}const p=el('pbarText');if(p)p.textContent='分析未能启动：'+message}
+async function waitForMediaPipeScripts(maxWaitMs=12000){
+    if(typeof FaceMesh!=='undefined'&&typeof Pose!=='undefined')return true;
+    setTechStatus('mp','loading','等待 MediaPipe 脚本');
+    const start=Date.now();
+    while(Date.now()-start<maxWaitMs){
+        if(typeof FaceMesh!=='undefined'&&typeof Pose!=='undefined')return true;
+        await sleep(120)
+    }
+    throw new Error('MediaPipe 主脚本暂未加载；系统已进入快速启动降级模式，模型加载完成后会自动接入。')
+}
+function scaleSize(w,h,maxW){const sc=Math.min(1,maxW/Math.max(1,w));return{width:Math.max(2,Math.round(w*sc)),height:Math.max(2,Math.round(h*sc)),scale:sc}}
+function choosePerformanceProfile(videoW=0,videoH=0){
+    const cores=navigator.hardwareConcurrency||4,mem=navigator.deviceMemory||4,pixels=videoW*videoH;
+    const ua=(navigator.userAgent||'').toLowerCase();
+    const likelyIntelMac=ua.includes('macintosh')&&cores<=8;
+    const heavyVideo=pixels>=1920*1080;
+    if(likelyIntelMac||cores<=6||mem<=4||heavyVideo)return{name:'兼容模式',maxWidth:CONFIG.performance.compatAnalysisMaxWidth,interval:220,poseEvery:2,playbackRate:.45,stableFrame:true,timeout:CONFIG.performance.frameTimeoutMs};
+    if(cores<=8||pixels>=1280*720)return{name:'均衡模式',maxWidth:720,interval:155,poseEvery:2,playbackRate:.8,stableFrame:false,timeout:CONFIG.performance.frameTimeoutMs};
+    return{name:'高性能模式',maxWidth:CONFIG.performance.analysisMaxWidth,interval:CONFIG.processIntervalMs,poseEvery:1,playbackRate:1,stableFrame:false,timeout:CONFIG.performance.frameTimeoutMs};
+}
+function currentProcessInterval(){
+    const p=G.perfProfile||choosePerformanceProfile(G.videoWidth,G.videoHeight);
+    const recent=G.processMsArr.slice(-8),avg=recent.length?mean(recent):0;
+    if(avg>p.interval*1.5)return Math.min(320,p.interval+80);
+    if(avg>p.interval*1.15)return Math.min(260,p.interval+40);
+    return p.interval;
+}
+
 /* ---------- 屏幕、音频、任务、触控与本地数据库 ---------- */
 const TASK_META={
-  visual:{name:'无声动画观看',short:'视觉任务',className:'visual'},
-  auditory:{name:'故事音频聆听',short:'听觉任务',className:'auditory'},
-  kinesthetic:{name:'拖拽拼图操作',short:'动觉任务',className:'kinesthetic'},
-  unknown:{name:'待确认片段',short:'未识别',className:'unknown'}
+  visual:{name:'无声动画观看',short:'无声动画',className:'visual'},
+  auditory:{name:'故事音频聆听',short:'故事音频',className:'auditory'},
+  kinesthetic:{name:'拖拽拼图操作',short:'拖拽拼图',className:'kinesthetic'},
+  other1:{name:'其他测试一',short:'其他一',className:'other'},
+  other2:{name:'其他测试二',short:'其他二',className:'other'},
+  other3:{name:'其他测试三',short:'其他三',className:'other'},
+  other4:{name:'其他测试四',short:'其他四',className:'other'},
+  unknown:{name:'未选择项目',short:'未选择',className:'unknown'}
 };
-function taskMeta(code){return TASK_META[code]||TASK_META.unknown}
+const MANUAL_TASK_CODES=['visual','auditory','kinesthetic'];
+function taskCodes(){return MANUAL_TASK_CODES.slice()}
+function taskMeta(code){const base=TASK_META[code]||TASK_META.unknown;if(code&&code.startsWith('other')){const name=(G?.taskLabels?.[code]||base.name).trim()||base.name;return{...base,name,short:name.length>8?name.slice(0,8):name}}return base}
+function readTaskLabels(){return{other1:(el('taskLabel4')?.value||'其他测试一').trim()||'其他测试一',other2:(el('taskLabel5')?.value||'其他测试二').trim()||'其他测试二',other3:(el('taskLabel6')?.value||'其他测试三').trim()||'其他测试三',other4:(el('taskLabel7')?.value||'其他测试四').trim()||'其他测试四'}}
+function refreshTaskSelect(){G.taskLabels={...G.taskLabels,...readTaskLabels()};const sel=el('initialTaskSelect');if(!sel)return;const current=sel.value||G.manualSelectedTask||'visual';sel.innerHTML=taskCodes().map(code=>`<option value="${code}">${escapeHtml(taskMeta(code).name)}</option>`).join('');sel.value=taskCodes().includes(current)?current:'visual';G.manualSelectedTask=sel.value;renderLiveTaskButtons()}
+function setManualTaskMode(mode){G.manualTaskMode=mode==='single'?'single':'multi';document.querySelectorAll('#taskModeGrid .task-mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.taskMode===G.manualTaskMode));renderLiveTaskButtons();const c=el('manualTaskClock');if(c)c.textContent=G.manualTaskMode==='single'?'单项目模式：整个视频将全部归入当前选择的测试项目。':'多项目模式：测试发生变化时点击对应按钮，当前视频时间将成为新分段起点。'}
+function renderLiveTaskButtons(){const box=el('liveTaskButtons');if(!box)return;box.innerHTML=taskCodes().map(code=>`<button type="button" class="task-switch-btn ${G.currentTask===code?'active':''}" data-live-task="${code}" ${G.manualTaskMode==='single'&&G.currentTask!==code?'disabled':''}>${escapeHtml(taskMeta(code).name)}</button>`).join('');box.querySelectorAll('[data-live-task]').forEach(b=>b.addEventListener('click',()=>selectManualTask(b.dataset.liveTask,true)))}
+function selectManualTask(code,fromLive=false){if(!taskCodes().includes(code))return;if(G.running&&G.manualTaskMode==='single'&&code!==G.currentTask)return;const previous=G.currentTask;G.currentTask=code;G.manualSelectedTask=code;G.currentTaskConfidence=100;if(el('initialTaskSelect')&&!G.running)el('initialTaskSelect').value=code;if(G.running&&fromLive&&previous!==code){const t=Number(G.runtimeVideo?.currentTime||0);G.taskSwitches.push({time:t,code,name:taskMeta(code).name,source:'手动点击'});const clock=el('manualTaskClock');if(clock)clock.textContent=`已在 ${t.toFixed(2)} 秒切换为「${taskMeta(code).name}」；共记录 ${Math.max(0,G.taskSwitches.length-1)} 次项目切换。`}renderLiveTaskButtons();const mt=el('mTask');if(mt)mt.textContent=taskMeta(code).name;const mc=el('mTaskConf');if(mc)mc.textContent='分类来源：上传槽位固定分类'}
+function initializeManualTaskUI(){refreshTaskSelect();setManualTaskMode('multi');selectManualTask(el('initialTaskSelect')?.value||'visual',false)}
 function polygonArea(points){let a=0;for(let i=0;i<points.length;i++){const p=points[i],q=points[(i+1)%points.length];a+=p.x*q.y-q.x*p.y}return Math.abs(a)/2}
 function orderQuad(points){if(!points||points.length!==4)return null;const pts=points.map(p=>({x:p.x,y:p.y}));const sums=pts.map(p=>p.x+p.y),diffs=pts.map(p=>p.x-p.y);return[pts[sums.indexOf(Math.min(...sums))],pts[diffs.indexOf(Math.max(...diffs))],pts[sums.indexOf(Math.max(...sums))],pts[diffs.indexOf(Math.min(...diffs))]]}
 function pointInPolygon(p,poly){let inside=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];const intersect=((a.y>p.y)!==(b.y>p.y))&&(p.x<(b.x-a.x)*(p.y-a.y)/(b.y-a.y+1e-9)+a.x);if(intersect)inside=!inside}return inside}
@@ -407,43 +509,79 @@ function detectScreenQuad(canvas){
     return best;
   }catch(e){console.warn('[VAK] screen detect',e);return null}finally{[src,small,gray,blur,edges,contours,hierarchy].forEach(m=>{try{if(m)m.delete()}catch(_){}})}
 }
+function fullFrameQuad(margin=.006){return[{x:margin,y:margin},{x:1-margin,y:margin},{x:1-margin,y:1-margin},{x:margin,y:1-margin}]}
+function setModeHint(mode,text){const n=el('screenModeHint');if(!n)return;n.className='mode-badge '+(mode==='screen-recording'?'recording':mode==='camera-touch'?'camera':'');n.textContent=text}
+function setCaptureModePreference(mode){G.captureModePreference=mode;document.querySelectorAll('#captureModeGrid .mode-option').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));if(_previewVideo){if(mode==='screen-recording')useFullFrameMode('用户选择：整帧录屏模式');else autoDetectScreen()}}
+function useFullFrameMode(source='整帧录屏自动适配'){if(!_previewVideo)return;G.screenQuad=fullFrameQuad();G.captureMode='screen-recording';G.screenDetectedBy=source;G.screenModeConfidence=95;G.manualScreenPoints=[];G.manualScreenMode=false;el('screenStatus').textContent='✓ 已使用整帧录屏模式。系统将自动屏蔽人物画中画，并依据局部目标位移识别拖拽/点击。';setModeHint('screen-recording','🖥️ 录屏 / 画中画模式');redrawScreenPreview();updateStartAvailability()}
 async function prepareScreenPreview(file){
-  const setup=el('screenSetup'),canvas=el('screenPreviewCanvas');setup.classList.add('show');G.screenQuad=null;G.manualScreenPoints=[];G.manualScreenMode=false;el('screenStatus').textContent='正在读取视频预览并扫描多个时间点识别屏幕区域...';if(G.previewUrl)URL.revokeObjectURL(G.previewUrl);G.previewUrl=URL.createObjectURL(file);if(_previewVideo)try{_previewVideo.remove()}catch(_){};_previewVideo=document.createElement('video');_previewVideo.muted=true;_previewVideo.playsInline=true;_previewVideo.preload='metadata';_previewVideo.src=G.previewUrl;
+  const setup=el('screenSetup'),canvas=el('screenPreviewCanvas');setup.classList.add('show');G.screenQuad=null;G.manualScreenPoints=[];G.manualScreenMode=false;G.captureMode='auto';G.screenExclusionBox=null;el('screenStatus').textContent='正在读取视频预览并判断实体拍摄或录屏模式...';setModeHint('auto','正在判断视频模式');if(G.previewUrl)URL.revokeObjectURL(G.previewUrl);G.previewUrl=URL.createObjectURL(file);if(_previewVideo)try{_previewVideo.remove()}catch(_){};_previewVideo=document.createElement('video');_previewVideo.muted=true;_previewVideo.playsInline=true;_previewVideo.preload='metadata';_previewVideo.src=G.previewUrl;
   try{await new Promise((res,rej)=>{_previewVideo.onloadedmetadata=res;_previewVideo.onerror=()=>rej(new Error('视频预览读取失败'));_previewVideo.load()});canvas.width=_previewVideo.videoWidth||960;canvas.height=_previewVideo.videoHeight||540;await ensureOpenCV();await autoDetectScreen()}catch(e){el('screenStatus').textContent=e.message+'，请尝试重新选择视频。'}updateStartAvailability();
 }
 async function seekPreview(sec){if(!_previewVideo)return;await new Promise(resolve=>{let done=false;const finish=()=>{if(done)return;done=true;resolve()};_previewVideo.onseeked=finish;_previewVideo.currentTime=Math.max(0,Math.min(sec,Math.max(0,_previewVideo.duration-.05)));setTimeout(finish,900)});const c=el('screenPreviewCanvas');c.getContext('2d').drawImage(_previewVideo,0,0,c.width,c.height)}
+async function seekVideoFrame(video,sec){
+    const target=Math.max(0,Math.min(sec,Math.max(0,(video.duration||0)-.05)));
+    if(Math.abs((video.currentTime||0)-target)<.015&&video.readyState>=2)return;
+    await new Promise(resolve=>{
+        let done=false;
+        const finish=()=>{if(done)return;done=true;video.onseeked=null;resolve()};
+        video.onseeked=finish;
+        try{video.currentTime=target}catch(_){finish();return}
+        setTimeout(finish,1200)
+    });
+    if(video.readyState<2)await sleep(80);
+}
 function redrawScreenPreview(){if(!_previewVideo)return;const c=el('screenPreviewCanvas'),x=c.getContext('2d');x.drawImage(_previewVideo,0,0,c.width,c.height);drawScreenQuad(c,G.screenQuad,G.manualScreenPoints)}
-async function autoDetectScreen(){if(!_previewVideo)return;const c=el('screenPreviewCanvas');await ensureOpenCV();el('screenStatus').textContent='正在扫描视频中的屏幕边界...';const d=_previewVideo.duration||1,times=[.05,.20,.40,.62,.82].map(x=>Math.min(Math.max(.2,d*x),Math.max(.2,d-.1)));let best=null,bestTime=times[0],bestScore=0;for(const t of times){await seekPreview(t);const q=detectScreenQuad(c);if(q){const score=polygonArea(q);if(score>bestScore){best=q;bestScore=score;bestTime=t}}}await seekPreview(bestTime);if(best){G.screenQuad=best;G.screenDetectedBy='OpenCV 多帧自动识别';G.manualScreenPoints=[];G.manualScreenMode=false;el('screenStatus').textContent='✓ 已从多个时间点自动识别屏幕区域，请检查青色四边形是否准确。'}else{G.screenQuad=null;el('screenStatus').textContent='未找到可靠屏幕四边形，请使用“手动标定四角”。'}redrawScreenPreview();updateStartAvailability()}
+async function autoDetectScreen(){if(!_previewVideo)return;const pref=G.captureModePreference;if(pref==='screen-recording'){useFullFrameMode('用户选择：整帧录屏模式');return}const c=el('screenPreviewCanvas');await ensureOpenCV();el('screenStatus').textContent='正在扫描多个时间点并判断视频类型...';const d=_previewVideo.duration||1,times=[.05,.20,.40,.62,.82].map(x=>Math.min(Math.max(.35,d*x),Math.max(.35,d-.1)));let best=null,bestTime=times[0],bestScore=0;for(const t of times){await seekPreview(t);const q=detectScreenQuad(c);if(q){const score=polygonArea(q);if(score>bestScore){best=q;bestScore=score;bestTime=t}}}await seekPreview(bestTime);if(best&&bestScore>=.22){G.screenQuad=best;G.captureMode='camera-touch';G.screenDetectedBy='OpenCV 多帧实体屏幕识别';G.screenModeConfidence=clamp(bestScore/.55*100,55,96);G.manualScreenPoints=[];G.manualScreenMode=false;el('screenStatus').textContent='✓ 已识别实体屏幕区域。若这是电脑录屏或画中画，请改点“使用整帧录屏”。';setModeHint('camera-touch','📱 实体屏幕拍摄模式')}else if(pref==='camera-touch'){G.screenQuad=null;G.captureMode='camera-touch';G.screenDetectedBy='';el('screenStatus').textContent='未找到可靠实体屏幕四边形，请使用“手动标定四角”。';setModeHint('camera-touch','📱 等待实体屏幕标定')}else{useFullFrameMode('未检测到实体边框，自动切换整帧录屏');return}redrawScreenPreview();updateStartAvailability()}
+function beginManualScreen(){if(!_previewVideo)return;G.manualScreenMode=true;G.manualScreenPoints=[];G.screenQuad=null;G.captureMode='camera-touch';G.screenDetectedBy='';el('screenStatus').textContent='手动标定中：请依次点击左上 → 右上 → 右下 → 左下。';setModeHint('camera-touch','✋ 手动实体屏幕标定');redrawScreenPreview();updateStartAvailability()}
+function clearScreen(){G.screenQuad=null;G.manualScreenPoints=[];G.manualScreenMode=false;G.screenDetectedBy='';G.screenExclusionBox=null;el('screenStatus').textContent='已清除标定。可重新自动判断、使用整帧录屏或手动标定。';setModeHint('auto','等待重新标定');redrawScreenPreview();updateStartAvailability()}
+function previewCanvasClick(e){if(!G.manualScreenMode)return;const c=el('screenPreviewCanvas'),r=c.getBoundingClientRect(),p={x:clamp((e.clientX-r.left)/r.width,0,1),y:clamp((e.clientY-r.top)/r.height,0,1)};G.manualScreenPoints.push(p);if(G.manualScreenPoints.length===4){G.screenQuad=orderQuad(G.manualScreenPoints);G.manualScreenPoints=[];G.manualScreenMode=false;G.captureMode='camera-touch';G.screenDetectedBy='用户手动标定实体屏幕';G.screenModeConfidence=100;el('screenStatus').textContent='✓ 已完成手动四角标定。';setModeHint('camera-touch','📱 手动实体屏幕模式')}else el('screenStatus').textContent=`已标定 ${G.manualScreenPoints.length}/4 个角，请继续点击。`;redrawScreenPreview();updateStartAvailability()}
+async function setupAudioAnalysis(video){
+    cleanupAudio();setInitStep('stepAudio','loading','音频初始化');
+    try{
+        const AudioCtx=window.AudioContext||window.webkitAudioContext;if(!AudioCtx)throw new Error('浏览器不支持 Web Audio API');
+        _audioCtx=new AudioCtx({latencyHint:'interactive'});if(_audioCtx.state==='suspended')await _audioCtx.resume().catch(()=>{});
+        _audioSource=_audioCtx.createMediaElementSource(video);_audioAnalyser=_audioCtx.createAnalyser();_audioAnalyser.fftSize=1024;_audioAnalyser.smoothingTimeConstant=.35;_audioGain=_audioCtx.createGain();_audioGain.gain.value=0;
+        _audioSource.connect(_audioAnalyser);_audioAnalyser.connect(_audioGain);_audioGain.connect(_audioCtx.destination);_audioBuffer=new Float32Array(_audioAnalyser.fftSize);
+        G.audioReady=true;G.libraryStatus.audio=true;G.audioMessage='已就绪';setTechStatus('audio','ok','音频分析已就绪');setInitStep('stepAudio','ok','音频就绪');return true;
+    }catch(e){console.warn('[VAK] audio unavailable:',e);cleanupAudio();G.audioReady=false;G.audioMessage='不可用：'+e.message;setTechStatus('audio','warn','音频分析已降级');setInitStep('stepAudio','warn','音频降级');return false}
+}
 function sampleAudio(){if(!_audioAnalyser||!_audioBuffer)return{rms:null,db:null};_audioAnalyser.getFloatTimeDomainData(_audioBuffer);let sum=0;for(const v of _audioBuffer)sum+=v*v;const rms=Math.sqrt(sum/_audioBuffer.length),db=rms>1e-7?20*Math.log10(rms):-100;return{rms,db}}
-function cleanupAudio(){try{if(_audioSource)_audioSource.disconnect();if(_audioAnalyser)_audioAnalyser.disconnect();if(_audioGain)_audioGain.disconnect();if(_audioCtx)_audioCtx.close()}catch(_){}_audioCtx=_audioSource=_audioAnalyser=_audioGain=_audioBuffer=null}
+function cleanupAudio(){try{if(_audioSource)_audioSource.disconnect();if(_audioAnalyser)_audioAnalyser.disconnect();if(_audioGain)_audioGain.disconnect();if(_audioCtx&&_audioCtx.state!=='closed')_audioCtx.close().catch(()=>{})}catch(_){}_audioCtx=_audioSource=_audioAnalyser=_audioGain=_audioBuffer=null}
 
-function warpScreenMetrics(canvas,quad){
-  if(!_cvReady||!quad)return{screenMotion:null,screenMeanDiff:null,screenSharpness:null};let src,M,srcTri,dstTri,warped,gray,diff,lap,meanM,stdM;
-  try{src=cv.imread(canvas);const W=360,H=230,pts=quad.map(p=>({x:p.x*src.cols,y:p.y*src.rows}));srcTri=cv.matFromArray(4,1,cv.CV_32FC2,pts.flatMap(p=>[p.x,p.y]));dstTri=cv.matFromArray(4,1,cv.CV_32FC2,[0,0,W-1,0,W-1,H-1,0,H-1]);M=cv.getPerspectiveTransform(srcTri,dstTri);warped=new cv.Mat();cv.warpPerspective(src,warped,M,new cv.Size(W,H),cv.INTER_LINEAR,cv.BORDER_REPLICATE);gray=new cv.Mat();cv.cvtColor(warped,gray,cv.COLOR_RGBA2GRAY);lap=new cv.Mat();cv.Laplacian(gray,lap,cv.CV_64F);meanM=new cv.Mat();stdM=new cv.Mat();cv.meanStdDev(lap,meanM,stdM);const sd=stdM.data64F?.[0]??stdM.doubleAt(0,0);let screenMotion=null,screenMeanDiff=null;if(_cvPrevScreenGray&&_cvPrevScreenGray.rows===gray.rows){diff=new cv.Mat();cv.absdiff(gray,_cvPrevScreenGray,diff);const m=cv.mean(diff)[0];screenMeanDiff=m;cv.threshold(diff,diff,CONFIG.cv.diffThreshold,255,cv.THRESH_BINARY);screenMotion=cv.countNonZero(diff)/(diff.rows*diff.cols)*100}if(_cvPrevScreenGray)_cvPrevScreenGray.delete();_cvPrevScreenGray=gray.clone();return{screenMotion,screenMeanDiff,screenSharpness:sd*sd}}
-  catch(e){console.warn('[VAK] screen metrics',e);return{screenMotion:null,screenMeanDiff:null,screenSharpness:null}}
-  finally{[src,M,srcTri,dstTri,warped,gray,diff,lap,meanM,stdM].forEach(m=>{try{if(m)m.delete()}catch(_){}})}
+function updateRecordingFaceMask(lm){if(G.captureMode!=='screen-recording'||!lm?.length)return;let minX=1,minY=1,maxX=0,maxY=0;for(const p of lm){if(!Number.isFinite(p.x)||!Number.isFinite(p.y))continue;minX=Math.min(minX,p.x);minY=Math.min(minY,p.y);maxX=Math.max(maxX,p.x);maxY=Math.max(maxY,p.y)}if(maxX<=minX||maxY<=minY)return;const cx=(minX+maxX)/2,cy=(minY+maxY)/2,w=(maxX-minX)*CONFIG.recording.faceMaskPadX,h=(maxY-minY)*CONFIG.recording.faceMaskPadY;let box={x1:clamp(cx-w,0,1),y1:clamp(cy-h,0,1),x2:clamp(cx+w,0,1),y2:clamp(cy+h,0,1)};const area=(box.x2-box.x1)*(box.y2-box.y1);if(area>CONFIG.recording.maxMaskArea){const scale=Math.sqrt(CONFIG.recording.maxMaskArea/area),hw=(box.x2-box.x1)*scale/2,hh=(box.y2-box.y1)*scale/2;box={x1:clamp(cx-hw,0,1),y1:clamp(cy-hh,0,1),x2:clamp(cx+hw,0,1),y2:clamp(cy+hh,0,1)}}if(!G.screenExclusionBox)G.screenExclusionBox=box;else{const a=.18;G.screenExclusionBox={x1:G.screenExclusionBox.x1*(1-a)+box.x1*a,y1:G.screenExclusionBox.y1*(1-a)+box.y1*a,x2:G.screenExclusionBox.x2*(1-a)+box.x2*a,y2:G.screenExclusionBox.y2*(1-a)+box.y2*a}}}
+function warpScreenMetrics(canvas,quad,excludeBox=null){
+  if(!_cvReady||!quad)return{screenMotion:null,screenMeanDiff:null,screenSharpness:null,largestMotionRatio:null,motionComponentCount:0,motionCentroidX:null,motionCentroidY:null};let src,M,srcTri,dstTri,warped,gray,diff,lap,meanM,stdM,labels,stats,centroids,kernel;
+  try{src=cv.imread(canvas);if(excludeBox){const p1=new cv.Point(Math.round(excludeBox.x1*src.cols),Math.round(excludeBox.y1*src.rows)),p2=new cv.Point(Math.round(excludeBox.x2*src.cols),Math.round(excludeBox.y2*src.rows));cv.rectangle(src,p1,p2,new cv.Scalar(0,0,0,255),-1)}const W=360,H=230,pts=quad.map(p=>({x:p.x*src.cols,y:p.y*src.rows}));srcTri=cv.matFromArray(4,1,cv.CV_32FC2,pts.flatMap(p=>[p.x,p.y]));dstTri=cv.matFromArray(4,1,cv.CV_32FC2,[0,0,W-1,0,W-1,H-1,0,H-1]);M=cv.getPerspectiveTransform(srcTri,dstTri);warped=new cv.Mat();cv.warpPerspective(src,warped,M,new cv.Size(W,H),cv.INTER_LINEAR,cv.BORDER_REPLICATE);gray=new cv.Mat();cv.cvtColor(warped,gray,cv.COLOR_RGBA2GRAY);lap=new cv.Mat();cv.Laplacian(gray,lap,cv.CV_64F);meanM=new cv.Mat();stdM=new cv.Mat();cv.meanStdDev(lap,meanM,stdM);const sd=stdM.data64F?.[0]??stdM.doubleAt(0,0);let screenMotion=null,screenMeanDiff=null,largestMotionRatio=null,motionComponentCount=0,motionCentroidX=null,motionCentroidY=null;if(_cvPrevScreenGray&&_cvPrevScreenGray.rows===gray.rows){diff=new cv.Mat();cv.absdiff(gray,_cvPrevScreenGray,diff);screenMeanDiff=cv.mean(diff)[0];cv.threshold(diff,diff,CONFIG.cv.diffThreshold,255,cv.THRESH_BINARY);kernel=cv.Mat.ones(3,3,cv.CV_8U);cv.morphologyEx(diff,diff,cv.MORPH_OPEN,kernel);screenMotion=cv.countNonZero(diff)/(diff.rows*diff.cols)*100;labels=new cv.Mat();stats=new cv.Mat();centroids=new cv.Mat();const count=cv.connectedComponentsWithStats(diff,labels,stats,centroids,8,cv.CV_32S);let largest=0,largestI=-1;for(let i=1;i<count;i++){const area=stats.intAt(i,cv.CC_STAT_AREA);if(area>=18){motionComponentCount++;if(area>largest){largest=area;largestI=i}}}largestMotionRatio=largest/(diff.rows*diff.cols)*100;if(largestI>0){motionCentroidX=centroids.doubleAt(largestI,0)/diff.cols;motionCentroidY=centroids.doubleAt(largestI,1)/diff.rows}}if(_cvPrevScreenGray)_cvPrevScreenGray.delete();_cvPrevScreenGray=gray.clone();return{screenMotion,screenMeanDiff,screenSharpness:sd*sd,largestMotionRatio,motionComponentCount,motionCentroidX,motionCentroidY}}
+  catch(e){console.warn('[VAK] screen metrics',e);return{screenMotion:null,screenMeanDiff:null,screenSharpness:null,largestMotionRatio:null,motionComponentCount:0,motionCentroidX:null,motionCentroidY:null}}
+  finally{[src,M,srcTri,dstTri,warped,gray,diff,lap,meanM,stdM,labels,stats,centroids,kernel].forEach(m=>{try{if(m)m.delete()}catch(_){}})}
 }
 function bestFinger(pl,w,h,quad){if(!pl)return null;const ids=[19,20,21,22,15,16],poly=quad?.map(p=>({x:p.x*w,y:p.y*h}));let best=null,bestScore=Infinity;for(const i of ids){const p=pl[i];if(!p||p.visibility<.28)continue;const q={x:p.x*w,y:p.y*h,nx:p.x,ny:p.y,index:i,visibility:p.visibility};const dist=poly?pointPolyDistance(q,poly):0,priority=(i===19||i===20)?0:(i===21||i===22?8:18),score=dist+priority-(p.visibility*12);if(score<bestScore){best=q;bestScore=score}}return best}
-function analyzeTouch(pl,t,dt,screenMetrics){
-  const quad=G.screenQuad,finger=bestFinger(pl,G.videoWidth,G.videoHeight,quad);if(!finger||!quad)return{contact:false,confidence:0,finger:null,speed:null,responseMs:null,touchStart:false};const polyPx=quad.map(p=>({x:p.x*G.videoWidth,y:p.y*G.videoHeight})),p={x:finger.x,y:finger.y};const diag=Math.hypot(G.videoWidth,G.videoHeight),dist=pointPolyDistance(p,polyPx),inside=pointInPolygon(p,polyPx),near=inside||dist<diag*CONFIG.touch.nearPxRatio;let speed=null;if(G.lastFingerPoint&&G.lastFingerTime!==null&&t>G.lastFingerTime)speed=Math.hypot(p.x-G.lastFingerPoint.x,p.y-G.lastFingerPoint.y)/diag/(t-G.lastFingerTime);G.lastFingerPoint=p;G.lastFingerTime=t;const nearScore=inside?1:clamp(1-dist/(diag*CONFIG.touch.nearPxRatio),0,1),screenSupport=clamp((screenMetrics.screenMotion||0)/2.2,0,1),slowSupport=Number.isFinite(speed)?clamp(1-speed/2.2,0,1):.3;const confidence=.58*nearScore+.27*screenSupport+.15*slowSupport;if(near&&confidence>.48)G.touchCandidateCount++;else G.touchCandidateCount=Math.max(0,G.touchCandidateCount-1);const contact=G.touchCandidateCount>=CONFIG.touch.minContactSamples;const touchStart=contact&&!G.touchContact;let responseMs=null;if(touchStart){const pending=G.pendingStimulus;if(pending&&t-pending.time>=CONFIG.touch.minResponseSec&&t-pending.time<=CONFIG.touch.maxResponseSec){responseMs=(t-pending.time)*1000;const event={index:G.touchEvents.length+1,task:G.currentTask,stimulusTime:pending.time,touchTime:t,responseMs,confidence:clamp((confidence*.65+pending.confidence*.35)*100),basis:`指尖${inside?'进入':'接近'}屏幕；屏幕运动${valueOrDash(screenMetrics.screenMotion,2)}%`};G.touchEvents.push(event);pending.matched=true;G.pendingStimulus=null}else{G.touchEvents.push({index:G.touchEvents.length+1,task:G.currentTask,stimulusTime:null,touchTime:t,responseMs:null,confidence:clamp(confidence*100),basis:'检测到触控开始，但未匹配到前序刺激变化'})}}G.touchContact=contact;return{contact,confidence:confidence*100,finger,speed,responseMs,touchStart}}
-function detectStimulus(t,screenMetrics,touch){const motion=screenMetrics.screenMotion;if(!Number.isFinite(motion))return null;if(motion<.55)G.screenQuietCount++;else G.screenQuietCount=0;const prev=G.featureRows.at(-1),wasQuiet=prev&&Number.isFinite(prev.screenMotion)&&prev.screenMotion<.75;if(!touch.contact&&wasQuiet&&motion>=CONFIG.cv.stimulusThreshold&&t-G.lastStimulusTime>=CONFIG.touch.stimulusCooldownSec){const e={index:G.stimulusEvents.length+1,time:t,confidence:clamp((motion/6)*100),motion};G.stimulusEvents.push(e);G.pendingStimulus=e;G.lastStimulusTime=t;return e}return null}
-function inferTask(t){const rows=G.featureRows.filter(r=>t-r.t<=CONFIG.task.windowSec);if(rows.length<8)return{code:'unknown',confidence:0,scores:{visual:0,auditory:0,kinesthetic:0}};const audioDb=mean(rows.map(r=>r.audioDb).filter(Number.isFinite)),audioN=clamp((audioDb+62)/38,0,1),screenN=clamp(mean(rows.map(r=>r.screenMotion).filter(Number.isFinite))/4.5,0,1),touchN=clamp(mean(rows.map(r=>r.touch?1:0))/.22,0,1),armN=clamp(mean(rows.map(r=>r.arm).filter(Number.isFinite))/1.2,0,1);const scores={kinesthetic:.58*touchN+.20*armN+.14*screenN+.08*(1-audioN),auditory:.60*audioN+.22*(1-touchN)+.18*(1-screenN),visual:.56*screenN+.25*(1-audioN)+.19*(1-touchN)};const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]),margin=sorted[0][1]-sorted[1][1],code=sorted[0][1]>=.42?sorted[0][0]:'unknown',confidence=code==='unknown'?clamp(sorted[0][1]*100):clamp((sorted[0][1]*.65+margin*.85)*100);G.lastTaskLabels.push(code);if(G.lastTaskLabels.length>CONFIG.task.smoothSamples)G.lastTaskLabels.shift();const counts={};G.lastTaskLabels.forEach(x=>counts[x]=(counts[x]||0)+1);const smooth=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];return{code:smooth,confidence,scores}}
-function buildTaskSegments(){const rows=G.featureRows;if(!rows.length)return[];let segments=[],cur=null;for(const r of rows){const code=r.task||'unknown';if(!cur||cur.code!==code){if(cur)segments.push(cur);cur={code,start:r.t,end:r.t,conf:[r.taskConfidence||0],rows:[r]}}else{cur.end=r.t;cur.conf.push(r.taskConfidence||0);cur.rows.push(r)}}if(cur)segments.push(cur);segments=segments.filter(x=>x.end-x.start>=.35);for(let i=0;i<segments.length;i++){if(segments[i].code==='unknown'&&segments[i].end-segments[i].start<CONFIG.task.minSegmentSec){const prev=segments[i-1],next=segments[i+1];segments[i].code=prev&&next&&prev.code===next.code?prev.code:(prev?.code||next?.code||'unknown')}}const merged=[];for(const seg of segments){const last=merged.at(-1);if(last&&last.code===seg.code&&seg.start-last.end<.5){last.end=seg.end;last.conf.push(...seg.conf);last.rows.push(...seg.rows)}else merged.push(seg)}return merged.map((seg,i)=>{const summary=scoreFromFeatureRows(seg.rows),touches=G.touchEvents.filter(e=>e.touchTime>=seg.start&&e.touchTime<=seg.end);return{index:i+1,code:seg.code,name:taskMeta(seg.code).name,start:seg.start,end:seg.end,duration:Math.max(0,seg.end-seg.start),confidence:mean(seg.conf),scores:summary,touchCount:touches.length,avgResponse:mean(touches.map(e=>e.responseMs).filter(Number.isFinite))}})}
+function analyzePhysicalTouch(pl,t,dt,screenMetrics){
+  const quad=G.screenQuad,finger=bestFinger(pl,G.videoWidth,G.videoHeight,quad);if(!finger||!quad)return{contact:false,confidence:0,finger:null,speed:null,responseMs:null,touchStart:false,eventType:'实体触控'};const polyPx=quad.map(p=>({x:p.x*G.videoWidth,y:p.y*G.videoHeight})),p={x:finger.x,y:finger.y};const diag=Math.hypot(G.videoWidth,G.videoHeight),dist=pointPolyDistance(p,polyPx),inside=pointInPolygon(p,polyPx),near=inside||dist<diag*CONFIG.touch.nearPxRatio;let speed=null;if(G.lastFingerPoint&&G.lastFingerTime!==null&&t>G.lastFingerTime)speed=Math.hypot(p.x-G.lastFingerPoint.x,p.y-G.lastFingerPoint.y)/diag/(t-G.lastFingerTime);G.lastFingerPoint=p;G.lastFingerTime=t;const nearScore=inside?1:clamp(1-dist/(diag*CONFIG.touch.nearPxRatio),0,1),screenSupport=clamp((screenMetrics.screenMotion||0)/2.2,0,1),slowSupport=Number.isFinite(speed)?clamp(1-speed/2.2,0,1):.3,confidence=.58*nearScore+.27*screenSupport+.15*slowSupport;if(near&&confidence>.48)G.touchCandidateCount++;else G.touchCandidateCount=Math.max(0,G.touchCandidateCount-1);const contact=G.touchCandidateCount>=CONFIG.touch.minContactSamples,touchStart=contact&&!G.touchContact;let responseMs=null;if(touchStart){const pending=G.pendingStimulus,intervalMs=Number.isFinite(G.lastInteractionEnd)?(t-G.lastInteractionEnd)*1000:null;if(pending&&t-pending.time>=CONFIG.touch.minResponseSec&&t-pending.time<=CONFIG.touch.maxResponseSec){responseMs=(t-pending.time)*1000;const event={index:G.touchEvents.length+1,eventType:'实体触控',task:G.currentTask,stimulusTime:pending.time,touchTime:t,responseMs,intervalMs,confidence:clamp((confidence*.65+pending.confidence*.35)*100),basis:`指尖${inside?'进入':'接近'}实体屏幕；屏幕运动${valueOrDash(screenMetrics.screenMotion,2)}%`};G.touchEvents.push(event);pending.matched=true;G.pendingStimulus=null}else G.touchEvents.push({index:G.touchEvents.length+1,eventType:'实体触控',task:G.currentTask,stimulusTime:null,touchTime:t,responseMs:null,intervalMs,confidence:clamp(confidence*100),basis:'检测到实体触控开始，但未匹配到前序刺激变化'});G.lastInteractionEvidenceTime=t}if(!contact&&G.touchContact)G.lastInteractionEnd=t;G.touchContact=contact;return{contact,confidence:confidence*100,finger,speed,responseMs,touchStart,eventType:'实体触控'}}
+function analyzeScreenInteraction(t,screenMetrics){const motion=screenMetrics.screenMotion||0,local=screenMetrics.largestMotionRatio||0,ratio=motion>0?local/motion:0;const evidence=t>=CONFIG.recording.warmupSec&&((local>=CONFIG.cv.localMotionThreshold&&motion>=CONFIG.cv.screenMotionThreshold)||(motion>=1.35&&ratio>=.16));if(evidence){G.interactionCandidateCount++;G.interactionQuietCount=0}else{G.interactionCandidateCount=Math.max(0,G.interactionCandidateCount-1);if(G.interactionActive)G.interactionQuietCount++}const shouldBeActive=G.interactionActive||G.interactionCandidateCount>=CONFIG.recording.minInteractionSamples,opening=!G.interactionActive&&shouldBeActive,mergePrevious=opening&&Number.isFinite(G.lastInteractionEnd)&&(t-G.lastInteractionEnd)<CONFIG.recording.minGapSec,touchStart=opening&&!mergePrevious;let responseMs=null;if(opening){G.interactionActive=true;G.interactionStartTime=t;G.recordingInteractionSeen=true;G.lastInteractionEvidenceTime=t;if(mergePrevious&&G.lastInteractionEvent){G.lastInteractionEvent.endTime=null;G.lastInteractionEvent.durationMs=null}else{const pending=G.pendingStimulus||((Number.isFinite(G.initialTaskReadyTime))?{time:G.initialTaskReadyTime,confidence:75,type:'任务画面就绪'}:null),intervalMs=Number.isFinite(G.lastInteractionEnd)?(t-G.lastInteractionEnd)*1000:null;let stimulusTime=null;if(pending&&t-pending.time>=CONFIG.touch.minResponseSec&&t-pending.time<=CONFIG.touch.maxResponseSec){stimulusTime=pending.time;responseMs=(t-pending.time)*1000;if(G.pendingStimulus)G.pendingStimulus=null}const confidence=clamp((.50*clamp(local/1.2,0,1)+.30*clamp(motion/4.5,0,1)+.20*clamp(ratio/.55,0,1))*100,35,99),event={index:G.touchEvents.length+1,eventType:'录屏交互',task:G.currentTask,stimulusTime,touchTime:t,responseMs,intervalMs,confidence,basis:`局部目标连续位移；最大运动区域${valueOrDash(local,2)}%，屏幕运动${valueOrDash(motion,2)}%`,endTime:null,durationMs:null};G.touchEvents.push(event);G.interactionEvents.push(event);G.lastInteractionEvent=event}}if(G.interactionActive&&evidence)G.lastInteractionEvidenceTime=t;if(G.interactionActive&&G.interactionQuietCount>=CONFIG.recording.endQuietSamples){G.interactionActive=false;G.interactionCandidateCount=0;G.interactionQuietCount=0;G.lastInteractionEnd=t;if(G.lastInteractionEvent&&!Number.isFinite(G.lastInteractionEvent.endTime)){G.lastInteractionEvent.endTime=t;G.lastInteractionEvent.durationMs=(t-G.lastInteractionEvent.touchTime)*1000}}return{contact:G.interactionActive,confidence:shouldBeActive?clamp((local/1.2*.55+motion/4.5*.45)*100):0,finger:null,speed:null,responseMs,touchStart,eventType:'录屏交互'}}
+function analyzeInteraction(pl,t,dt,screenMetrics){return G.captureMode==='screen-recording'?analyzeScreenInteraction(t,screenMetrics):analyzePhysicalTouch(pl,t,dt,screenMetrics)}
+function detectStimulus(t,screenMetrics,interaction){const motion=screenMetrics.screenMotion;if(!Number.isFinite(motion))return null;if(G.captureMode==='screen-recording'){if(!Number.isFinite(G.initialTaskReadyTime)&&t>=CONFIG.recording.warmupSec){if(motion<=CONFIG.cv.quietThreshold){if(G.initialQuietStart===null)G.initialQuietStart=t;if(t-G.initialQuietStart>=CONFIG.recording.stableSec){G.initialTaskReadyTime=G.initialQuietStart;const e={index:G.stimulusEvents.length+1,time:G.initialTaskReadyTime,confidence:80,motion,type:'任务画面稳定就绪'};G.stimulusEvents.push(e);G.pendingStimulus=e;G.lastStimulusTime=e.time;return e}}else G.initialQuietStart=null}const prev=G.featureRows.at(-1),wasQuiet=prev&&Number.isFinite(prev.screenMotion)&&prev.screenMotion<CONFIG.cv.quietThreshold;if(!interaction.contact&&wasQuiet&&motion>=CONFIG.cv.stimulusThreshold&&t-G.lastStimulusTime>=CONFIG.touch.stimulusCooldownSec){const e={index:G.stimulusEvents.length+1,time:t,confidence:clamp((motion/6)*100),motion,type:'屏幕刺激变化'};G.stimulusEvents.push(e);G.pendingStimulus=e;G.lastStimulusTime=t;return e}return null}if(motion<.55)G.screenQuietCount++;else G.screenQuietCount=0;const prev=G.featureRows.at(-1),wasQuiet=prev&&Number.isFinite(prev.screenMotion)&&prev.screenMotion<.75;if(!interaction.contact&&wasQuiet&&motion>=CONFIG.cv.stimulusThreshold&&t-G.lastStimulusTime>=CONFIG.touch.stimulusCooldownSec){const e={index:G.stimulusEvents.length+1,time:t,confidence:clamp((motion/6)*100),motion,type:'屏幕刺激变化'};G.stimulusEvents.push(e);G.pendingStimulus=e;G.lastStimulusTime=t;return e}return null}
+function inferTask(t){const rows=G.featureRows.filter(r=>t-r.t<=CONFIG.task.windowSec);if(rows.length<8)return{code:'unknown',confidence:0,scores:{visual:0,auditory:0,kinesthetic:0}};const audioVals=rows.map(r=>r.audioDb).filter(Number.isFinite),audioDb=audioVals.length?mean(audioVals):-100,audioN=clamp((audioDb+62)/38,0,1),screenN=clamp(mean(rows.map(r=>r.screenMotion).filter(Number.isFinite))/4.5,0,1),touchN=clamp(mean(rows.map(r=>r.touch?1:0))/.20,0,1),localN=clamp(mean(rows.map(r=>r.largestMotionRatio).filter(Number.isFinite))/1.25,0,1),armN=clamp(mean(rows.map(r=>r.arm).filter(Number.isFinite))/1.2,0,1),recentInteraction=(t-G.lastInteractionEvidenceTime)<=CONFIG.task.recentInteractionSec?1:0;let scores;if(G.captureMode==='screen-recording'){const interactionN=Math.max(touchN,localN*.78,recentInteraction*.68);scores={kinesthetic:.66*interactionN+.16*localN+.10*screenN+.08*(1-audioN),auditory:.67*audioN+.20*(1-interactionN)+.13*(1-screenN),visual:.50*screenN+.29*(1-audioN)+.21*(1-interactionN)};if(G.recordingInteractionSeen&&recentInteraction)scores.kinesthetic+=.18}else scores={kinesthetic:.58*touchN+.20*armN+.14*screenN+.08*(1-audioN),auditory:.60*audioN+.22*(1-touchN)+.18*(1-screenN),visual:.56*screenN+.25*(1-audioN)+.19*(1-touchN)};const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]),margin=sorted[0][1]-sorted[1][1],code=sorted[0][1]>=.40?sorted[0][0]:'unknown',confidence=code==='unknown'?clamp(sorted[0][1]*100):clamp((sorted[0][1]*.65+margin*.85)*100);G.lastTaskLabels.push(code);if(G.lastTaskLabels.length>CONFIG.task.smoothSamples)G.lastTaskLabels.shift();const counts={};G.lastTaskLabels.forEach(x=>counts[x]=(counts[x]||0)+1);const smooth=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];return{code:smooth,confidence,scores}}
+function buildTaskSegments(){
+  const rows=G.featureRows;if(!rows.length)return[];let segments=[],cur=null;
+  for(const r of rows){const code=taskCodes().includes(r.task)?r.task:(G.manualSelectedTask||'visual');if(!cur||cur.code!==code){if(cur)segments.push(cur);cur={code,start:r.t,end:r.t,rows:[r]}}else{cur.end=r.t;cur.rows.push(r)}}if(cur)segments.push(cur);
+  return segments.map((seg,i)=>{const summary=scoreFromFeatureRows(seg.rows),touches=G.touchEvents.filter(e=>e.touchTime>=seg.start&&e.touchTime<=seg.end);return{index:i+1,code:seg.code,name:taskMeta(seg.code).name,start:seg.start,end:seg.end,duration:Math.max(0,seg.end-seg.start),confidence:100,source:'上传槽位固定分类',scores:summary,touchCount:touches.length,avgResponse:mean(touches.map(e=>e.responseMs).filter(Number.isFinite))}})
+}
 function scoreFromFeatureRows(rows){if(!rows?.length)return{visual_pct:0,auditory_pct:0,kinesthetic_pct:0};const gx=rows.map(r=>r.gazeXPx).filter(Number.isFinite),gy=rows.map(r=>r.gazeYPx).filter(Number.isFinite),ears=rows.map(r=>r.ear).filter(Number.isFinite),yaws=rows.map(r=>r.yaw).filter(Number.isFinite),mis=rows.map(r=>r.mi).filter(Number.isFinite),arms=rows.map(r=>r.arm).filter(Number.isFinite),duration=Math.max(.1,rows.at(-1).t-rows[0].t),blinks=rows.filter(r=>r.blinkEvent).length,yawEvents=rows.filter(r=>r.yawEvent).length;const gv=gx.length>4?variance(gx)+variance(gy):999,vStab=100*Math.exp(-(gv/Math.max(G.videoWidth*G.videoWidth,1))/.0015),vEar=ears.length?clamp((mean(ears)-.16)/.14*100):0,vBlink=clamp(100-Math.abs(blinks/duration*60-15)/20*100);const a1=expScore(yawEvents/duration*60,6),a2=expScore(std(yaws),8),a3=expScore(mean(yaws.map(Math.abs)),10),k1=expScore(mean(mis),.8),k2=expScore(mean(arms),.8),touchBoost=clamp(mean(rows.map(r=>r.touch?1:0))*220);const v=vStab*.5+vEar*.3+vBlink*.2,a=a1*.5+a2*.3+a3*.2,k=k1*.45+k2*.25+touchBoost*.30,total=v+a+k||1;return{visual_pct:v/total*100,auditory_pct:a/total*100,kinesthetic_pct:k/total*100}}
 
 function openDB(){if(_dbPromise)return _dbPromise;_dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open('VAKChildLabDB',2);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('sessions')){const st=db.createObjectStore('sessions',{keyPath:'id'});st.createIndex('createdAt','createdAt')}};req.onsuccess=()=>{G.libraryStatus.db=true;setTechStatus('db','ok','本地数据库已就绪');resolve(req.result)};req.onerror=()=>{setTechStatus('db','warn','本地数据库不可用');reject(req.error)}});return _dbPromise}
-async function saveSession(report){try{const db=await openDB(),id=`${Date.now()}_${Math.random().toString(36).slice(2,7)}`,record={id,createdAt:new Date().toISOString(),participant:{...G.participant},fileName:G.fileName,screenQuad:G.screenQuad,screenDetectedBy:G.screenDetectedBy,report,taskSegments:G.taskSegments,touchEvents:G.touchEvents,stimulusEvents:G.stimulusEvents,sampleRows:G.sampleRows};await new Promise((res,rej)=>{const tx=db.transaction('sessions','readwrite');tx.objectStore('sessions').put(record);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});return id}catch(e){console.warn('[VAK] save db',e);return null}}
+async function saveSession(report){try{const db=await openDB(),id=`${Date.now()}_${Math.random().toString(36).slice(2,7)}`,record={id,createdAt:new Date().toISOString(),participant:{...G.participant},fileName:G.fileName,screenQuad:G.screenQuad,screenDetectedBy:G.screenDetectedBy,captureMode:G.captureMode,screenExclusionBox:G.screenExclusionBox,report,taskSegments:G.taskSegments,touchEvents:G.touchEvents,stimulusEvents:G.stimulusEvents,sampleRows:G.sampleRows};await new Promise((res,rej)=>{const tx=db.transaction('sessions','readwrite');tx.objectStore('sessions').put(record);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});return id}catch(e){console.warn('[VAK] save db',e);return null}}
 async function getAllSessions(){const db=await openDB();return new Promise((res,rej)=>{const q=db.transaction('sessions','readonly').objectStore('sessions').getAll();q.onsuccess=()=>res(q.result.sort((a,b)=>b.createdAt.localeCompare(a.createdAt)));q.onerror=()=>rej(q.error)})}
 async function deleteSession(id){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction('sessions','readwrite');tx.objectStore('sessions').delete(id);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
 async function clearSessions(){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction('sessions','readwrite');tx.objectStore('sessions').clear();tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
-async function renderHistory(){const box=el('historyList');box.innerHTML='<div class="empty-state">正在读取本机记录...</div>';try{const rows=await getAllSessions();if(!rows.length){box.innerHTML='<div class="empty-state">尚无已保存记录。完成一次视频分析后，记录会自动出现在这里。</div>';return}box.innerHTML=rows.map(r=>`<div class="history-item"><div><div class="history-title">${escapeHtml(r.participant?.id||'匿名对象')} · ${escapeHtml(r.report?.style?.type||'分析记录')}</div><div class="history-meta">${new Date(r.createdAt).toLocaleString()} ｜ ${escapeHtml(r.fileName||'')} ｜ 分段 ${r.taskSegments?.length||0} 个 ｜ 触控事件 ${r.touchEvents?.length||0} 个</div></div><div class="history-actions"><button class="btn btn-ghost" onclick="exportOneHistory('${r.id}')">导出</button><button class="btn btn-warn" onclick="removeHistory('${r.id}')">删除</button></div></div>`).join('')}catch(e){box.innerHTML='<div class="empty-state">读取失败：'+escapeHtml(e.message)+'</div>'}}
+async function renderHistory(){const box=el('historyList');box.innerHTML='<div class="empty-state">正在读取本机记录...</div>';try{const rows=await getAllSessions();if(!rows.length){box.innerHTML='<div class="empty-state">尚无已保存记录。完成一次视频分析后，记录会自动出现在这里。</div>';return}box.innerHTML=rows.map(r=>`<div class="history-item"><div><div class="history-title">${escapeHtml(r.participant?.id||'匿名对象')} · ${escapeHtml(r.report?.style?.type||'分析记录')}</div><div class="history-meta">${new Date(r.createdAt).toLocaleString()} ｜ ${escapeHtml(r.fileName||'')} ｜ 分段 ${r.taskSegments?.length||0} 个 ｜ 交互事件 ${r.touchEvents?.length||0} 个</div></div><div class="history-actions"><button class="btn btn-ghost" onclick="exportOneHistory('${r.id}')">导出</button><button class="btn btn-warn" onclick="removeHistory('${r.id}')">删除</button></div></div>`).join('')}catch(e){box.innerHTML='<div class="empty-state">读取失败：'+escapeHtml(e.message)+'</div>'}}
 function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 async function removeHistory(id){if(!confirm('确认删除这条本机记录？'))return;await deleteSession(id);renderHistory()}
 async function exportOneHistory(id){const rows=await getAllSessions(),r=rows.find(x=>x.id===id);if(r)exportSessionRecord(r)}
-function exportSessionRecord(r){if(typeof XLSX==='undefined')return alert('Excel 组件未加载');const wb=XLSX.utils.book_new();appendAoa(wb,'记录摘要',[['字段','内容'],['匿名编号',r.participant?.id],['创建时间',r.createdAt],['视频文件',r.fileName],['综合倾向',r.report?.style?.type],['V',r.report?.scores?.visual_pct],['A',r.report?.scores?.auditory_pct],['K',r.report?.scores?.kinesthetic_pct]],[20,55]);appendAoa(wb,'任务分段',taskSegmentsToAoa(r.taskSegments||[]),[8,22,14,14,14,16,28,14]);appendAoa(wb,'触控事件',touchEventsToAoa(r.touchEvents||[]),[8,20,17,17,17,16,48]);const ws=XLSX.utils.json_to_sheet(r.sampleRows||[]);XLSX.utils.book_append_sheet(wb,ws,'逐时点数据');XLSX.writeFile(wb,safeFileName(`${r.participant?.id||'匿名'}_历史记录_${r.createdAt.slice(0,10)}`)+'.xlsx',{compression:true})}
-async function exportAllHistory(){const rows=await getAllSessions();if(!rows.length)return alert('暂无历史记录');if(typeof XLSX==='undefined')return alert('Excel 组件未加载');const wb=XLSX.utils.book_new(),summary=[['记录ID','创建时间','匿名编号','文件','综合倾向','V%','A%','K%','任务分段数','触控事件数','平均响应(ms)']];const segments=[['记录ID','匿名编号','分段序号','任务','开始(s)','结束(s)','时长(s)','置信度(%)','V%','A%','K%','触控次数','平均响应(ms)']],touches=[['记录ID','匿名编号','事件','任务','刺激时间(s)','触控时间(s)','响应(ms)','置信度(%)','依据']];for(const r of rows){const av=mean((r.touchEvents||[]).map(e=>e.responseMs).filter(Number.isFinite));summary.push([r.id,r.createdAt,r.participant?.id,r.fileName,r.report?.style?.type,round(r.report?.scores?.visual_pct,2),round(r.report?.scores?.auditory_pct,2),round(r.report?.scores?.kinesthetic_pct,2),r.taskSegments?.length||0,r.touchEvents?.length||0,round(av,1)]);for(const x of r.taskSegments||[])segments.push([r.id,r.participant?.id,x.index,x.name,round(x.start,3),round(x.end,3),round(x.duration,3),round(x.confidence,1),round(x.scores?.visual_pct,1),round(x.scores?.auditory_pct,1),round(x.scores?.kinesthetic_pct,1),x.touchCount,round(x.avgResponse,1)]);for(const e of r.touchEvents||[])touches.push([r.id,r.participant?.id,e.index,taskMeta(e.task).name,round(e.stimulusTime,3),round(e.touchTime,3),round(e.responseMs,1),round(e.confidence,1),e.basis])}appendAoa(wb,'历史汇总',summary,[24,22,16,28,36,10,10,10,12,12,16]);appendAoa(wb,'全部任务分段',segments,[24,15,10,22,12,12,12,14,10,10,10,12,16]);appendAoa(wb,'全部触控事件',touches,[24,15,8,22,16,16,16,14,52]);XLSX.writeFile(wb,'VAK_全部本机实验记录.xlsx',{compression:true})}
-function taskSegmentsToAoa(rows){return[['序号','任务类别','开始(s)','结束(s)','时长(s)','置信度(%)','V/A/K(%)','触控次数','平均响应(ms)'],...rows.map(x=>[x.index,x.name,round(x.start,3),round(x.end,3),round(x.duration,3),round(x.confidence,1),`${round(x.scores?.visual_pct,1)}/${round(x.scores?.auditory_pct,1)}/${round(x.scores?.kinesthetic_pct,1)}`,x.touchCount,round(x.avgResponse,1)])]}
-function touchEventsToAoa(rows){return[['事件','任务','刺激出现(s)','触控(s)','响应(ms)','置信度(%)','判定依据'],...rows.map(e=>[e.index,taskMeta(e.task).name,round(e.stimulusTime,3),round(e.touchTime,3),round(e.responseMs,1),round(e.confidence,1),e.basis])]}
+function exportSessionRecord(r){if(typeof XLSX==='undefined')return alert('Excel 组件未加载');const wb=XLSX.utils.book_new();appendAoa(wb,'记录摘要',[['字段','内容'],['匿名编号',r.participant?.id],['创建时间',r.createdAt],['视频文件',r.fileName],['综合倾向',r.report?.style?.type],['V',r.report?.scores?.visual_pct],['A',r.report?.scores?.auditory_pct],['K',r.report?.scores?.kinesthetic_pct]],[20,55]);appendAoa(wb,'任务分段',taskSegmentsToAoa(r.taskSegments||[]),[8,22,14,14,14,16,28,14]);appendAoa(wb,'交互事件',touchEventsToAoa(r.touchEvents||[]),[8,20,17,17,17,16,48]);const ws=XLSX.utils.json_to_sheet(r.sampleRows||[]);XLSX.utils.book_append_sheet(wb,ws,'逐时点数据');XLSX.writeFile(wb,safeFileName(`${r.participant?.id||'匿名'}_历史记录_${r.createdAt.slice(0,10)}`)+'.xlsx',{compression:true})}
+async function exportAllHistory(){const rows=await getAllSessions();if(!rows.length)return alert('暂无历史记录');if(typeof XLSX==='undefined')return alert('Excel 组件未加载');const wb=XLSX.utils.book_new(),summary=[['记录ID','创建时间','匿名编号','文件','综合倾向','V%','A%','K%','任务分段数','交互事件数','平均响应(ms)']];const segments=[['记录ID','匿名编号','分段序号','任务','开始(s)','结束(s)','时长(s)','分类来源','V%','A%','K%','触控次数','平均响应(ms)']],touches=[['记录ID','匿名编号','事件','任务','模式','刺激/任务就绪(s)','交互开始(s)','响应(ms)','操作间隔(ms)','分类来源','依据']];for(const r of rows){const av=mean((r.touchEvents||[]).map(e=>e.responseMs).filter(Number.isFinite));summary.push([r.id,r.createdAt,r.participant?.id,r.fileName,r.report?.style?.type,round(r.report?.scores?.visual_pct,2),round(r.report?.scores?.auditory_pct,2),round(r.report?.scores?.kinesthetic_pct,2),r.taskSegments?.length||0,r.touchEvents?.length||0,round(av,1)]);for(const x of r.taskSegments||[])segments.push([r.id,r.participant?.id,x.index,x.name,round(x.start,3),round(x.end,3),round(x.duration,3),x.source||'研究者手动选择',round(x.scores?.visual_pct,1),round(x.scores?.auditory_pct,1),round(x.scores?.kinesthetic_pct,1),x.touchCount,round(x.avgResponse,1)]);for(const e of r.touchEvents||[])touches.push([r.id,r.participant?.id,e.index,e.taskName||taskMeta(e.task).name,e.eventType||'',round(e.stimulusTime,3),round(e.touchTime,3),round(e.responseMs,1),round(e.intervalMs,1),round(e.confidence,1),e.basis])}appendAoa(wb,'历史汇总',summary,[24,22,16,28,36,10,10,10,12,12,16]);appendAoa(wb,'全部任务分段',segments,[24,15,10,22,12,12,12,14,10,10,10,12,16]);appendAoa(wb,'全部交互事件',touches,[24,15,8,22,16,18,18,16,16,14,58]);XLSX.writeFile(wb,'VAK_全部本机实验记录.xlsx',{compression:true})}
+function taskSegmentsToAoa(rows){return[['序号','测试项目','开始(s)','结束(s)','时长(s)','分类来源','V/A/K(%)','触控次数','平均响应(ms)'],...rows.map(x=>[x.index,x.name,round(x.start,3),round(x.end,3),round(x.duration,3),x.source||'研究者手动选择',`${round(x.scores?.visual_pct,1)}/${round(x.scores?.auditory_pct,1)}/${round(x.scores?.kinesthetic_pct,1)}`,x.touchCount,round(x.avgResponse,1)])]}
+function touchEventsToAoa(rows){return[['事件','任务','模式','刺激/任务就绪(s)','交互开始(s)','响应(ms)','操作间隔(ms)','持续(ms)','分类来源','判定依据'],...rows.map(e=>[e.index,e.taskName||taskMeta(e.task).name,e.eventType||'',round(e.stimulusTime,3),round(e.touchTime,3),round(e.responseMs,1),round(e.intervalMs,1),round(e.durationMs,1),round(e.confidence,1),e.basis])]}
 
 
 /* ---------- 外部库状态 ---------- */
@@ -456,8 +594,8 @@ async function waitForGlobal(name,timeoutMs=30000){
     throw new Error(name+' 加载超时');
 }
 async function ensureOpenCV(){
-    if(_cvReady&&window.cv&&cv.Mat)return true;
-    setTechStatus('cv','loading','OpenCV.js 加载中');
+    if(_cvReady&&window.cv&&cv.Mat){setInitStep('stepCv','ok','OpenCV就绪');return true;}
+    setTechStatus('cv','loading','OpenCV.js 加载中');setInitStep('stepCv','loading','OpenCV加载');
     try{
         let c=await waitForGlobal('cv',20000);
         if(c&&typeof c.then==='function')c=await c;
@@ -465,12 +603,12 @@ async function ensureOpenCV(){
         while((!window.cv||!cv.Mat)&&Date.now()-start<10000)await new Promise(r=>setTimeout(r,100));
         if(!window.cv||!cv.Mat)throw new Error('OpenCV Runtime 未初始化');
         _cvReady=true;G.openCvReady=true;G.libraryStatus.opencv=true;G.openCvMessage='已就绪';
-        setTechStatus('cv','ok','OpenCV.js 已就绪');
+        setTechStatus('cv','ok','OpenCV.js 已就绪');setInitStep('stepCv','ok','OpenCV就绪');
         return true;
     }catch(e){
         console.warn('[VAK] OpenCV.js unavailable:',e);
         _cvReady=false;G.openCvReady=false;G.openCvMessage='不可用：'+e.message;
-        setTechStatus('cv','warn','OpenCV.js 未就绪');
+        setTechStatus('cv','warn','OpenCV.js 未就绪');setInitStep('stepCv','warn','OpenCV降级');
         return false;
     }
 }
@@ -482,38 +620,237 @@ function updateStaticLibraryStatus(){
     setTechStatus('mp',typeof FaceMesh!=='undefined'&&typeof Pose!=='undefined'?'ok':'loading',typeof FaceMesh!=='undefined'&&typeof Pose!=='undefined'?'MediaPipe 脚本已加载':'MediaPipe 加载中');
     setTechStatus('xls',typeof XLSX!=='undefined'?'ok':'loading',typeof XLSX!=='undefined'?'Excel 导出已就绪':'Excel 组件加载中');
 }
-window.addEventListener('load',()=>{updateStaticLibraryStatus();ensureOpenCV();openDB().catch(()=>{});});
+function startBackgroundWarmup(reason='页面空闲预热'){
+    console.info('[VAK] MediaPipe 后台预热已禁用:',reason);
+}
+function registerRuntimeCache(){
+    if('serviceWorker'in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{})
+}
+window.addEventListener('DOMContentLoaded',()=>{
+    updateStaticLibraryStatus();
+    ensureOpenCV().catch(()=>{});
+    openDB().catch(()=>{});
+    registerRuntimeCache();
+});
 
 /* ---------- MediaPipe 初始化 ---------- */
-async function initMP(){
-    if(_mpReady&&_faceMesh&&_poseDet)return;
-    if(typeof FaceMesh==='undefined'||typeof Pose==='undefined')throw new Error('MediaPipe脚本未加载，请检查网络连接');
-    setTechStatus('mp','loading','MediaPipe 模型初始化中');
-    const warmup=document.createElement('canvas');warmup.width=64;warmup.height=64;
-    const wc=warmup.getContext('2d');wc.fillStyle='#000';wc.fillRect(0,0,64,64);
-    async function warm(model,label){
-        await new Promise((resolve,reject)=>{
-            let done=false;const timer=setTimeout(()=>{if(!done){done=true;reject(new Error(label+'加载超时'))}},120000);
-            model.onResults(r=>{if(!done){done=true;clearTimeout(timer);resolve(r)}});
-            model.send({image:warmup}).catch(e=>{if(!done){done=true;clearTimeout(timer);reject(e)}});
-        });
+async function initMP(options={}){
+    const background=!!options.background;
+    if(_faceReady&&_poseReady&&_faceMesh&&_poseDet){
+        _mpReady=true;
+        if(!background){setInitStep('stepFace','ok','FaceMesh就绪');setInitStep('stepPose','ok','BlazePose就绪')}
+        return {face:true,pose:true}
     }
-    if(!_faceMesh){
-        _faceMesh=new FaceMesh({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${f}`});
-        _faceMesh.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:.5,minTrackingConfidence:.5});
-        await warm(_faceMesh,'FaceMesh');
-    }
-    if(!_poseDet){
-        _poseDet=new Pose({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/pose/${f}`});
-        _poseDet.setOptions({modelComplexity:1,smoothLandmarks:true,minDetectionConfidence:.5,minTrackingConfidence:.5});
-        await warm(_poseDet,'BlazePose');
-    }
-    _mpReady=true;G.libraryStatus.face=true;G.libraryStatus.pose=true;
-    setTechStatus('mp','ok','MediaPipe 模型已就绪');
+    if(_mpInitPromise)return _mpInitPromise;
+    _mpInitPromise=(async()=>{
+        await waitForMediaPipeScripts(background?20000:12000);
+        setTechStatus('mp','loading',background?'MediaPipe 模型后台预热中':'MediaPipe 模型初始化中');
+        const warmup=document.createElement('canvas');warmup.width=64;warmup.height=64;
+        const wc=warmup.getContext('2d');wc.fillStyle='#000';wc.fillRect(0,0,64,64);
+        async function warmPart(kind){
+            const isFace=kind==='face',label=isFace?'FaceMesh':'BlazePose',stepId=isFace?'stepFace':'stepPose';
+            if((isFace&&_faceReady)||(!isFace&&_poseReady)){if(!background)setInitStep(stepId,'ok',label+'就绪');return true}
+            if(!background)setInitStep(stepId,'loading',label+'模型加载');
+            let model=isFace?_faceMesh:_poseDet;
+            if(!model){
+                if(isFace){
+                    model=_faceMesh=new FaceMesh({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/${f}`});
+                    model.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:.30,minTrackingConfidence:.35});
+                }else{
+                    model=_poseDet=new Pose({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/${f}`});
+                    model.setOptions({modelComplexity:0,smoothLandmarks:true,minDetectionConfidence:.45,minTrackingConfidence:.45});
+                }
+            }
+            await withTimeout(new Promise((resolve,reject)=>{
+                let done=false;
+                model.onResults(r=>{if(!done){done=true;resolve(r)}});
+                model.send({image:warmup}).catch(e=>{if(!done){done=true;reject(e)}})
+            }),CONFIG.performance.modelInitTimeoutMs,label+'模型初始化');
+            if(isFace){_faceReady=true;G.libraryStatus.face=true}else{_poseReady=true;G.libraryStatus.pose=true}
+            if(!background)setInitStep(stepId,'ok',label+'就绪');
+            return true
+        }
+        // Intel Chrome 上并行初始化 MediaPipe 模型可能竞争同一批 wasm/data 资源。
+        // 这里固定串行：先 FaceMesh，后 Pose，让稳定逐帧模式获得确定的模型状态。
+        const settle=p=>Promise.resolve(p).then(value=>({status:'fulfilled',value}),reason=>({status:'rejected',reason}));
+        const results=[];
+        results[0]=await settle(warmPart('face'));
+        await sleep(260);
+        results[1]=await settle(warmPart('pose'));
+        const errors=[];
+        if(results[0].status==='rejected'){errors.push('FaceMesh：'+results[0].reason.message);if(!background)setInitStep('stepFace','warn','FaceMesh稍后重试')}
+        if(results[1].status==='rejected'){errors.push('BlazePose：'+results[1].reason.message);if(!background)setInitStep('stepPose','warn','BlazePose稍后重试')}
+        _mpReady=_faceReady||_poseReady;
+        if(_mpReady){
+            setTechStatus('mp',_faceReady&&_poseReady?'ok':'warn',_faceReady&&_poseReady?'MediaPipe 双模型已就绪':'MediaPipe 部分模型已就绪');
+            if(G.running&&!G.modelsJoinedAt)G.modelsJoinedAt=performance.now();
+            return {face:_faceReady,pose:_poseReady,errors}
+        }
+        throw new Error(errors.join('；')||'MediaPipe 模型未能初始化')
+    })();
+    try{return await _mpInitPromise}catch(e){_mpInitPromise=null;setTechStatus('mp','warn','MediaPipe 初始化失败，可刷新重试');throw e}
 }
-function sendFace(canvas){return new Promise((resolve,reject)=>{_faceMesh.onResults(resolve);_faceMesh.send({image:canvas}).catch(reject)})}
-function sendPose(canvas){return new Promise((resolve,reject)=>{_poseDet.onResults(resolve);_poseDet.send({image:canvas}).catch(reject)})}
-async function detectBoth(source){const face=await sendFace(source);const pose=await sendPose(source);return{face,pose}}
+async function resetMediaPipeRuntime(reason='重新开始分析'){
+    console.info('[VAK] reset MediaPipe runtime:',reason);
+    _mpInitPromise=null;_mpReady=false;_faceReady=false;_poseReady=false;_backgroundWarmupStarted=false;
+    _faceSendQueue=Promise.resolve();_poseSendQueue=Promise.resolve();
+    const oldFace=_faceMesh,oldPose=_poseDet;_faceMesh=null;_poseDet=null;
+    try{if(oldFace&&typeof oldFace.close==='function')await oldFace.close()}catch(e){console.warn('[VAK] FaceMesh close skipped:',e.message)}
+    try{if(oldPose&&typeof oldPose.close==='function')await oldPose.close()}catch(e){console.warn('[VAK] Pose close skipped:',e.message)}
+    G.libraryStatus.face=false;G.libraryStatus.pose=false;
+    setInitStep('stepFace','','FaceMesh');setInitStep('stepPose','','BlazePose');
+    setTechStatus('mp',typeof FaceMesh!=='undefined'&&typeof Pose!=='undefined'?'loading':'warn',typeof FaceMesh!=='undefined'&&typeof Pose!=='undefined'?'MediaPipe 将重新初始化':'MediaPipe 脚本未就绪');
+}
+function resetMediaPipeQueues(reason='新一轮推理'){
+    console.info('[VAK] reset MediaPipe queues:',reason);
+    _faceSendQueue=Promise.resolve();_poseSendQueue=Promise.resolve();
+}
+async function waitForCoreModelsBeforePlayback(maxMs=18000){
+    setTechStatus('mp','loading','MediaPipe 模型初始化中');
+    el('runtimeHint').textContent='正在初始化 FaceMesh 与 BlazePose 模型，请稍候。';
+    try{
+        await withTimeout(initMP({background:false}),maxMs,'MediaPipe 前台初始化');
+    }catch(e){
+        console.warn('[VAK] foreground model init:',e.message);
+    }
+    if(_faceReady||_poseReady)return true;
+    setTechStatus('mp','warn','MediaPipe 模型未完成初始化');
+    el('runtimeHint').textContent='MediaPipe 模型未能完成初始化，已停止本次分析；请刷新页面后重试，避免浏览器空跑视频。';
+    return false;
+}
+function enqueueModelSend(kind,model,canvas,emptyResult,timeoutMs=CONFIG.performance.frameTimeoutMs){
+    const prev=kind==='face'?_faceSendQueue:_poseSendQueue;
+    const run=prev.catch(()=>{}).then(()=>new Promise(resolve=>{
+        let settled=false;
+        const settle=(value)=>{if(settled)return;settled=true;clearTimeout(timer);resolve(value||emptyResult)};
+        const timer=setTimeout(()=>{if(kind==='face')G.faceModelTimeouts=(G.faceModelTimeouts||0)+1;settle(emptyResult)},timeoutMs+1200);
+        try{
+            model.onResults(r=>settle(r));
+            Promise.resolve(model.send({image:canvas})).catch(e=>{console.warn('[VAK] '+kind+' send failed:',e.message);settle(emptyResult)});
+        }catch(e){console.warn('[VAK] '+kind+' send error:',e.message);settle(emptyResult)}
+    }));
+    if(kind==='face')_faceSendQueue=run;else _poseSendQueue=run;
+    return run;
+}
+function sendFace(canvas,timeoutMs=CONFIG.performance.frameTimeoutMs){
+    if(!_faceReady||!_faceMesh)return Promise.resolve({multiFaceLandmarks:[]});
+    return enqueueModelSend('face',_faceMesh,canvas,{multiFaceLandmarks:[]},timeoutMs);
+}
+function sendPose(canvas,timeoutMs=CONFIG.performance.frameTimeoutMs){
+    if(!_poseReady||!_poseDet)return Promise.resolve({poseLandmarks:null});
+    return enqueueModelSend('pose',_poseDet,canvas,{poseLandmarks:null},timeoutMs);
+}
+function normalizeRoiBox(box){
+    if(!box)return null;
+    let x=clamp(box.x,0,.98),y=clamp(box.y,0,.98),w=clamp(box.w,.08,1),h=clamp(box.h,.08,1);
+    if(x+w>1)x=1-w;if(y+h>1)y=1-h;
+    return{x:clamp(x,0,1),y:clamp(y,0,1),w:clamp(w,.08,1),h:clamp(h,.08,1),source:box.source||'候选区域'}
+}
+function expandRoiBox(cx,cy,w,h,source){
+    const size=Math.max(w,h,.16);
+    return normalizeRoiBox({x:cx-size/2,y:cy-size/2,w:size,h:size,source})
+}
+function poseFaceRoi(pl){
+    if(!pl?.length)return null;
+    const usable=[0,1,2,3,4,5,6].map(i=>pl[i]).filter(p=>p&&p.visibility>.25&&Number.isFinite(p.x)&&Number.isFinite(p.y));
+    const shoulders=[pl[11],pl[12]].filter(p=>p&&p.visibility>.25&&Number.isFinite(p.x)&&Number.isFinite(p.y));
+    if(!usable.length&&!shoulders.length)return null;
+    const cx=usable.length?mean(usable.map(p=>p.x)):mean(shoulders.map(p=>p.x));
+    const faceY=usable.length?mean(usable.map(p=>p.y)):(Math.min(...shoulders.map(p=>p.y))-.16);
+    let size=.22;
+    if(shoulders.length===2)size=clamp(Math.hypot(shoulders[0].x-shoulders[1].x,shoulders[0].y-shoulders[1].y)*.95,.16,.42);
+    else if(usable.length>1){
+        const xs=usable.map(p=>p.x),ys=usable.map(p=>p.y);
+        size=clamp(Math.max(Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys)) * 3.1,.16,.36);
+    }
+    return expandRoiBox(cx,faceY+size*.08,size,size,'姿态推断人脸区域')
+}
+function commonFaceRois(){
+    const grid=[];
+    for(const y of [.02,.34,.62])for(const x of [.02,.36,.70])grid.push({x,y,w:.28,h:.34,source:'九宫格人脸候选'});
+    return[
+        {x:.08,y:.00,w:.58,h:.64,source:'上半身大区域候选'},
+        {x:.18,y:.00,w:.48,h:.56,source:'中心偏左人脸候选'},
+        {x:.25,y:.08,w:.50,h:.56,source:'中心人脸候选'},
+        {x:.18,y:.00,w:.64,h:.52,source:'上半画面人脸候选'},
+        {x:.70,y:.02,w:.28,h:.34,source:'右上画中画候选'},
+        {x:.74,y:.04,w:.24,h:.30,source:'右上小窗候选'},
+        {x:.02,y:.02,w:.28,h:.34,source:'左上画中画候选'},
+        {x:.70,y:.62,w:.28,h:.34,source:'右下画中画候选'},
+        {x:.02,y:.62,w:.28,h:.34,source:'左下画中画候选'},
+        {x:.28,y:.02,w:.44,h:.36,source:'顶部中间人脸候选'},
+        {x:.28,y:.58,w:.44,h:.38,source:'底部中间人脸候选'},
+        {x:.02,y:.20,w:.36,h:.56,source:'左侧人脸候选'},
+        {x:.62,y:.20,w:.36,h:.56,source:'右侧人脸候选'},
+        {x:.25,y:.20,w:.50,h:.58,source:'中心偏下人脸候选'},
+        ...grid
+    ].map(normalizeRoiBox)
+}
+function roiListForFaceRetry(pose){
+    const seen=new Set(),out=[];
+    function add(box){
+        const b=normalizeRoiBox(box);if(!b)return;
+        const key=[b.x,b.y,b.w,b.h].map(v=>Math.round(v*100)).join(',');
+        if(!seen.has(key)){seen.add(key);out.push(b)}
+    }
+    if(G.faceRoiBox)add({...G.faceRoiBox,source:'上次成功人脸区域'});
+    add(poseFaceRoi(pose?.poseLandmarks));
+    if(G.analysisMode==='stable-frame'||(G.faceNoHitStreak||0)>=4){
+        const all=commonFaceRois();
+        const limit=(G.faceNoHitStreak||0)>=8?8:4;
+        all.slice(0,limit).forEach(add);
+    }
+    return out.slice(0,G.faceRoiBox?4:((G.faceNoHitStreak||0)>=8?8:4))
+}
+function mapFaceLandmarksFromRoi(lm,box){
+    return lm.map(p=>({...p,x:box.x+p.x*box.w,y:box.y+p.y*box.h}))
+}
+async function retryFaceWithRoi(source,pose){
+    if(G.captureMode!=='screen-recording'||!_faceReady||!_faceMesh)return{multiFaceLandmarks:[]};
+    const rois=roiListForFaceRetry(pose);if(!rois.length)return{multiFaceLandmarks:[]};
+    if(!_faceRoiCanvas){_faceRoiCanvas=document.createElement('canvas');_faceRoiCanvas.width=512;_faceRoiCanvas.height=512;_faceRoiCtx=_faceRoiCanvas.getContext('2d',{alpha:false,willReadFrequently:true})}
+    const sw=source.width||source.videoWidth,sh=source.height||source.videoHeight;
+    for(const box of rois){
+        G.faceRoiAttempts++;
+        _faceRoiCtx.fillStyle='#000';_faceRoiCtx.fillRect(0,0,512,512);
+        _faceRoiCtx.drawImage(source,box.x*sw,box.y*sh,box.w*sw,box.h*sh,0,0,512,512);
+        try{
+            const res=await withTimeout(sendFace(_faceRoiCanvas,CONFIG.performance.roiTimeoutMs),CONFIG.performance.roiTimeoutMs+600,'FaceMesh ROI推理');
+            const lm=res?.multiFaceLandmarks?.[0];
+            if(lm?.length){
+                G.faceRoiBox=box;G.faceRoiHits++;G.faceRoiSource=box.source;
+                logFaceDiag('roi-hit');
+                return{...res,multiFaceLandmarks:[mapFaceLandmarksFromRoi(lm,box)],_roiSource:box.source}
+            }
+        }catch(e){console.warn('[VAK] Face ROI skipped:',e.message)}
+    }
+    return{multiFaceLandmarks:[]}
+}
+function logFaceDiag(reason='sample'){
+    if(G.sampledFrames%10!==0&&reason==='sample')return;
+    console.info(`[VAK-DIAG] face full=${G.faceFullHits||0} roi=${G.faceRoiHits||0} attempts=${G.faceRoiAttempts||0} miss=${G.faceNoHitStreak||0} timeout=${G.faceModelTimeouts||0} mode=${G.analysisMode||'unknown'} reason=${reason}`);
+}
+async function detectBoth(source){
+    let face={multiFaceLandmarks:[]},pose={poseLandmarks:null};
+    // 快速启动阶段：未就绪的模型直接跳过，OpenCV/Canvas与音频分析不被阻塞
+    G.detectFrameIndex=(G.detectFrameIndex||0)+1;
+    const profile=G.perfProfile||choosePerformanceProfile(G.videoWidth,G.videoHeight),timeout=profile.timeout||CONFIG.performance.frameTimeoutMs;
+    const shouldPose=_poseReady&&(profile.poseEvery<=1||!G.lastPoseLM||G.detectFrameIndex%profile.poseEvery===0);
+    const faceP=_faceReady?withTimeout(sendFace(source),timeout,'FaceMesh 单帧推理'):Promise.resolve(face);
+    const poseP=shouldPose?withTimeout(sendPose(source),timeout,'BlazePose 单帧推理'):Promise.resolve(pose);
+    const [faceR,poseR]=await Promise.allSettled([faceP,poseP]);
+    if(faceR.status==='fulfilled')face=faceR.value;else{G.frameErrorCount++;G.faceModelTimeouts=(G.faceModelTimeouts||0)+1;console.warn('[VAK] Face frame skipped:',faceR.reason.message)}
+    if(poseR.status==='fulfilled')pose=poseR.value;else{G.frameErrorCount++;console.warn('[VAK] Pose frame skipped:',poseR.reason.message)}
+    if(face.multiFaceLandmarks&&face.multiFaceLandmarks.length){G.faceFullHits=(G.faceFullHits||0)+1;G.faceRoiSource='整帧FaceMesh'}
+    else G.faceFullMisses=(G.faceFullMisses||0)+1;
+    if(_faceReady&&G.captureMode==='screen-recording'&&!(face.multiFaceLandmarks&&face.multiFaceLandmarks.length)){
+        if((G.faceNoHitStreak||0)>=8&&G.faceFrames===0)el('runtimeHint').textContent='尚未锁定人脸，正在扩大画中画/九宫格人脸区域搜索；Intel 兼容模式会自动使用稳定逐帧识别。';
+        face=await retryFaceWithRoi(source,pose);
+    }
+    if(face.multiFaceLandmarks&&face.multiFaceLandmarks.length)G.faceNoHitStreak=0;else G.faceNoHitStreak=(G.faceNoHitStreak||0)+1;
+    logFaceDiag();
+    return{face,pose}
+}
 
 /* ---------- 指标计算 ---------- */
 function calcEAR(lm,w,h){
@@ -564,13 +901,30 @@ function calcArmTraj(pl,prev,w,h,dt){
     return n?total/n:null;
 }
 function updateBlink(ear,t){
+    if(!Number.isFinite(ear))return;
     const b=CONFIG.blink;
-    if(!G.blinkClosed&&ear<b.close){G.blinkClosed=true;G.blinkCloseStart=t;return;}
-    if(G.blinkClosed&&ear>b.open){
+    if(!G.blinkClosed){
+        if(G.earOpenBaseline===null)G.earOpenBaseline=ear;
+        else{
+            const rate = ear > G.earOpenBaseline ? .015 : .003;
+            G.earOpenBaseline=G.earOpenBaseline*(1-rate)+ear*rate;
+        }
+    }
+    const base=G.earOpenBaseline;
+    const closeTh=Number.isFinite(base)?clamp(base*.62,.10,.23):b.close;
+    const openTh=Number.isFinite(base)?clamp(base*.78,.14,.30):b.open;
+    const rapidDrop=Number.isFinite(G.prevEAR)&&Number.isFinite(base)&&G.prevEAR-ear>base*.14&&ear<base*.78;
+    const rapidRise=Number.isFinite(G.prevEAR)&&Number.isFinite(base)&&ear-G.prevEAR>base*.10&&ear>closeTh;
+    if(!G.blinkClosed&&(ear<closeTh||rapidDrop)){G.blinkClosed=true;G.blinkCloseStart=t;G.blinkClosedSamples=1;G.prevEAR=ear;return;}
+    if(G.blinkClosed){
+        G.blinkClosedSamples=(G.blinkClosedSamples||0)+1;
+    }
+    if(G.blinkClosed&&(ear>openTh||rapidRise)){
         const dur=t-(G.blinkCloseStart??t);
         if(dur>=b.minClosedSec&&dur<=b.maxClosedSec&&t-G.lastBlinkTime>=b.minGapSec){G.blinkCount++;G.lastBlinkTime=t;}
-        G.blinkClosed=false;G.blinkCloseStart=null;
+        G.blinkClosed=false;G.blinkCloseStart=null;G.blinkClosedSamples=0;
     }
+    G.prevEAR=ear;
 }
 function updateYawEvent(yaw,t){
     if(G.prevYaw!==null&&Math.abs(yaw-G.prevYaw)>CONFIG.yawEventDelta&&t-G.lastYawEventTime>=CONFIG.yawEventCooldownSec){
@@ -578,11 +932,26 @@ function updateYawEvent(yaw,t){
     }
     G.prevYaw=yaw;
 }
-function calcOpenCVMetrics(canvas){
-    if(!_cvReady||!window.cv||!cv.Mat)return{sharpness:null,motionRatio:null,screenMotion:null,screenMeanDiff:null,screenSharpness:null};
+function calcFastCanvasMetrics(source){
+    try{
+        const w=112,h=Math.max(36,Math.round((source.height||source.videoHeight||63)*w/Math.max(1,(source.width||source.videoWidth||112))));
+        if(!_fastMetricCanvas){_fastMetricCanvas=document.createElement('canvas');_fastMetricCtx=_fastMetricCanvas.getContext('2d',{willReadFrequently:true})}
+        if(_fastMetricCanvas.width!==w||_fastMetricCanvas.height!==h){_fastMetricCanvas.width=w;_fastMetricCanvas.height=h;_fastPrevGray=null}
+        _fastMetricCtx.drawImage(source,0,0,w,h);const rgba=_fastMetricCtx.getImageData(0,0,w,h).data,gray=new Uint8Array(w*h);
+        let diffCount=0,diffSum=0,edgeSum=0;
+        for(let i=0,p=0;i<rgba.length;i+=4,p++)gray[p]=(rgba[i]*77+rgba[i+1]*150+rgba[i+2]*29)>>8;
+        if(_fastPrevGray&&_fastPrevGray.length===gray.length){for(let i=0;i<gray.length;i++){const d=Math.abs(gray[i]-_fastPrevGray[i]);diffSum+=d;if(d>18)diffCount++}}
+        for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){const i=y*w+x;edgeSum+=Math.abs(4*gray[i]-gray[i-1]-gray[i+1]-gray[i-w]-gray[i+w])}
+        _fastPrevGray=gray;
+        const motionRatio=diffCount/(w*h)*100,meanDiff=diffSum/(w*h),sharpness=edgeSum/Math.max(1,(w-2)*(h-2));
+        return{sharpness,motionRatio,screenMotion:motionRatio,screenMeanDiff:meanDiff,screenSharpness:sharpness,largestMotionRatio:motionRatio*.45,motionComponentCount:motionRatio>.15?1:0,motionCentroidX:null,motionCentroidY:null}
+    }catch(e){return{sharpness:null,motionRatio:null,screenMotion:null,screenMeanDiff:null,screenSharpness:null,largestMotionRatio:null,motionComponentCount:0,motionCentroidX:null,motionCentroidY:null}}
+}
+function calcOpenCVMetrics(canvas,excludeBox=null){
+    if(!_cvReady||!window.cv||!cv.Mat)return calcFastCanvasMetrics(canvas);
     let src=null,small=null,gray=null,lap=null,meanMat=null,stdMat=null,diff=null;
-    try{src=cv.imread(canvas);const targetW=CONFIG.cv.width,targetH=Math.max(1,Math.round(src.rows*targetW/src.cols));small=new cv.Mat();cv.resize(src,small,new cv.Size(targetW,targetH),0,0,cv.INTER_AREA);gray=new cv.Mat();cv.cvtColor(small,gray,cv.COLOR_RGBA2GRAY);lap=new cv.Mat();cv.Laplacian(gray,lap,cv.CV_64F);meanMat=new cv.Mat();stdMat=new cv.Mat();cv.meanStdDev(lap,meanMat,stdMat);const sd=stdMat.data64F&&stdMat.data64F.length?stdMat.data64F[0]:stdMat.doubleAt(0,0),sharpness=sd*sd;let motionRatio=null;if(_cvPrevGray&&_cvPrevGray.rows===gray.rows&&_cvPrevGray.cols===gray.cols){diff=new cv.Mat();cv.absdiff(gray,_cvPrevGray,diff);cv.threshold(diff,diff,CONFIG.cv.diffThreshold,255,cv.THRESH_BINARY);motionRatio=cv.countNonZero(diff)/(diff.rows*diff.cols)*100}if(_cvPrevGray)_cvPrevGray.delete();_cvPrevGray=gray.clone();G.openCvUsed=true;return{sharpness,motionRatio,...warpScreenMetrics(canvas,G.screenQuad)}}
-    catch(e){console.warn('[VAK] OpenCV frame error:',e);return{sharpness:null,motionRatio:null,screenMotion:null,screenMeanDiff:null,screenSharpness:null}}
+    try{src=cv.imread(canvas);const targetW=CONFIG.cv.width,targetH=Math.max(1,Math.round(src.rows*targetW/src.cols));small=new cv.Mat();cv.resize(src,small,new cv.Size(targetW,targetH),0,0,cv.INTER_AREA);gray=new cv.Mat();cv.cvtColor(small,gray,cv.COLOR_RGBA2GRAY);lap=new cv.Mat();cv.Laplacian(gray,lap,cv.CV_64F);meanMat=new cv.Mat();stdMat=new cv.Mat();cv.meanStdDev(lap,meanMat,stdMat);const sd=stdMat.data64F&&stdMat.data64F.length?stdMat.data64F[0]:stdMat.doubleAt(0,0),sharpness=sd*sd;let motionRatio=null;if(_cvPrevGray&&_cvPrevGray.rows===gray.rows&&_cvPrevGray.cols===gray.cols){diff=new cv.Mat();cv.absdiff(gray,_cvPrevGray,diff);cv.threshold(diff,diff,CONFIG.cv.diffThreshold,255,cv.THRESH_BINARY);motionRatio=cv.countNonZero(diff)/(diff.rows*diff.cols)*100}if(_cvPrevGray)_cvPrevGray.delete();_cvPrevGray=gray.clone();G.openCvUsed=true;return{sharpness,motionRatio,...warpScreenMetrics(canvas,G.screenQuad,excludeBox)}}
+    catch(e){console.warn('[VAK] OpenCV frame error:',e);return{sharpness:null,motionRatio:null,screenMotion:null,screenMeanDiff:null,screenSharpness:null,largestMotionRatio:null,motionComponentCount:0,motionCentroidX:null,motionCentroidY:null}}
     finally{[src,small,gray,lap,meanMat,stdMat,diff].forEach(m=>{try{if(m)m.delete()}catch(_){}})}
 }
 function resampleSeries(times,vals,targetHz=10,maxN=512){
@@ -630,20 +999,14 @@ function drawBody(ctx,pl,w,h){
     drawTrail(ctx,G.trailL,w,h,'#00DDFF');drawTrail(ctx,G.trailR,w,h,'#FF6B9D');
     if(G.renderPrevPoseLM){for(const i of ARM_IDX){const c=pl[i],p=G.renderPrevPoseLM[i];if(c&&p&&c.visibility>.5&&p.visibility>.5){const cx=c.x*w,cy=c.y*h,px=p.x*w,py=p.y*h;if(Math.hypot(cx-px,cy-py)>3){ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(cx,cy);ctx.strokeStyle='rgba(255,255,0,.55)';ctx.lineWidth=3;ctx.stroke()}}}}
 }
-function drawHUD(ctx,w,h,fd){ctx.save();ctx.fillStyle='rgba(10,18,44,.68)';ctx.fillRect(0,0,w,118);ctx.font='bold 15px monospace';ctx.fillStyle='#6ee7f9';ctx.fillText('EAR: '+valueOrDash(fd.ear,3),14,22);ctx.fillStyle='#f9a8d4';ctx.fillText('Yaw*: '+valueOrDash(fd.yaw,1)+'°',14,44);ctx.fillStyle='#86efac';ctx.fillText('MI: '+valueOrDash(fd.mi,3),14,66);ctx.fillStyle='#fcd34d';ctx.fillText('Screen Δ: '+valueOrDash(fd.screenMotion,2)+'%',14,88);ctx.fillStyle='#ddd6fe';ctx.fillText('Task: '+taskMeta(fd.task||'unknown').short,14,110);ctx.font='bold 13px sans-serif';ctx.fillStyle=fd.faceOK?'#86efac':'#fb7185';ctx.fillText(fd.faceOK?'✓ FACE':'✗ NO FACE',w-155,22);ctx.fillStyle=fd.poseOK?'#86efac':'#fb7185';ctx.fillText(fd.poseOK?'✓ POSE 33pts':'✗ NO POSE',w-155,44);ctx.fillStyle=fd.touch?'#ffb4a8':'#cbd5e1';ctx.fillText(fd.touch?'● TOUCH':'○ NO TOUCH',w-155,66);ctx.fillStyle='#ddd6fe';ctx.fillText('Audio: '+valueOrDash(fd.audioDb,1)+' dB',w-155,88);ctx.fillStyle='#cbd5e1';ctx.fillText('Visible: '+(fd.visJ||0)+'/33',w-155,110);if(G.screenQuad){ctx.beginPath();G.screenQuad.forEach((p,i)=>i?ctx.lineTo(p.x*w,p.y*h):ctx.moveTo(p.x*w,p.y*h));ctx.closePath();ctx.strokeStyle='rgba(110,231,249,.88)';ctx.lineWidth=Math.max(2,w/500);ctx.stroke()}ctx.restore()}
+function drawHUD(ctx,w,h,fd){ctx.save();ctx.fillStyle='rgba(10,18,44,.68)';ctx.fillRect(0,0,w,118);ctx.font='bold 15px monospace';ctx.fillStyle='#6ee7f9';ctx.fillText('EAR: '+valueOrDash(fd.ear,3),14,22);ctx.fillStyle='#f9a8d4';ctx.fillText('Yaw*: '+valueOrDash(fd.yaw,1)+'°',14,44);ctx.fillStyle='#86efac';ctx.fillText('MI: '+valueOrDash(fd.mi,3),14,66);ctx.fillStyle='#fcd34d';ctx.fillText('Screen Δ: '+valueOrDash(fd.screenMotion,2)+'%',14,88);ctx.fillStyle='#ddd6fe';ctx.fillText('Task: '+taskMeta(fd.task||'unknown').short,14,110);ctx.font='bold 13px sans-serif';ctx.fillStyle=fd.faceOK?'#86efac':'#fb7185';ctx.fillText(fd.faceOK?'✓ FACE':'✗ NO FACE',w-155,22);ctx.fillStyle=fd.poseOK?'#86efac':'#fb7185';ctx.fillText(fd.poseOK?'✓ POSE 33pts':'✗ NO POSE',w-155,44);ctx.fillStyle=fd.touch?'#ffb4a8':'#cbd5e1';ctx.fillText(fd.touch?(G.captureMode==='screen-recording'?'● INTERACT':'● TOUCH'):'○ IDLE',w-155,66);ctx.fillStyle='#ddd6fe';ctx.fillText('Audio: '+valueOrDash(fd.audioDb,1)+' dB',w-155,88);ctx.fillStyle='#cbd5e1';ctx.fillText('Visible: '+(fd.visJ||0)+'/33',w-155,110);if(G.screenQuad){ctx.beginPath();G.screenQuad.forEach((p,i)=>i?ctx.lineTo(p.x*w,p.y*h):ctx.moveTo(p.x*w,p.y*h));ctx.closePath();ctx.strokeStyle='rgba(110,231,249,.88)';ctx.lineWidth=Math.max(2,w/500);ctx.stroke()}ctx.restore()}
 
 /* ---------- 评分、质量与报告 ---------- */
 function qualityAssessment(){
     const duration=G.videoDuration,faceRate=G.sampledFrames?G.faceFrames/G.sampledFrames*100:0,poseRate=G.sampledFrames?G.poseFrames/G.sampledFrames*100:0;
-    const actualHz=G.sampleTimes.length>1?(G.sampleTimes.length-1)/(G.sampleTimes[G.sampleTimes.length-1]-G.sampleTimes[0]||1):0;
-    const sufficient=duration>=CONFIG.quality.minDurationSec&&G.sampledFrames>=CONFIG.quality.minSamples&&faceRate>=CONFIG.quality.minFaceRate&&poseRate>=CONFIG.quality.minPoseRate;
-    let grade='较低',reason=[];
-    if(duration<CONFIG.quality.minDurationSec)reason.push('视频有效时长不足');
-    if(G.sampledFrames<CONFIG.quality.minSamples)reason.push('有效采样点不足');
-    if(faceRate<CONFIG.quality.minFaceRate)reason.push('人脸检测率不足');
-    if(poseRate<CONFIG.quality.minPoseRate)reason.push('姿态检测率不足');
-    if(sufficient&&faceRate>=75&&poseRate>=75&&actualHz>=6)grade='良好';else if(sufficient)grade='可用';
-    return{duration,faceRate,poseRate,actualHz,sufficient,grade,reason:reason.length?reason.join('；'):'达到当前启发式输出条件'};
+    const actualHz=G.sampleTimes.length>1?(G.sampleTimes.length-1)/(G.sampleTimes[G.sampleTimes.length-1]-G.sampleTimes[0]||1):0,screenRate=G.featureRows.length?G.featureRows.filter(r=>Number.isFinite(r.screenMotion)).length/G.featureRows.length*100:0;
+    const base=duration>=CONFIG.quality.minDurationSec&&G.sampledFrames>=CONFIG.quality.minSamples,recordingOK=G.captureMode==='screen-recording'&&faceRate>=CONFIG.quality.recordingMinFaceRate&&screenRate>=55,physicalOK=G.captureMode!=='screen-recording'&&faceRate>=CONFIG.quality.minFaceRate&&poseRate>=CONFIG.quality.minPoseRate,sufficient=base&&(recordingOK||physicalOK);
+    let grade='较低',reason=[];if(duration<CONFIG.quality.minDurationSec)reason.push('视频有效时长不足');if(G.sampledFrames<CONFIG.quality.minSamples)reason.push('有效采样点不足');if(faceRate<(G.captureMode==='screen-recording'?CONFIG.quality.recordingMinFaceRate:CONFIG.quality.minFaceRate))reason.push('人脸检测率不足');if(G.captureMode!=='screen-recording'&&poseRate<CONFIG.quality.minPoseRate)reason.push('姿态检测率不足');if(G.captureMode==='screen-recording'&&screenRate<55)reason.push('录屏工作区有效指标不足');if(sufficient&&faceRate>=70&&actualHz>=6&&(G.captureMode==='screen-recording'?screenRate>=80:poseRate>=65))grade='良好';else if(sufficient)grade=G.captureMode==='screen-recording'?'可用（录屏模式）':'可用';return{duration,faceRate,poseRate,screenRate,actualHz,sufficient,grade,mode:G.captureMode,reason:reason.length?reason.join('；'):'达到当前启发式输出条件'};
 }
 function classifyVAK(){
     const gazeNormVar=G.gazeXArr.length>5?variance(G.gazeXArr)+variance(G.gazeYArr):null;
@@ -675,12 +1038,11 @@ function classifyVAK(){
 function determineStyle(scores,quality){
     if(!quality.sufficient)return{type:'数据不足，暂不形成综合倾向',code:'insufficient',primary:null,secondary:null,difference:null,dominantScore:null};
     const sorted=[['visual',scores.visual],['auditory',scores.auditory],['kinesthetic',scores.kinesthetic]].sort((a,b)=>b[1]-a[1]);
-    const ratio=sorted[1][1]/(sorted[0][1]||1),difference=(sorted[0][1]-sorted[1][1])/(sorted[0][1]||1)*100;
-    if(ratio>CONFIG.mixedThreshold)return{type:`${STYLE_NAMES[sorted[0][0]]}主导、${STYLE_NAMES[sorted[1][0]]}辅助的混合倾向`,code:'mixed',primary:sorted[0][0],secondary:sorted[1][0],difference,dominantScore:sorted[0][1]};
-    return{type:`${STYLE_NAMES[sorted[0][0]]}倾向相对较高`,code:sorted[0][0],primary:sorted[0][0],secondary:null,difference,dominantScore:sorted[0][1]};
+    const difference=(sorted[0][1]-sorted[1][1])/(sorted[0][1]||1)*100;
+    return{type:`${STYLE_NAMES[sorted[0][0]]}主导`,code:sorted[0][0],primary:sorted[0][0],secondary:null,difference,dominantScore:sorted[0][1]};
 }
 function buildMetricRows(sc,q){
-    const m=sc.meta,rows=[
+    const m=sc.meta,validInteractions=G.touchEvents.filter(e=>Number.isFinite(e.responseMs)),interactionLabel=G.captureMode==='screen-recording'?'屏幕交互响应时间均值（录屏估算）':'平板触控响应时间均值（视频估算）',interactionSource=G.captureMode==='screen-recording'?'OpenCV 局部目标位移与画面反馈':'OpenCV 屏幕变化 + MediaPipe 指尖接触';return[
         {dimension:'视觉 V',metric:'注视点稳定性（相对像素方差）',value:round(m.gazePxVar,2),unit:'px²',source:'MediaPipe 虹膜相对坐标',note:'数值越低表示本视频中的注视位置波动越小'},
         {dimension:'视觉 V',metric:'EAR 眼部纵横比均值',value:round(m.avgEAR,4),unit:'比值',source:'FaceMesh 眼部关键点',note:'反映眼睛开合状态，不单独作为注意力诊断依据'},
         {dimension:'视觉 V',metric:'眨眼频率',value:round(m.blinkRate,2),unit:'次/分钟',source:'EAR 状态机',note:'按有效人脸检测时长计算'},
@@ -695,24 +1057,28 @@ function buildMetricRows(sc,q){
         {dimension:'动觉 K',metric:'上肢轨迹强度',value:round(m.avgArm,4),unit:'身体尺度/秒',source:'手腕与肘部位移',note:'按身体尺度和真实采样时间归一化'},
         {dimension:'动觉 K',metric:'身体运动主频率',value:round(m.dominantFreq,3),unit:'Hz',source:'时间戳重采样 + DFT',note:'为运动能量序列中的主要频率分量'},
         {dimension:'动觉 K',metric:'2–4 Hz 频段能量占比',value:round(m.bandRatio*100,2),unit:'%',source:'频域分析',note:'作为节律性身体运动的辅助指标'},
-        {dimension:'触控实验',metric:'平板触控响应时间均值（视频估算）',value:round(mean(G.touchEvents.map(e=>e.responseMs).filter(Number.isFinite)),1),unit:'ms',source:'OpenCV 屏幕变化 + MediaPipe 指尖接触',note:'从刺激变化到首次触控的估算值，受帧率、角度与遮挡影响'},
-        {dimension:'触控实验',metric:'有效触控响应事件数',value:G.touchEvents.filter(e=>Number.isFinite(e.responseMs)).length,unit:'次',source:'时序事件匹配',note:'仅统计在 0.10–8 秒窗口内成功匹配刺激的事件'},
-        {dimension:'任务识别',metric:'自动识别任务分段数',value:G.taskSegments.length,unit:'段',source:'音频+屏幕+触控+上肢滑动窗口',note:'自动分段建议结合实验流程进行复核'},
-        {dimension:'OpenCV 辅助',metric:'帧间运动像素比例均值',value:round(m.cvMotion,3),unit:'%',source:'OpenCV.js absdiff + threshold',note:'用于画面整体运动与质量复核，不进入 VAK 主评分'},
-        {dimension:'OpenCV 辅助',metric:'画面清晰度均值',value:round(m.cvSharp,2),unit:'Laplacian 方差',source:'OpenCV.js Laplacian',note:'用于识别模糊风险，不进入 VAK 主评分'},
-        {dimension:'数据质量',metric:'人脸有效检测率',value:round(q.faceRate,1),unit:'%',source:'FaceMesh',note:'视觉与听觉指标的有效性参考'},
-        {dimension:'数据质量',metric:'姿态有效检测率',value:round(q.poseRate,1),unit:'%',source:'BlazePose',note:'动觉指标的有效性参考'},
-        {dimension:'数据质量',metric:'实际分析采样频率',value:round(q.actualHz,2),unit:'Hz',source:'视频时间戳',note:'用于频率换算与结果复核'}
+        {dimension:'交互实验',metric:interactionLabel,value:round(mean(validInteractions.map(e=>e.responseMs)),1),unit:'ms',source:interactionSource,note:G.captureMode==='screen-recording'?'从任务画面稳定/刺激变化到首次局部拖拽或点击反馈的估算值':'从刺激变化到首次指尖接触的估算值，受帧率、角度与遮挡影响'},
+        {dimension:'交互实验',metric:'有效交互响应事件数',value:validInteractions.length,unit:'次',source:'时序事件匹配',note:'仅统计在当前配对窗口内成功匹配刺激或任务就绪时刻的事件'},
+        {dimension:'录屏交互',metric:'局部运动区域均值',value:round(mean(G.featureRows.map(r=>r.largestMotionRatio).filter(Number.isFinite)),3),unit:'%',source:'OpenCV 连通区域分析',note:'录屏模式用于识别图片拖拽等局部连续位移；实体拍摄仅作辅助'},
+        {dimension:'任务识别',metric:'自动识别任务分段数',value:G.taskSegments.length,unit:'段',source:'音频+屏幕整体/局部运动+交互+上肢滑动窗口',note:'分类结果需结合实验流程复核'},
+        {dimension:'数据质量',metric:'分析模式',value:G.captureMode==='screen-recording'?'录屏 / 画中画':'实体平板拍摄',unit:'',source:'自动判断或用户选择',note:G.screenDetectedBy||''},
+        {dimension:'数据质量',metric:'人脸有效检测率',value:round(q.faceRate,2),unit:'%',source:'FaceMesh',note:'有效人脸帧占全部采样帧比例'},
+        {dimension:'数据质量',metric:'画中画人脸增强',value:G.faceRoiHits,unit:'帧',source:'FaceMesh ROI重试',note:`${G.faceRoiSource||'未触发'}；尝试 ${G.faceRoiAttempts||0} 次`},
+        {dimension:'数据质量',metric:'FaceMesh整帧命中',value:G.faceFullHits||0,unit:'帧',source:'FaceMesh诊断',note:`整帧未命中 ${G.faceFullMisses||0} 帧；连续未命中 ${G.faceNoHitStreak||0} 帧`},
+        {dimension:'数据质量',metric:'FaceMesh模型超时',value:G.faceModelTimeouts||0,unit:'次',source:'FaceMesh诊断',note:'用于区分模型未返回与单纯未检测到人脸'},
+        {dimension:'数据质量',metric:'姿态有效检测率',value:round(q.poseRate,2),unit:'%',source:'BlazePose',note:G.captureMode==='screen-recording'?'画中画常只显示上半身，姿态指标可能受限':'有效姿态帧占全部采样帧比例'},
+        {dimension:'数据质量',metric:'实际采样频率',value:round(q.actualHz,3),unit:'Hz',source:'视频时间戳',note:'用于频率换算和时序复核'},
+        {dimension:'OpenCV辅助',metric:'画面清晰度（Laplacian方差）',value:round(m.cvSharp,2),unit:'相对值',source:'OpenCV.js',note:'越高通常表示边缘越清晰，仅作质量参考'},
+        {dimension:'OpenCV辅助',metric:'全画面帧间运动比例',value:round(m.cvMotion,3),unit:'%',source:'OpenCV.js 帧差',note:'用于判断镜头或画面整体运动'}
     ];
-    return rows;
 }
-function buildReport(video){const scores=classifyVAK(),quality=qualityAssessment(),style=determineStyle(scores,quality),m=scores.meta;G.taskSegments=buildTaskSegments();const metricRows=buildMetricRows(scores,quality),duration=G.videoDuration,validResponses=G.touchEvents.map(e=>e.responseMs).filter(Number.isFinite);const videoInfo={duration:duration.toFixed(1),resolution:G.videoWidth+'×'+G.videoHeight,sampledFrames:G.sampledFrames,analyzeFps:quality.actualHz.toFixed(2),faceFrames:G.faceFrames,poseFrames:G.poseFrames,faceRate:quality.faceRate.toFixed(1),poseRate:quality.poseRate.toFixed(1),quality:quality.grade,opencv:G.openCvUsed?'已调用':'未获取有效指标',screen:G.screenDetectedBy||'未标定'};const primary=style.primary||'insufficient';const report={style,scores,quality,videoInfo,metricRows,taskSegments:G.taskSegments,touchEvents:G.touchEvents,touchSummary:{count:G.touchEvents.length,validCount:validResponses.length,mean:validResponses.length?mean(validResponses):null,median:validResponses.length?[...validResponses].sort((a,b)=>a-b)[Math.floor(validResponses.length/2)]:null,min:validResponses.length?Math.min(...validResponses):null,max:validResponses.length?Math.max(...validResponses):null},suggestions:genSug(primary),explanation:genExpl(primary,style.secondary)};const taskNames=[...new Set(G.taskSegments.map(x=>x.name))].join('、')||'未形成可靠分段';report.summary=`本次分析基于时长 ${duration.toFixed(1)} 秒的视频，共获得 ${G.sampledFrames} 个时间采样点，实际采样频率约 ${quality.actualHz.toFixed(2)} Hz。系统使用 MediaPipe FaceMesh 与 BlazePose 提取面部、虹膜、手指和身体关键点，OpenCV.js 完成屏幕透视区域、内容变化与画质分析，Web Audio API 提取音频能量。
+function buildReport(video){const scores=classifyVAK(),quality=qualityAssessment(),style=determineStyle(scores,quality),m=scores.meta;G.taskSegments=buildTaskSegments();const metricRows=buildMetricRows(scores,quality).filter(r=>G.openCvUsed||r.dimension!=='OpenCV辅助'),duration=G.videoDuration,validResponses=G.touchEvents.map(e=>e.responseMs).filter(Number.isFinite);const faceDiag=`整帧命中 ${G.faceFullHits||0} / ROI命中 ${G.faceRoiHits||0} / ROI尝试 ${G.faceRoiAttempts||0} / 连续未命中 ${G.faceNoHitStreak||0} / 超时 ${G.faceModelTimeouts||0}`;const videoInfo={duration:duration.toFixed(1),resolution:(G.videoInfos&&G.videoInfos.length?G.videoInfos.length+' 个测试视频':G.videoWidth+'×'+G.videoHeight),sampledFrames:G.sampledFrames,analyzeFps:quality.actualHz.toFixed(2),faceFrames:G.faceFrames,poseFrames:G.poseFrames,faceRate:quality.faceRate.toFixed(1),poseRate:quality.poseRate.toFixed(1),quality:quality.grade,opencv:G.openCvUsed?'已调用':'未获取有效指标',screen:G.screenDetectedBy||'未标定',mode:G.captureMode==='screen-recording'?'录屏 / 画中画':'实体平板拍摄',analysisResolution:(G.videoInfos&&G.videoInfos.length?'逐视频自适应':(G.analysisWidth||G.videoWidth)+'×'+(G.analysisHeight||G.videoHeight)),frameErrors:G.frameErrorCount,startupSeconds:Number.isFinite(G.startupElapsedMs)?G.startupElapsedMs/1000:null,modelState:`FaceMesh ${_faceReady?'已接入':'未接入'} / BlazePose ${_poseReady?'已接入':'未接入'}`,faceDiag};const primary=style.primary||'insufficient';for(const e of G.touchEvents){const seg=G.taskSegments.find(x=>e.touchTime>=x.start&&e.touchTime<=x.end);if(seg){e.task=seg.code;e.taskName=seg.name}}const report={style,scores,quality,videoInfo,metricRows,taskSegments:G.taskSegments,touchEvents:G.touchEvents,touchSummary:{count:G.touchEvents.length,validCount:validResponses.length,mean:validResponses.length?mean(validResponses):null,median:validResponses.length?[...validResponses].sort((a,b)=>a-b)[Math.floor(validResponses.length/2)]:null,min:validResponses.length?Math.min(...validResponses):null,max:validResponses.length?Math.max(...validResponses):null},suggestions:genSug(primary),explanation:genExpl(primary,null)};const taskNames=[...new Set(G.taskSegments.map(x=>x.name))].join('、')||'未形成可靠分段',cvSummary=G.openCvUsed?'OpenCV.js 对屏幕工作区、局部目标位移、内容变化与画质进行分析；':'';report.summary=`本次分析基于时长 ${duration.toFixed(1)} 秒的视频，共获得 ${G.sampledFrames} 个时间采样点，实际采样频率约 ${quality.actualHz.toFixed(2)} Hz。系统采用【${videoInfo.mode}】分析模式：MediaPipe FaceMesh 与 BlazePose 提取面部、虹膜和身体行为；${cvSummary}Web Audio API 提取音频能量。
 
-系统自动识别的任务片段包括：${taskNames}。共检测 ${G.touchEvents.length} 次触控开始事件，其中 ${validResponses.length} 次成功匹配前序刺激变化，平均触控响应时间为 ${Number.isFinite(report.touchSummary.mean)?report.touchSummary.mean.toFixed(1)+' ms':'数据不足'}。该响应时间属于视频估算结果，应结合原始视频逐帧复核。
+上传槽位固定对应的测试项目包括：${taskNames}。共检测 ${G.touchEvents.length} 次触控开始事件，其中 ${validResponses.length} 次成功匹配前序刺激变化，平均触控响应时间为 ${Number.isFinite(report.touchSummary.mean)?report.touchSummary.mean.toFixed(1)+' ms':'数据不足'}。该响应时间属于视频估算结果，应结合原始视频逐帧复核。
 
 本次数据质量等级为【${quality.grade}】，人脸有效检测率 ${quality.faceRate.toFixed(1)}%，姿态有效检测率 ${quality.poseRate.toFixed(1)}%。${quality.sufficient?`当前视频整体相对通道倾向为【${style.type}】。`:`由于${quality.reason}，系统不输出确定性的综合倾向。`} VAK 相对得分：视觉 ${scores.visual_pct.toFixed(1)}%，听觉 ${scores.auditory_pct.toFixed(1)}%，动觉 ${scores.kinesthetic_pct.toFixed(1)}%。
 
-所有原始视频均在浏览器本地处理。任务分类、触控时刻、权重和阈值均为可解释的启发式估算，需要在正式研究中通过人工标注与更大样本进行效度校准。`;return report}
+所有原始视频均在浏览器本地处理。测试项目名称和时间分段来自三个上传槽位的固定对应关系；触控时刻、行为指标、权重和阈值仍属于可解释的算法估算，需要结合原视频复核并在更大样本中校准。`;return report}
 function genExpl(p,s){
     const E={
         visual:{name:'视觉通道行为倾向说明',traits:['本次任务中的注视位置波动相对较小','眼部开合与眨眼行为提供了视觉活动的辅助证据','可结合儿童对图像、图表、动画和示范材料的反应继续观察','该结果只代表当前视频情境，不等同于稳定不变的学习者类型']},
@@ -720,7 +1086,7 @@ function genExpl(p,s){
         kinesthetic:{name:'动觉通道行为倾向说明',traits:['本次任务中的主要关节位移和上肢活动相对明显','身体活动可能参与信息加工，也可能受到任务要求、座位和拍摄范围影响','可结合操作、拼搭、实验和角色扮演任务继续观察','身体活动不能被直接解释为注意力不足或医学意义上的多动']},
         insufficient:{name:'数据不足说明',traits:['当前视频尚未达到综合倾向输出所需的数据质量条件','请优先检查面部与身体是否完整入镜、光线是否充足、视频是否过短','建议重新录制或补充其他任务视频后再进行比较','现有数值可用于技术复核，但不宜据此形成儿童类型判断']}
     };
-    const r={...E[p]};if(s)r.mixedWith=E[s].name;return r;
+    return {...E[p]};
 }
 function genSug(p){
     const D={
@@ -734,52 +1100,101 @@ function genSug(p){
 
 /* ---------- 核心分析流程 ---------- */
 async function startAnalysis(){
-    if(!G.file||G.running)return;
-    if(!el('consentCheck').checked||!el('singleCheck').checked){showErr('请先确认授权和视频构图要求。');return;}if(!G.screenQuad){showErr('请先完成屏幕区域标定，才能估算触控时间并识别任务。');return;}
-    G.participant={id:el('participantId').value.trim()||'匿名对象',ageGroup:el('ageGroup').value,taskType:'自动识别三类任务',notes:el('notes').value.trim()};
-    G.running=true;G.finished=false;el('startBtn').disabled=true;hideErr();showView('viewAnalyze');
-    const video=document.createElement('video');video.id='srcVideo';video.muted=false;video.volume=1;video.playsInline=true;video.preload='auto';video.style.cssText='position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';document.querySelector('.canvas-wrap').appendChild(video);
-    const audioInitPromise=setupAudioAnalysis(video);
-    G.objectUrl=URL.createObjectURL(G.file);video.src=G.objectUrl;
-    try{await new Promise((resolve,reject)=>{video.onloadedmetadata=resolve;video.onerror=()=>reject(new Error('浏览器无法解码该视频，建议转换为 H.264 MP4 或 WebM'));video.load()})}catch(e){showErr(e.message);cleanupVideo(video);G.running=false;el('startBtn').disabled=false;showView('viewUpload');return;}
-    if(!Number.isFinite(video.duration)||video.duration<1){showErr('视频过短或无法读取时长');cleanupVideo(video);G.running=false;showView('viewUpload');return;}
-    G.videoDuration=video.duration;G.videoWidth=video.videoWidth;G.videoHeight=video.videoHeight;G.fileName=G.file.name;
-    try{await video.play();video.pause();video.currentTime=0}catch(e){console.warn('[VAK] audio/video prime failed',e);}
-    resetMetricState();
-    const canvas=el('mainCanvas');canvas.width=G.videoWidth;canvas.height=G.videoHeight;const ctx=canvas.getContext('2d');
-    const offC=document.createElement('canvas');offC.width=G.videoWidth;offC.height=G.videoHeight;const offX=offC.getContext('2d',{willReadFrequently:true});
-    el('frameTotal').textContent='按时间采样';el('pbarText').innerHTML='<span class="spin"></span>正在初始化 MediaPipe 与 OpenCV.js...';
-    ctx.fillStyle='#111';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#fff';ctx.font='bold 20px sans-serif';ctx.textAlign='center';ctx.fillText('正在加载分析模型...',canvas.width/2,canvas.height/2);
-    try{await Promise.all([initMP(),ensureOpenCV(),audioInitPromise])}catch(e){showErr('MediaPipe 模型加载失败：'+e.message);cleanupVideo(video);G.running=false;el('startBtn').disabled=false;showView('viewUpload');return;}
-    el('pbarText').innerHTML='<span class="spin"></span>正在进行浏览器端多模态分析...';
-    video.currentTime=0;try{await video.play()}catch(e){showErr('视频播放失败：'+e.message);cleanupVideo(video);G.running=false;showView('viewUpload');return;}
-    let renderActive=true,processActive=true,processingBusy=false,lastProcessWall=0,finishRequested=false;
-    function requestFinish(){if(finishRequested)return;finishRequested=true;processActive=false;renderActive=false;const wait=()=>{if(processingBusy)setTimeout(wait,50);else finishAnalysis(video)};wait()}
-    function renderLoop(){
-        if(!renderActive)return;if(video.readyState>=2)ctx.drawImage(video,0,0,canvas.width,canvas.height);if(G.lastFaceLM)drawFace(ctx,G.lastFaceLM,canvas.width,canvas.height);if(G.lastPoseLM)drawBody(ctx,G.lastPoseLM,canvas.width,canvas.height);drawHUD(ctx,canvas.width,canvas.height,G.lastFrameData);
-        const pct=Math.min(100,video.currentTime/G.videoDuration*100);el('pbarFill').style.width=pct+'%';el('pbarPct').textContent=pct.toFixed(0)+'%';el('curTime').textContent=video.currentTime.toFixed(1);el('frameNum').textContent=G.sampledFrames;
-        if(video.ended){requestFinish();return}requestAnimationFrame(renderLoop);
-    }
-    async function processLoop(){
-        if(!processActive||video.ended){if(video.ended)requestFinish();return}
-        const now=performance.now();
-        if(!processingBusy&&now-lastProcessWall>=CONFIG.processIntervalMs&&video.readyState>=2){
-            processingBusy=true;lastProcessWall=now;offX.drawImage(video,0,0,offC.width,offC.height);const t=video.currentTime;
-            try{await processFrame(offC,t)}catch(e){console.warn('[VAK] frame process:',e)}finally{processingBusy=false}
+    const codes=taskCodes(),files=G.multiFiles||{};
+    if(G.running)return;
+    if(!codes.every(code=>files[code])){showErr('请分别上传无声动画观看、故事音频聆听、拖拽拼图操作三个视频。');return}
+    if(!el('consentCheck').checked||!el('singleCheck').checked){showErr('请先确认授权和视频构图要求。');return}
+    const clickStarted=performance.now(),initialFiles={...files};let activeVideo=null,stopFlag=false;
+    G=Object.assign(emptyState(),{multiFiles:initialFiles,participant:{id:el('participantId').value.trim()||'匿名对象',ageGroup:el('ageGroup').value,taskType:'三项测试综合分析',taskMode:'three-video',taskLabels:{visual:TASK_META.visual.name,auditory:TASK_META.auditory.name,kinesthetic:TASK_META.kinesthetic.name},captureMode:G.captureModePreference,notes:el('notes').value.trim()},libraryStatus:G.libraryStatus,openCvReady:G.openCvReady,openCvMessage:G.openCvMessage,captureModePreference:G.captureModePreference,running:true,finished:false,cancelRequested:false,videoInfos:[],globalTimeOffset:0,fileName:codes.map(code=>initialFiles[code].name).join(' / '),screenDetectedBy:'三项测试视频按上传槽位固定分类'});
+    el('startBtn').disabled=true;hideErr();resetInitSteps();showView('viewAnalyze');
+    const canvas=el('mainCanvas'),ctx=canvas.getContext('2d',{alpha:false});
+    const stopRuntime=(returnUpload=true)=>{stopFlag=true;G.cancelRequested=true;cleanupAudio();if(activeVideo)cleanupVideo(activeVideo);G.running=false;G.runtimeVideo=null;G.runtimeCancel=null;el('startBtn').disabled=false;if(returnUpload){showView('viewUpload');updateStartAvailability()}};G.runtimeCancel=stopRuntime;
+    try{
+        resetMediaPipeQueues('新一轮视频分析');
+        await ensureOpenCV().catch(()=>false);
+        const modelReady=await waitForCoreModelsBeforePlayback(30000);
+        if(!modelReady)throw new Error('MediaPipe 模型未完成初始化，请刷新页面后重试。');
+        for(let i=0;i<codes.length;i++){if(stopFlag||G.cancelRequested)throw new Error('分析已取消');await analyzeOneUploadedVideo(initialFiles[codes[i]],codes[i],i,codes.length,canvas,ctx)}
+        if(stopFlag||G.cancelRequested)return;
+        G.videoDuration=G.videoInfos.reduce((sum,v)=>sum+(v.duration||0),0);G.fileName=G.videoInfos.map(v=>v.taskName+'：'+v.fileName).join(' / ');G.screenDetectedBy='三项测试视频按上传槽位固定分类';G.captureMode='screen-recording';G.screenQuad=fullFrameQuad();G.startupElapsedMs=performance.now()-clickStarted;finishAnalysis(null);
+    }catch(e){console.error('[VAK] startAnalysis failed:',e);showAnalysisError(e.message||String(e));cleanupAudio();if(activeVideo)cleanupVideo(activeVideo);G.running=false;G.runtimeVideo=null;G.runtimeCancel=null;el('startBtn').disabled=false;el('runtimeHint').textContent='已停止本次综合分析。可返回上传页检查三个视频后重试。'}
+    async function analyzeOneUploadedVideo(file,code,index,total,canvas,ctx){
+        const taskName=taskMeta(code).name;G.activeTestCode=code;G.currentTask=code;G.manualSelectedTask=code;G.currentTaskConfidence=100;G.taskSwitches.push({time:G.globalTimeOffset||0,code,name:taskName,source:'上传槽位'});selectManualTask(code,false);
+        const video=document.createElement('video');activeVideo=video;video.id='srcVideo';video.muted=false;video.volume=1;video.playsInline=true;video.preload='auto';video.style.cssText='position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';document.querySelector('.canvas-wrap').appendChild(video);G.runtimeVideo=video;
+        let objectUrl=null,renderActive=false,processActive=false,processingBusy=false,finishRequested=false,watchdog=null,startDeadlineTimer=null,lastProcessWall=0,lastRenderedTime=-1,offC=null,offX=null;const touchStartIndex=G.touchEvents.length,stimStartIndex=G.stimulusEvents.length,miStartIndex=G.miTimes.length,videoOffset=G.globalTimeOffset||0;
+        try{
+            setInitStep('stepVideo','loading','读取 '+(index+1)+'/'+total);el('pbarText').innerHTML='<span class="spin"></span>正在分析 '+(index+1)+'/'+total+'：'+taskName;
+            objectUrl=URL.createObjectURL(file);G.objectUrl=objectUrl;video.src=objectUrl;
+            await withTimeout(new Promise((resolve,reject)=>{video.onloadedmetadata=resolve;video.onerror=()=>reject(new Error('浏览器无法解码：'+file.name));video.load()}),CONFIG.performance.metadataTimeoutMs,'视频读取');
+            if(!Number.isFinite(video.duration)||video.duration<1)throw new Error(taskName+' 视频过短或无法读取时长');
+            G.videoDuration=video.duration;G.videoWidth=video.videoWidth;G.videoHeight=video.videoHeight;G.fileName=file.name;G.captureMode='screen-recording';G.screenQuad=fullFrameQuad();G.screenDetectedBy='三视频整帧自动分析';G.screenModeConfidence=95;
+            G.perfProfile=choosePerformanceProfile(G.videoWidth,G.videoHeight);
+            const renderSize=scaleSize(G.videoWidth,G.videoHeight,CONFIG.performance.renderMaxWidth),analysisSize=scaleSize(G.videoWidth,G.videoHeight,G.perfProfile.maxWidth);G.renderWidth=renderSize.width;G.renderHeight=renderSize.height;G.analysisWidth=analysisSize.width;G.analysisHeight=analysisSize.height;canvas.width=G.renderWidth;canvas.height=G.renderHeight;
+            resetPerVideoContinuity();G.analysisMode=G.perfProfile.stableFrame?'stable-frame':'realtime';setInitStep('stepVideo','ok',(index+1)+'/'+total+' 就绪');el('canvasPerformance').textContent=taskName+' · 源视频 '+G.videoWidth+'×'+G.videoHeight+' · 推理 '+G.analysisWidth+'×'+(G.analysisHeight||G.videoHeight)+' · '+G.perfProfile.name+' · '+(G.analysisMode==='stable-frame'?'稳定逐帧模式':'实时分析模式');
+            offC=document.createElement('canvas');offC.width=G.analysisWidth;offC.height=G.analysisHeight;offX=offC.getContext('2d',{alpha:false,willReadFrequently:true});
+            await setupAudioAnalysis(video).catch(()=>false);ctx.fillStyle='#05070d';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#fff';ctx.font='bold 19px sans-serif';ctx.textAlign='center';ctx.fillText('正在分析：'+taskName,canvas.width/2,canvas.height/2);
+            if(G.analysisMode==='stable-frame')await runStableFrameAnalysis();
+            else await runRealtimeAnalysis();
+            G.touchEvents.slice(touchStartIndex).forEach(e=>{['stimulusTime','touchTime','endTime'].forEach(k=>{if(Number.isFinite(e[k]))e[k]+=videoOffset});e.task=code;e.taskName=taskName});
+            G.interactionEvents.slice(touchStartIndex).forEach(e=>{['stimulusTime','touchTime','endTime'].forEach(k=>{if(Number.isFinite(e[k]))e[k]+=videoOffset});e.task=code;e.taskName=taskName});
+            G.stimulusEvents.slice(stimStartIndex).forEach(e=>{if(Number.isFinite(e.time))e.time+=videoOffset});
+            for(let j=miStartIndex;j<G.miTimes.length;j++)G.miTimes[j]+=videoOffset;
+            G.videoInfos.push({code,taskName,fileName:file.name,duration:video.duration,resolution:video.videoWidth+'×'+video.videoHeight,samples:G.featureRows.filter(r=>r.task===code).length});G.globalTimeOffset+=video.duration;
+        }finally{cleanupAudio();if(watchdog)clearInterval(watchdog);if(startDeadlineTimer)clearTimeout(startDeadlineTimer);if(objectUrl){URL.revokeObjectURL(objectUrl);if(G.objectUrl===objectUrl)G.objectUrl=null}try{video.pause();video.remove()}catch(_){}activeVideo=null;G.runtimeVideo=null;if(_cvPrevGray){_cvPrevGray.delete();_cvPrevGray=null}if(_cvPrevScreenGray){_cvPrevScreenGray.delete();_cvPrevScreenGray=null}_fastPrevGray=null}
+        async function runStableFrameAnalysis(){
+            video.pause();processActive=true;renderActive=false;G.lastFrameCompletedWall=performance.now();
+            const step=CONFIG.performance.stableFrameStepSec,totalSamples=Math.max(1,Math.floor(video.duration/step)+1);
+            el('runtimeHint').textContent='Intel/兼容设备已启用稳定逐帧模式：系统将暂停视频并逐帧识别，速度较慢但结果更稳定。';
+            for(let si=0;si<totalSamples;si++){
+                if(stopFlag||G.cancelRequested)throw new Error('分析已取消');
+                const t=Math.min(video.duration-.05,si*step);
+                await seekVideoFrame(video,t);
+                ctx.drawImage(video,0,0,canvas.width,canvas.height);
+                offX.drawImage(video,0,0,offC.width,offC.height);
+                processingBusy=true;
+                const frameStarted=performance.now();
+                try{
+                    await processFrame(offC,t);
+                    const spent=performance.now()-frameStarted;G.processMsArr.push(spent);if(G.processMsArr.length>40)G.processMsArr.shift();G.lastFrameCompletedWall=performance.now();
+                }catch(e){
+                    G.frameErrorCount++;console.warn('[VAK] stable frame process:',e);el('runtimeHint').textContent='稳定逐帧模式中有采样帧处理失败，系统已跳过并继续。错误：'+e.message;
+                }finally{processingBusy=false}
+                if(G.lastFaceLM)drawFace(ctx,G.lastFaceLM,canvas.width,canvas.height);
+                if(G.lastPoseLM)drawBody(ctx,G.lastPoseLM,canvas.width,canvas.height);
+                drawHUD(ctx,canvas.width,canvas.height,G.lastFrameData);
+                const localPct=(si+1)/totalSamples*100,totalPct=(index+(si+1)/totalSamples)/total*100;
+                el('pbarFill').style.width=totalPct+'%';el('pbarPct').textContent=totalPct.toFixed(0)+'%';el('curTime').textContent=(G.globalTimeOffset+t).toFixed(1);el('frameNum').textContent=G.sampledFrames;
+                if(si%8===0)el('runtimeHint').textContent=`稳定逐帧模式：FaceMesh整帧命中 ${G.faceFullHits||0}，ROI命中 ${G.faceRoiHits||0}，ROI尝试 ${G.faceRoiAttempts||0}，连续未命中 ${G.faceNoHitStreak||0}，模型超时 ${G.faceModelTimeouts||0}。`;
+                el('pbarText').innerHTML='<span class="spin"></span>稳定逐帧分析 '+(index+1)+'/'+total+'：'+taskName+' · '+localPct.toFixed(0)+'%';
+                await sleep(20);
+            }
+            processActive=false;
         }
-        if(processActive)setTimeout(processLoop,25);
+        async function runRealtimeAnalysis(){
+            try{video.currentTime=0;video.playbackRate=G.perfProfile.playbackRate||1;await video.play()}catch(e){throw new Error(taskName+' 视频播放失败：'+e.message)}
+            renderActive=true;processActive=true;G.lastFrameCompletedWall=performance.now();
+            startDeadlineTimer=setTimeout(()=>{if(G.running&&!G.cancelRequested&&video.currentTime<=0.05)showAnalysisError(taskName+' 启动超过15秒且视频尚未播放。')},CONFIG.performance.startDeadlineMs);
+            await new Promise((resolve,reject)=>{
+                function finishOne(){if(finishRequested)return;finishRequested=true;processActive=false;renderActive=false;if(watchdog)clearInterval(watchdog);if(startDeadlineTimer)clearTimeout(startDeadlineTimer);const wait=()=>processingBusy?setTimeout(wait,60):resolve();wait()}
+                function renderLoop(){if(!renderActive||G.cancelRequested){finishOne();return}if(video.readyState>=2&&video.currentTime!==lastRenderedTime){ctx.drawImage(video,0,0,canvas.width,canvas.height);lastRenderedTime=video.currentTime;if(G.lastFaceLM)drawFace(ctx,G.lastFaceLM,canvas.width,canvas.height);if(G.lastPoseLM)drawBody(ctx,G.lastPoseLM,canvas.width,canvas.height);drawHUD(ctx,canvas.width,canvas.height,G.lastFrameData)}const localPct=Math.min(100,video.currentTime/video.duration*100),totalPct=(index+localPct/100)/total*100;el('pbarFill').style.width=totalPct+'%';el('pbarPct').textContent=totalPct.toFixed(0)+'%';el('curTime').textContent=(G.globalTimeOffset+video.currentTime).toFixed(1);el('frameNum').textContent=G.sampledFrames;if(video.ended){finishOne();return}requestAnimationFrame(renderLoop)}
+                async function processLoop(){if(!processActive||G.cancelRequested||video.ended){if(video.ended)finishOne();return}const now=performance.now(),adaptiveInterval=(!_faceReady&&!_poseReady)?110:currentProcessInterval();if(!processingBusy&&now-lastProcessWall>=adaptiveInterval&&video.readyState>=2){processingBusy=true;lastProcessWall=now;offX.drawImage(video,0,0,offC.width,offC.height);const frameStarted=performance.now();try{await processFrame(offC,video.currentTime);const spent=performance.now()-frameStarted;G.processMsArr.push(spent);if(G.processMsArr.length>40)G.processMsArr.shift();G.lastFrameCompletedWall=performance.now()}catch(e){G.frameErrorCount++;console.warn('[VAK] frame process:',e);el('runtimeHint').textContent='部分采样帧处理失败，系统已跳过并继续。错误：'+e.message}finally{processingBusy=false}}if(processActive)setTimeout(processLoop,32)}
+                watchdog=setInterval(()=>{if(!G.running||G.cancelRequested)return;const idle=performance.now()-G.lastFrameCompletedWall;if(idle>CONFIG.performance.watchdogMs)el('runtimeHint').textContent='单帧处理耗时较长，系统正在自动跳帧并保持视频运行。'},3000);
+                video.onended=finishOne;video.onerror=()=>reject(new Error(taskName+' 播放过程中出错'));requestAnimationFrame(renderLoop);setTimeout(processLoop,40)
+            });
+        }
     }
-    requestAnimationFrame(renderLoop);setTimeout(processLoop,100);video.onended=requestFinish;
+}
+function resetPerVideoContinuity(){
+    G.lastSampleTime=null;G.lastFaceOK=false;G.lastPoseOK=false;G.prevPoseLM=null;G.renderPrevPoseLM=null;G.prevPoseTime=null;G.lastFaceLM=null;G.lastPoseLM=null;G.trailL=[];G.trailR=[];G.touchContact=false;G.touchCandidateCount=0;G.lastFingerPoint=null;G.lastFingerTime=null;G.interactionActive=false;G.interactionCandidateCount=0;G.interactionQuietCount=0;G.interactionStartTime=null;G.lastInteractionEnd=null;G.lastInteractionEvidenceTime=-Infinity;G.lastInteractionEvent=null;G.initialTaskReadyTime=null;G.initialQuietStart=null;G.recordingInteractionSeen=false;G.pendingStimulus=null;G.lastStimulusTime=-Infinity;G.screenQuietCount=0;G.faceRoiBox=null;G.faceRoiSource='未触发';G.faceNoHitStreak=0;G.faceFullHits=0;G.faceFullMisses=0;G.faceRoiHits=0;G.faceRoiAttempts=0;G.faceModelTimeouts=0;G.detectFrameIndex=0;G.processMsArr=[];if(_cvPrevGray){_cvPrevGray.delete();_cvPrevGray=null}if(_cvPrevScreenGray){_cvPrevScreenGray.delete();_cvPrevScreenGray=null}_fastPrevGray=null;
 }
 function resetMetricState(){
-    const keep={file:G.file,running:G.running,participant:G.participant,videoDuration:G.videoDuration,videoWidth:G.videoWidth,videoHeight:G.videoHeight,fileName:G.fileName,objectUrl:G.objectUrl,previewUrl:G.previewUrl,screenQuad:G.screenQuad,screenDetectedBy:G.screenDetectedBy,openCvReady:G.openCvReady,openCvMessage:G.openCvMessage,libraryStatus:G.libraryStatus,audioReady:G.audioReady,audioMessage:G.audioMessage};
+    const keep={file:G.file,running:G.running,participant:G.participant,videoDuration:G.videoDuration,videoWidth:G.videoWidth,videoHeight:G.videoHeight,analysisWidth:G.analysisWidth,analysisHeight:G.analysisHeight,renderWidth:G.renderWidth,renderHeight:G.renderHeight,fileName:G.fileName,objectUrl:G.objectUrl,previewUrl:G.previewUrl,screenQuad:G.screenQuad,screenDetectedBy:G.screenDetectedBy,captureModePreference:G.captureModePreference,captureMode:G.captureMode,screenModeConfidence:G.screenModeConfidence,openCvReady:G.openCvReady,openCvMessage:G.openCvMessage,libraryStatus:G.libraryStatus,audioReady:G.audioReady,audioMessage:G.audioMessage,runtimeVideo:G.runtimeVideo,runtimeCancel:G.runtimeCancel,cancelRequested:G.cancelRequested};
     const fresh=emptyState();Object.assign(G,fresh,keep);G.running=true;
-    if(_cvPrevGray){_cvPrevGray.delete();_cvPrevGray=null}if(_cvPrevScreenGray){_cvPrevScreenGray.delete();_cvPrevScreenGray=null}
+    if(_cvPrevGray){_cvPrevGray.delete();_cvPrevGray=null}if(_cvPrevScreenGray){_cvPrevScreenGray.delete();_cvPrevScreenGray=null}_fastPrevGray=null
 }
-async function processFrame(offC,t){const prevSampleTime=G.lastSampleTime,dt=prevSampleTime===null?null:t-prevSampleTime;const {face:fr,pose:pr}=await detectBoth(offC);const cvm=calcOpenCVMetrics(offC),audio=sampleAudio();const fd={ear:null,yaw:null,mi:null,faceOK:false,poseOK:false,visJ:0,sharpness:cvm.sharpness,cvMotion:cvm.motionRatio,screenMotion:cvm.screenMotion,audioDb:audio.db,touch:false,task:'unknown'};let gaze=null,hp=null,arm=null,blinkBefore=G.blinkCount,yawBefore=G.yawChanges.length,pl=null;if(fr&&fr.multiFaceLandmarks&&fr.multiFaceLandmarks.length){const lm=fr.multiFaceLandmarks[0];G.lastFaceLM=lm;G.faceFrames++;fd.faceOK=true;const ear=calcEAR(lm,G.videoWidth,G.videoHeight);G.earArr.push(ear);fd.ear=ear;updateBlink(ear,t);gaze=calcGaze(lm,G.videoWidth,G.videoHeight);if(gaze){G.gazeXArr.push(gaze.x);G.gazeYArr.push(gaze.y);G.gazeXPxArr.push(gaze.xPx);G.gazeYPxArr.push(gaze.yPx)}hp=calcHeadPose(lm);G.yawArr.push(hp.yaw);G.pitchArr.push(hp.pitch);G.rollArr.push(hp.roll);fd.yaw=hp.yaw;updateYawEvent(hp.yaw,t)}else if(G.lastFaceOK&&dt&&dt>.35){G.lastFaceLM=null}if(pr&&pr.poseLandmarks){pl=pr.poseLandmarks;G.renderPrevPoseLM=G.lastPoseLM?G.lastPoseLM.map(p=>({...p})):null;G.lastPoseLM=pl;G.poseFrames++;fd.poseOK=true;fd.visJ=pl.filter(p=>p.visibility>.3).length;const poseDt=G.prevPoseTime===null?null:t-G.prevPoseTime,mi=calcMI(pl,G.prevPoseLM,G.videoWidth,G.videoHeight,poseDt);arm=calcArmTraj(pl,G.prevPoseLM,G.videoWidth,G.videoHeight,poseDt);if(Number.isFinite(mi)){G.miArr.push(mi);G.miTimes.push(t);fd.mi=mi}if(Number.isFinite(arm))G.armTrajArr.push(arm);G.prevPoseLM=pl.map(p=>({x:p.x,y:p.y,z:p.z,visibility:p.visibility}));G.prevPoseTime=t;if(pl[15].visibility>.4){G.trailL.push({x:pl[15].x,y:pl[15].y});if(G.trailL.length>G.TRAIL_LEN)G.trailL.shift()}if(pl[16].visibility>.4){G.trailR.push({x:pl[16].x,y:pl[16].y});if(G.trailR.length>G.TRAIL_LEN)G.trailR.shift()}}else if(G.lastPoseOK&&dt&&dt>.35){G.lastPoseLM=null;G.renderPrevPoseLM=null}const touch=analyzeTouch(pl,t,dt,cvm);fd.touch=touch.contact;detectStimulus(t,cvm,touch);const feature={t,dt,ear:fd.ear,gazeX:gaze?.x,gazeY:gaze?.y,gazeXPx:gaze?.xPx,gazeYPx:gaze?.yPx,yaw:hp?.yaw,pitch:hp?.pitch,roll:hp?.roll,mi:fd.mi,arm,cvMotion:cvm.motionRatio,screenMotion:cvm.screenMotion,screenMeanDiff:cvm.screenMeanDiff,screenSharpness:cvm.screenSharpness,audioRms:audio.rms,audioDb:audio.db,touch:touch.contact,touchConfidence:touch.confidence,fingerX:touch.finger?.x,fingerY:touch.finger?.y,fingerSpeed:touch.speed,blinkEvent:G.blinkCount>blinkBefore,yawEvent:G.yawChanges.length>yawBefore,task:'unknown',taskConfidence:0};G.featureRows.push(feature);const task=inferTask(t);G.currentTask=task.code;G.currentTaskConfidence=task.confidence;feature.task=task.code;feature.taskConfidence=task.confidence;fd.task=task.code;if(Number.isFinite(cvm.sharpness))G.cvSharpArr.push(cvm.sharpness);if(Number.isFinite(cvm.motionRatio))G.cvMotionArr.push(cvm.motionRatio);if(Number.isFinite(cvm.screenMotion))G.screenMotionArr.push(cvm.screenMotion);if(Number.isFinite(audio.db))G.audioDbArr.push(audio.db);if(dt&&dt>0&&dt<1){if(fd.faceOK&&G.lastFaceOK)G.faceValidSeconds+=dt;if(fd.poseOK&&G.lastPoseOK)G.poseValidSeconds+=dt}G.sampledFrames++;G.sampleTimes.push(t);G.lastSampleTime=t;G.lastFaceOK=fd.faceOK;G.lastPoseOK=fd.poseOK;G.lastFrameData=fd;G.sampleRows.push({'序号':G.sampledFrames,'视频时间(s)':round(t,3),'自动任务类别':taskMeta(task.code).name,'任务置信度(%)':round(task.confidence,1),'采样间隔(ms)':dt?round(dt*1000,1):null,'人脸检测':fd.faceOK?'是':'否','姿态检测':fd.poseOK?'是':'否','可见身体关键点':fd.visJ,'EAR':round(fd.ear,5),'注视X相对值':round(gaze?.x,6),'注视Y相对值':round(gaze?.y,6),'注视X像素映射(px)':round(gaze?.xPx,3),'注视Y像素映射(px)':round(gaze?.yPx,3),'Yaw近似角(°)':round(hp?.yaw,3),'Pitch近似角(°)':round(hp?.pitch,3),'Roll近似角(°)':round(hp?.roll,3),'眨眼事件':feature.blinkEvent?'是':'否','Yaw偏转事件':feature.yawEvent?'是':'否','MI(身体尺度/秒)':round(fd.mi,6),'上肢轨迹(身体尺度/秒)':round(arm,6),'音频RMS':round(audio.rms,7),'音频电平(dBFS)':round(audio.db,3),'全画面运动像素比例(%)':round(cvm.motionRatio,5),'屏幕运动像素比例(%)':round(cvm.screenMotion,5),'屏幕平均差分':round(cvm.screenMeanDiff,4),'OpenCV清晰度':round(cvm.sharpness,3),'触控接触':touch.contact?'是':'否','触控置信度(%)':round(touch.confidence,1),'指尖X(px)':round(touch.finger?.x,2),'指尖Y(px)':round(touch.finger?.y,2),'指尖速度(画面对角线/秒)':round(touch.speed,5),'本帧匹配响应时间(ms)':round(touch.responseMs,1)});updateLivePanel(fd)}
-function updateLivePanel(fd){if(Number.isFinite(fd.ear))el('mEAR').textContent=fd.ear.toFixed(3);if(G.gazeXPxArr.length>5)el('mGazeStab').textContent=(variance(G.gazeXPxArr)+variance(G.gazeYPxArr)).toFixed(1)+' px²';el('mBlink').textContent=G.blinkCount;if(Number.isFinite(fd.yaw)){el('mYaw').textContent=fd.yaw.toFixed(1)+'°';el('mPitch').textContent=(G.pitchArr.at(-1)||0).toFixed(1)+'°'}el('mYawCnt').textContent=G.yawChanges.length;if(Number.isFinite(fd.mi))el('mMI').textContent=fd.mi.toFixed(3);if(G.armTrajArr.length)el('mArm').textContent=mean(G.armTrajArr).toFixed(3);if(G.miArr.length>20)el('mFreq').textContent=frequencyAnalysis(G.miTimes,G.miArr).dominantFreq.toFixed(2);if(Number.isFinite(fd.sharpness))el('mSharp').textContent=fd.sharpness.toFixed(1);if(Number.isFinite(fd.screenMotion))el('mCvMotion').textContent=fd.screenMotion.toFixed(2)+'%';el('mActualHz').textContent=G.sampleTimes.length>1?((G.sampleTimes.length-1)/(G.sampleTimes.at(-1)-G.sampleTimes[0]||1)).toFixed(2)+' Hz':'--';const tm=taskMeta(fd.task);el('mTask').textContent=tm.name;el('mTaskConf').textContent=`窗口置信度 ${G.currentTaskConfidence.toFixed(1)}%`;el('mTouch').textContent=fd.touch?'检测到接触':'未检测';el('touchPulse').classList.toggle('on',!!fd.touch);el('mAudio').textContent=Number.isFinite(fd.audioDb)?fd.audioDb.toFixed(1)+' dBFS':'无音频';const last=G.touchEvents.filter(e=>Number.isFinite(e.responseMs)).at(-1);el('mResponse').textContent=last?last.responseMs.toFixed(0)+' ms':'--';if(G.sampledFrames>8){const sc=classifyVAK(),q=qualityAssessment(),st=determineStyle(sc,q);el('vLive').textContent=sc.visual_pct.toFixed(1)+'%';el('aLive').textContent=sc.auditory_pct.toFixed(1)+'%';el('kLive').textContent=sc.kinesthetic_pct.toFixed(1)+'%';el('vBar').style.width=sc.visual_pct+'%';el('aBar').style.width=sc.auditory_pct+'%';el('kBar').style.width=sc.kinesthetic_pct+'%';el('trendStyle').textContent=q.sufficient?st.type:'采样中：数据质量尚未达标'}}
+async function processFrame(offC,t){const prevSampleTime=G.lastSampleTime,dt=prevSampleTime===null?null:t-prevSampleTime;const {face:fr,pose:pr}=await detectBoth(offC),faceLm=fr&&fr.multiFaceLandmarks&&fr.multiFaceLandmarks.length?fr.multiFaceLandmarks[0]:null;if(faceLm)updateRecordingFaceMask(faceLm);const cvm=calcOpenCVMetrics(offC,G.captureMode==='screen-recording'?G.screenExclusionBox:null),audio=sampleAudio();const fd={ear:null,yaw:null,mi:null,faceOK:false,poseOK:false,visJ:0,sharpness:cvm.sharpness,cvMotion:cvm.motionRatio,screenMotion:cvm.screenMotion,largestMotionRatio:cvm.largestMotionRatio,audioDb:audio.db,touch:false,task:'unknown',interactionType:G.captureMode==='screen-recording'?'录屏交互':'实体触控'};let gaze=null,hp=null,arm=null,blinkBefore=G.blinkCount,yawBefore=G.yawChanges.length,pl=null;if(faceLm){const lm=faceLm;G.lastFaceLM=lm;G.faceFrames++;fd.faceOK=true;const ear=calcEAR(lm,G.videoWidth,G.videoHeight);G.earArr.push(ear);fd.ear=ear;updateBlink(ear,t);gaze=calcGaze(lm,G.videoWidth,G.videoHeight);if(gaze){G.gazeXArr.push(gaze.x);G.gazeYArr.push(gaze.y);G.gazeXPxArr.push(gaze.xPx);G.gazeYPxArr.push(gaze.yPx)}hp=calcHeadPose(lm);G.yawArr.push(hp.yaw);G.pitchArr.push(hp.pitch);G.rollArr.push(hp.roll);fd.yaw=hp.yaw;updateYawEvent(hp.yaw,t)}else if(G.lastFaceOK&&dt&&dt>.35){G.lastFaceLM=null}if(pr&&pr.poseLandmarks){pl=pr.poseLandmarks;G.renderPrevPoseLM=G.lastPoseLM?G.lastPoseLM.map(p=>({...p})):null;G.lastPoseLM=pl;G.poseFrames++;fd.poseOK=true;fd.visJ=pl.filter(p=>p.visibility>.3).length;const poseDt=G.prevPoseTime===null?null:t-G.prevPoseTime,mi=calcMI(pl,G.prevPoseLM,G.videoWidth,G.videoHeight,poseDt);arm=calcArmTraj(pl,G.prevPoseLM,G.videoWidth,G.videoHeight,poseDt);if(Number.isFinite(mi)){G.miArr.push(mi);G.miTimes.push(t);fd.mi=mi}if(Number.isFinite(arm))G.armTrajArr.push(arm);G.prevPoseLM=pl.map(p=>({x:p.x,y:p.y,z:p.z,visibility:p.visibility}));G.prevPoseTime=t;if(pl[15].visibility>.4){G.trailL.push({x:pl[15].x,y:pl[15].y});if(G.trailL.length>G.TRAIL_LEN)G.trailL.shift()}if(pl[16].visibility>.4){G.trailR.push({x:pl[16].x,y:pl[16].y});if(G.trailR.length>G.TRAIL_LEN)G.trailR.shift()}}else if(G.lastPoseOK&&dt&&dt>.35){G.lastPoseLM=null;G.renderPrevPoseLM=null}const interaction=analyzeInteraction(pl,t,dt,cvm);fd.touch=interaction.contact;detectStimulus(t,cvm,interaction);const sampleT=t+(G.globalTimeOffset||0);const feature={t:sampleT,localT:t,dt,ear:fd.ear,gazeX:gaze?.x,gazeY:gaze?.y,gazeXPx:gaze?.xPx,gazeYPx:gaze?.yPx,yaw:hp?.yaw,pitch:hp?.pitch,roll:hp?.roll,mi:fd.mi,arm,cvMotion:cvm.motionRatio,screenMotion:cvm.screenMotion,screenMeanDiff:cvm.screenMeanDiff,screenSharpness:cvm.screenSharpness,largestMotionRatio:cvm.largestMotionRatio,motionComponentCount:cvm.motionComponentCount,motionCentroidX:cvm.motionCentroidX,motionCentroidY:cvm.motionCentroidY,audioRms:audio.rms,audioDb:audio.db,touch:interaction.contact,interactionType:interaction.eventType,touchConfidence:interaction.confidence,fingerX:interaction.finger?.x,fingerY:interaction.finger?.y,fingerSpeed:interaction.speed,blinkEvent:G.blinkCount>blinkBefore,yawEvent:G.yawChanges.length>yawBefore,task:'unknown',taskConfidence:0};G.featureRows.push(feature);const task={code:taskCodes().includes(G.currentTask)?G.currentTask:(G.manualSelectedTask||'visual'),confidence:100,source:'slot'};G.currentTask=task.code;G.currentTaskConfidence=100;feature.task=task.code;feature.taskConfidence=100;feature.taskSource='上传槽位固定分类';fd.task=task.code;if(Number.isFinite(cvm.sharpness))G.cvSharpArr.push(cvm.sharpness);if(Number.isFinite(cvm.motionRatio))G.cvMotionArr.push(cvm.motionRatio);if(Number.isFinite(cvm.screenMotion))G.screenMotionArr.push(cvm.screenMotion);if(Number.isFinite(audio.db))G.audioDbArr.push(audio.db);if(dt&&dt>0&&dt<1){if(fd.faceOK&&G.lastFaceOK)G.faceValidSeconds+=dt;if(fd.poseOK&&G.lastPoseOK)G.poseValidSeconds+=dt}G.sampledFrames++;G.sampleTimes.push(sampleT);G.lastSampleTime=t;G.lastFaceOK=fd.faceOK;G.lastPoseOK=fd.poseOK;G.lastFrameData=fd;const lastEvent=interaction.touchStart?G.touchEvents.at(-1):null;G.sampleRows.push({'序号':G.sampledFrames,'视频时间(s)':round(t,3),'分析模式':G.captureMode==='screen-recording'?'录屏/画中画':'实体平板拍摄','手动任务类别':taskMeta(task.code).name,'分类来源':'上传槽位固定分类','采样间隔(ms)':dt?round(dt*1000,1):null,'人脸检测':fd.faceOK?'是':'否','姿态检测':fd.poseOK?'是':'否','可见身体关键点':fd.visJ,'EAR':round(fd.ear,5),'注视X相对值':round(gaze?.x,6),'注视Y相对值':round(gaze?.y,6),'注视X像素映射(px)':round(gaze?.xPx,3),'注视Y像素映射(px)':round(gaze?.yPx,3),'Yaw近似角(°)':round(hp?.yaw,3),'Pitch近似角(°)':round(hp?.pitch,3),'Roll近似角(°)':round(hp?.roll,3),'眨眼事件':feature.blinkEvent?'是':'否','Yaw偏转事件':feature.yawEvent?'是':'否','MI(身体尺度/秒)':round(fd.mi,6),'上肢轨迹(身体尺度/秒)':round(arm,6),'音频RMS':round(audio.rms,7),'音频电平(dBFS)':round(audio.db,3),'全画面运动像素比例(%)':round(cvm.motionRatio,5),'屏幕运动像素比例(%)':round(cvm.screenMotion,5),'局部最大运动区域(%)':round(cvm.largestMotionRatio,5),'运动连通区域数':cvm.motionComponentCount,'运动中心X(归一化)':round(cvm.motionCentroidX,5),'运动中心Y(归一化)':round(cvm.motionCentroidY,5),'屏幕平均差分':round(cvm.screenMeanDiff,4),'OpenCV清晰度':round(cvm.sharpness,3),'交互状态':interaction.contact?'是':'否','交互类型':interaction.eventType,'交互置信度(%)':round(interaction.confidence,1),'指尖X(px)':round(interaction.finger?.x,2),'指尖Y(px)':round(interaction.finger?.y,2),'指尖速度(画面对角线/秒)':round(interaction.speed,5),'本帧匹配响应时间(ms)':round(interaction.responseMs,1),'操作间隔(ms)':round(lastEvent?.intervalMs,1)});updateLivePanel(fd)}function updateLivePanel(fd){if(Number.isFinite(fd.ear))el('mEAR').textContent=fd.ear.toFixed(3);if(G.gazeXPxArr.length>5)el('mGazeStab').textContent=(variance(G.gazeXPxArr)+variance(G.gazeYPxArr)).toFixed(1)+' px²';el('mBlink').textContent=G.blinkCount;if(Number.isFinite(fd.yaw)){el('mYaw').textContent=fd.yaw.toFixed(1)+'°';el('mPitch').textContent=(G.pitchArr.at(-1)||0).toFixed(1)+'°'}el('mYawCnt').textContent=G.yawChanges.length;if(Number.isFinite(fd.mi))el('mMI').textContent=fd.mi.toFixed(3);if(G.armTrajArr.length)el('mArm').textContent=mean(G.armTrajArr).toFixed(3);if(G.miArr.length>20)el('mFreq').textContent=frequencyAnalysis(G.miTimes,G.miArr).dominantFreq.toFixed(2);if(Number.isFinite(fd.sharpness))el('mSharp').textContent=fd.sharpness.toFixed(1);if(Number.isFinite(fd.screenMotion))el('mCvMotion').textContent=fd.screenMotion.toFixed(2)+'%';el('mActualHz').textContent=G.sampleTimes.length>1?((G.sampleTimes.length-1)/(G.sampleTimes.at(-1)-G.sampleTimes[0]||1)).toFixed(2)+' Hz':'--';const tm=taskMeta(fd.task);el('mTask').textContent=tm.name;el('mTaskConf').textContent='分类来源：上传槽位固定分类';el('mTouch').textContent=fd.touch?(G.captureMode==='screen-recording'?'检测到录屏交互':'检测到实体触控'):'未检测';el('touchPulse').classList.toggle('on',!!fd.touch);el('mAudio').textContent=Number.isFinite(fd.audioDb)?fd.audioDb.toFixed(1)+' dBFS':'无音频';const last=G.touchEvents.filter(e=>Number.isFinite(e.responseMs)).at(-1);el('mResponse').textContent=last?last.responseMs.toFixed(0)+' ms':'--';if(G.sampledFrames>8){const sc=classifyVAK(),q=qualityAssessment(),st=determineStyle(sc,q);el('vLive').textContent=sc.visual_pct.toFixed(1)+'%';el('aLive').textContent=sc.auditory_pct.toFixed(1)+'%';el('kLive').textContent=sc.kinesthetic_pct.toFixed(1)+'%';el('vBar').style.width=sc.visual_pct+'%';el('aBar').style.width=sc.auditory_pct+'%';el('kBar').style.width=sc.kinesthetic_pct+'%';el('trendStyle').textContent=q.sufficient?st.type:'采样中：数据质量尚未达标'}}
 function finishAnalysis(video){
-    if(G.finished)return;G.finished=true;el('pbarText').textContent='分析完成，正在生成量表与报告...';el('pbarFill').style.width='100%';el('pbarPct').textContent='100%';
+    if(G.finished)return;G.finished=true;if(video&&G.captureMode==='screen-recording'&&G.interactionActive&&G.lastInteractionEvent){G.lastInteractionEvent.endTime=video.currentTime;G.lastInteractionEvent.durationMs=(video.currentTime-G.lastInteractionEvent.touchTime)*1000;G.interactionActive=false;G.lastInteractionEnd=video.currentTime;}el('pbarText').textContent='分析完成，正在生成量表与报告...';el('pbarFill').style.width='100%';el('pbarPct').textContent='100%';
     setTimeout(async()=>{const report=buildReport(video);G.currentReport=report;renderReport(report);showView('viewReport');G.running=false;const savedId=await saveSession(report);const badge=el('saveStatus');if(badge)badge.textContent=savedId?'✓ 已保存到本机实验记忆库':'未能保存到本机数据库';cleanupVideo(video)},250);
 }
 function cleanupVideo(video){cleanupAudio();try{video.pause()}catch(_){}if(G.objectUrl){URL.revokeObjectURL(G.objectUrl);G.objectUrl=null}try{video.remove()}catch(_){}}
@@ -789,23 +1204,26 @@ function renderReport(R){
     const colors={visual:'linear-gradient(135deg,#4cc9f0,#4895ef)',auditory:'linear-gradient(135deg,#f72585,#b5179e)',kinesthetic:'linear-gradient(135deg,#4ade80,#16a34a)',mixed:'linear-gradient(135deg,#4361ee,#3a0ca3)',insufficient:'linear-gradient(135deg,#64748b,#334155)'};
     el('verdict').style.background=colors[R.style.code]||colors.mixed;el('rStyle').textContent=R.style.type;
     el('rConf').textContent=R.style.code==='insufficient'?`数据质量：${R.quality.grade}｜${R.quality.reason}`:`通道差异度：${R.style.difference.toFixed(1)}%｜数据质量：${R.quality.grade}`;
-    const vi=R.videoInfo;el('rVideoInfo').innerHTML=
-        infoItem(vi.duration+'s','视频时长')+infoItem(vi.resolution,'视频分辨率')+infoItem(vi.sampledFrames,'分析采样点')+infoItem(vi.analyzeFps+' Hz','实际采样频率')+infoItem(vi.faceFrames+' ('+vi.faceRate+'%)','人脸有效帧')+infoItem(vi.poseFrames+' ('+vi.poseRate+'%)','姿态有效帧')+infoItem(vi.quality,'数据质量')+infoItem(vi.opencv,'OpenCV 状态')+infoItem(vi.screen,'屏幕区域');
+    const vi=R.videoInfo,opencvInfo=G.openCvUsed?infoItem(vi.opencv,'OpenCV 状态'):'';
+    el('rVideoInfo').innerHTML=
+        infoItem(vi.duration+'s','视频时长')+infoItem(vi.resolution,'视频分辨率')+infoItem(vi.analysisResolution||vi.resolution,'模型推理分辨率')+infoItem(vi.mode,'分析模式')+infoItem(vi.sampledFrames,'分析采样点')+infoItem(vi.analyzeFps+' Hz','实际采样频率')+infoItem(vi.faceFrames+' ('+vi.faceRate+'%)','人脸有效帧')+infoItem(vi.poseFrames+' ('+vi.poseRate+'%)','姿态有效帧')+infoItem(vi.quality,'数据质量')+opencvInfo+infoItem(Number.isFinite(vi.startupSeconds)?vi.startupSeconds.toFixed(1)+'s':'--','点击后启动用时')+infoItem(vi.modelState||'--','模型接入状态')+infoItem(vi.faceDiag||'--','FaceMesh诊断')+infoItem(vi.frameErrors||0,'跳过/超时帧')+infoItem(vi.screen,'屏幕区域');
     const sc=R.scores;el('rV').textContent=sc.visual_pct.toFixed(1)+'%（原始 '+sc.visual.toFixed(1)+'）';el('rA').textContent=sc.auditory_pct.toFixed(1)+'%（原始 '+sc.auditory.toFixed(1)+'）';el('rK').textContent=sc.kinesthetic_pct.toFixed(1)+'%（原始 '+sc.kinesthetic.toFixed(1)+'）';
     setTimeout(()=>{el('rVBar').style.width=sc.visual_pct+'%';el('rABar').style.width=sc.auditory_pct+'%';el('rKBar').style.width=sc.kinesthetic_pct+'%'},100);drawRadar(sc);
     renderTaskSegments(R);renderTouchEvents(R);renderQuality(R);renderMetricTable(R.metricRows);renderMetricCards(R);
     const ex=R.explanation,tc=R.style.primary==='auditory'?'#f72585':R.style.primary==='kinesthetic'?'#4ade80':'#4cc9f0';
-    el('rExplain').innerHTML=`<h4 style="margin-bottom:10px;font-size:16px">${ex.name}</h4>${ex.mixedWith?`<p style="color:var(--txt2);font-size:13px;margin-bottom:10px">辅助倾向：${ex.mixedWith}</p>`:''}<ul class="trait-list">${ex.traits.map(t=>`<li><span class="td" style="background:${tc}"></span>${t}</li>`).join('')}</ul><div class="mi-desc" style="margin-top:14px"><strong>解释边界：</strong>行为指标属于当前视频中的间接证据，应结合任务表现、教师观察和多次测量综合解释。</div>`;
+    el('rExplain').innerHTML=`<h4 style="margin-bottom:10px;font-size:16px">${ex.name}</h4><ul class="trait-list">${ex.traits.map(t=>`<li><span class="td" style="background:${tc}"></span>${t}</li>`).join('')}</ul><div class="mi-desc" style="margin-top:14px"><strong>解释边界：</strong>行为指标属于当前视频中的间接证据，应结合任务表现、教师观察和多次测量综合解释。</div>`;
     const su=R.suggestions;el('rSuggest').innerHTML=`<div class="sg"><h4>🏫 教学策略建议</h4><ul>${su.teach.map(s=>`<li>${s}</li>`).join('')}</ul></div><div class="sg"><h4>🏠 环境配置建议</h4><ul>${su.env.map(s=>`<li>${s}</li>`).join('')}</ul></div><div class="sg"><h4>🎲 推荐活动</h4><ul>${su.act.map(s=>`<li>${s}</li>`).join('')}</ul></div><div class="sg"><h4>⚠️ 使用注意</h4><ul>${su.note.map(s=>`<li>${s}</li>`).join('')}</ul></div>`;
     el('rSummary').textContent=R.summary;el('exportBtn').disabled=typeof XLSX==='undefined';
 }
 
-function renderTaskSegments(R){const segments=R.taskSegments||[],counts={visual:0,auditory:0,kinesthetic:0,unknown:0};segments.forEach(x=>counts[x.code]=(counts[x.code]||0)+x.duration);el('taskSegmentSummary').innerHTML=['visual','auditory','kinesthetic'].map(code=>{const m=taskMeta(code),d=counts[code]||0,p=G.videoDuration?d/G.videoDuration*100:0;return`<div class="segment-card"><span class="tag ${m.className}">${m.short}</span><h4>${m.name}</h4><div class="segment-meta">累计 ${d.toFixed(1)} 秒 · 占视频 ${p.toFixed(1)}%</div></div>`}).join('');el('taskSegmentBody').innerHTML=segments.length?segments.map(x=>`<tr><td>${x.index}</td><td><span class="dim-tag">${x.name}</span></td><td>${x.start.toFixed(2)}s</td><td>${x.end.toFixed(2)}s</td><td>${x.duration.toFixed(2)}s</td><td>${x.confidence.toFixed(1)}%</td><td>${x.scores.visual_pct.toFixed(1)} / ${x.scores.auditory_pct.toFixed(1)} / ${x.scores.kinesthetic_pct.toFixed(1)}</td><td>${x.touchCount}</td></tr>`).join(''):'<tr><td colspan="8">未形成可靠任务分段</td></tr>'}
-function renderTouchEvents(R){const t=R.touchSummary;el('touchSummary').innerHTML=infoItem(t.count,'触控开始事件')+infoItem(t.validCount,'有效响应事件')+infoItem(Number.isFinite(t.mean)?t.mean.toFixed(0)+'ms':'--','平均响应')+infoItem(Number.isFinite(t.median)?t.median.toFixed(0)+'ms':'--','中位数')+infoItem(Number.isFinite(t.min)?t.min.toFixed(0)+'ms':'--','最短响应')+infoItem(Number.isFinite(t.max)?t.max.toFixed(0)+'ms':'--','最长响应')+`<div class="vinfo-i"><div class="vv" id="saveStatus">正在保存...</div><div class="vl2">本机记忆存储</div></div>`;el('touchEventBody').innerHTML=(R.touchEvents||[]).length?R.touchEvents.map(e=>`<tr><td>${e.index}</td><td>${taskMeta(e.task).name}</td><td>${Number.isFinite(e.stimulusTime)?e.stimulusTime.toFixed(3)+'s':'—'}</td><td>${e.touchTime.toFixed(3)}s</td><td class="num">${Number.isFinite(e.responseMs)?e.responseMs.toFixed(1)+' ms':'未匹配'}</td><td>${e.confidence.toFixed(1)}%</td><td>${e.basis}</td></tr>`).join(''):'<tr><td colspan="7">未检测到可靠触控事件。请检查屏幕标定、手部遮挡与视频帧率。</td></tr>'}
-
-function infoItem(v,l){return`<div class="vinfo-i"><div class="vv">${v}</div><div class="vl2">${l}</div></div>`}
+function renderTaskSegments(R){
+  const segments=R.taskSegments||[],counts={};segments.forEach(x=>counts[x.code]=(counts[x.code]||0)+x.duration);
+  el('taskSegmentSummary').innerHTML=taskCodes().map(code=>{const m=taskMeta(code),d=counts[code]||0,p=G.videoDuration?d/G.videoDuration*100:0;return`<div class="segment-card"><span class="tag ${m.className}">${escapeHtml(m.short)}</span><h4>${escapeHtml(m.name)}</h4><div class="segment-meta">累计 ${d.toFixed(1)} 秒 · 占视频 ${p.toFixed(1)}%</div></div>`}).join('');
+  el('taskSegmentBody').innerHTML=segments.length?segments.map(x=>`<tr><td>${x.index}</td><td><span class="dim-tag">${escapeHtml(x.name)}</span></td><td>${x.start.toFixed(2)}s</td><td>${x.end.toFixed(2)}s</td><td>${x.duration.toFixed(2)}s</td><td>${escapeHtml(x.source||'研究者手动选择')}</td><td>${x.scores.visual_pct.toFixed(1)} / ${x.scores.auditory_pct.toFixed(1)} / ${x.scores.kinesthetic_pct.toFixed(1)}</td><td>${x.touchCount}</td></tr>`).join(''):'<tr><td colspan="8">尚未形成测试项目分段</td></tr>'
+}
+function renderTouchEvents(R){const t=R.touchSummary,mode=G.captureMode==='screen-recording'?'录屏交互':'实体触控';el('touchSummary').innerHTML=infoItem(mode,'事件模式')+infoItem(t.count,'交互开始事件')+infoItem(t.validCount,'有效响应事件')+infoItem(Number.isFinite(t.mean)?t.mean.toFixed(0)+'ms':'--','平均响应')+infoItem(Number.isFinite(t.median)?t.median.toFixed(0)+'ms':'--','中位数')+infoItem(Number.isFinite(t.min)?t.min.toFixed(0)+'ms':'--','最短响应')+infoItem(Number.isFinite(t.max)?t.max.toFixed(0)+'ms':'--','最长响应')+`<div class="vinfo-i"><div class="vv" id="saveStatus">正在保存...</div><div class="vl2">本机记忆存储</div></div>`;el('touchEventBody').innerHTML=(R.touchEvents||[]).length?R.touchEvents.map(e=>`<tr><td>${e.index}</td><td>${escapeHtml(e.taskName||taskMeta(e.task).name)}</td><td>${e.eventType||mode}</td><td>${Number.isFinite(e.stimulusTime)?e.stimulusTime.toFixed(3)+'s':'—'}</td><td>${e.touchTime.toFixed(3)}s</td><td class="num">${Number.isFinite(e.responseMs)?e.responseMs.toFixed(1)+' ms':'未匹配'}</td><td>${Number.isFinite(e.intervalMs)?e.intervalMs.toFixed(1)+' ms':'—'}</td><td>${e.confidence.toFixed(1)}%</td><td>${e.basis}</td></tr>`).join(''):'<tr><td colspan="9">未检测到可靠交互事件。录屏视频请使用“整帧录屏模式”；实体拍摄请检查屏幕标定、手部遮挡与视频帧率。</td></tr>'}function infoItem(v,l){return`<div class="vinfo-i"><div class="vv">${v}</div><div class="vl2">${l}</div></div>`}
 function renderQuality(R){
-    const q=R.quality,items=[['数据质量等级',q.grade],['有效分析时长',q.duration.toFixed(1)+' 秒'],['实际采样频率',q.actualHz.toFixed(2)+' Hz'],['人脸有效率',q.faceRate.toFixed(1)+'%'],['姿态有效率',q.poseRate.toFixed(1)+'%'],['综合输出条件',q.sufficient?'已达到':'未达到']];
+    const q=R.quality,items=[['数据质量等级',q.grade],['分析模式',G.captureMode==='screen-recording'?'录屏 / 画中画':'实体平板拍摄'],['有效分析时长',q.duration.toFixed(1)+' 秒'],['实际采样频率',q.actualHz.toFixed(2)+' Hz'],['人脸有效率',q.faceRate.toFixed(1)+'%'],['姿态有效率',q.poseRate.toFixed(1)+'%'],['录屏工作区有效率',Number.isFinite(q.screenRate)?q.screenRate.toFixed(1)+'%':'—'],['综合输出条件',q.sufficient?'已达到':'未达到']];
     el('rQuality').innerHTML=items.map(([k,v])=>`<div class="quality-item"><span>${k}</span><strong>${v}</strong></div>`).join('')+`<div class="quality-note">${q.reason}</div>`;
 }
 function renderMetricTable(rows){
@@ -813,11 +1231,12 @@ function renderMetricTable(rows){
 }
 function renderMetricCards(R){
     const m=R.scores.meta;
+    const cvCard=G.openCvUsed?`
+    <div class="mc"><div class="mh"><div class="mi" style="background:#fff7ed;color:#c2410c">CV</div><h4>OpenCV 辅助指标</h4></div><div class="mi-row"><span>全画面运动比例</span><span class="mv">${valueOrDash(m.cvMotion,3)}%</span></div><div class="mi-row"><span>屏幕运动比例</span><span class="mv">${valueOrDash(mean(G.screenMotionArr),3)}%</span></div><div class="mi-row"><span>音频电平均值</span><span class="mv">${valueOrDash(mean(G.audioDbArr),1)} dBFS</span></div><div class="mi-row"><span>清晰度</span><span class="mv">${valueOrDash(m.cvSharp,1)}</span></div><div class="mi-desc">OpenCV.js 只参与画面质量和整体运动复核，不直接改变 VAK 三维度评分。</div></div>`:'';
     el('rMetrics').innerHTML=`
     <div class="mc"><div class="mh"><div class="mi" style="background:#e0f7fa;color:#0097a7">👁</div><h4>视觉维度 V</h4></div><div class="mi-row"><span>注视像素方差</span><span class="mv">${valueOrDash(m.gazePxVar,2)} px²</span></div><div class="mi-row"><span>EAR 均值</span><span class="mv">${valueOrDash(m.avgEAR,4)}</span></div><div class="mi-row"><span>眨眼频率</span><span class="mv">${valueOrDash(m.blinkRate,2)} 次/分</span></div><div class="mi-desc">视觉指标由虹膜相对位置、眼部关键点和有效人脸检测时长计算。</div></div>
     <div class="mc"><div class="mh"><div class="mi" style="background:#fce4ec;color:#c62828">👂</div><h4>听觉维度 A</h4></div><div class="mi-row"><span>Yaw 绝对值均值</span><span class="mv">${valueOrDash(m.avgAbsYaw,2)}°</span></div><div class="mi-row"><span>Yaw 偏转频率</span><span class="mv">${valueOrDash(m.yawRate,2)} 次/分</span></div><div class="mi-row"><span>Yaw 标准差</span><span class="mv">${valueOrDash(m.yawStd,2)}°</span></div><div class="mi-desc">头部角度为面部几何近似值，用于观察头部朝向变化，不代表专业姿态标定结果。</div></div>
-    <div class="mc"><div class="mh"><div class="mi" style="background:#e8f5e9;color:#2e7d32">🦶</div><h4>动觉维度 K</h4></div><div class="mi-row"><span>归一化 MI</span><span class="mv">${valueOrDash(m.avgMI,4)}</span></div><div class="mi-row"><span>上肢轨迹强度</span><span class="mv">${valueOrDash(m.avgArm,4)}</span></div><div class="mi-row"><span>主频 / 2–4Hz 占比</span><span class="mv">${valueOrDash(m.dominantFreq,2)} Hz / ${valueOrDash(m.bandRatio*100,1)}%</span></div><div class="mi-desc">运动指标按身体尺度与真实时间间隔归一化，降低分辨率、距离和采样速度差异的影响。</div></div>
-    <div class="mc"><div class="mh"><div class="mi" style="background:#fff7ed;color:#c2410c">CV</div><h4>OpenCV 辅助指标</h4></div><div class="mi-row"><span>全画面运动比例</span><span class="mv">${valueOrDash(m.cvMotion,3)}%</span></div><div class="mi-row"><span>屏幕运动比例</span><span class="mv">${valueOrDash(mean(G.screenMotionArr),3)}%</span></div><div class="mi-row"><span>音频电平均值</span><span class="mv">${valueOrDash(mean(G.audioDbArr),1)} dBFS</span></div><div class="mi-row"><span>清晰度</span><span class="mv">${valueOrDash(m.cvSharp,1)}</span></div><div class="mi-desc">OpenCV.js 只参与画面质量和整体运动复核，不直接改变 VAK 三维度评分。</div></div>`;
+    <div class="mc"><div class="mh"><div class="mi" style="background:#e8f5e9;color:#2e7d32">🦶</div><h4>动觉维度 K</h4></div><div class="mi-row"><span>归一化 MI</span><span class="mv">${valueOrDash(m.avgMI,4)}</span></div><div class="mi-row"><span>上肢轨迹强度</span><span class="mv">${valueOrDash(m.avgArm,4)}</span></div><div class="mi-row"><span>主频 / 2–4Hz 占比</span><span class="mv">${valueOrDash(m.dominantFreq,2)} Hz / ${valueOrDash(m.bandRatio*100,1)}%</span></div><div class="mi-desc">运动指标按身体尺度与真实时间间隔归一化，降低分辨率、距离和采样速度差异的影响。</div></div>${cvCard}`;
 }
 function drawRadar(sc){
     const c=el('radarCanvas'),ctx=c.getContext('2d'),cx=150,cy=150,mr=110;ctx.clearRect(0,0,300,300);
@@ -831,35 +1250,39 @@ function drawRadar(sc){
 function exportExcel(){
     if(!G.currentReport){showErr('尚无可导出的分析结果');return}if(typeof XLSX==='undefined'){alert('Excel 导出组件未加载，请检查网络后刷新页面');return}
     const R=G.currentReport,wb=XLSX.utils.book_new();wb.Props={Title:'儿童VAK学习行为倾向分析数据',Subject:'MediaPipe + OpenCV.js 多模态浏览器分析',Author:'VAK浏览器识别系统',CreatedDate:new Date()};
-    const basic=[['字段','内容'],['匿名编号',G.participant.id],['年龄组',G.participant.ageGroup||'未填写'],['任务识别方式','音频+屏幕+触控+上肢自动分段'],['视频文件',G.fileName],['视频时长（秒）',R.videoInfo.duration],['视频分辨率',R.videoInfo.resolution],['备注',G.participant.notes||''],['屏幕区域来源',G.screenDetectedBy||'未标定'],['触控响应事件数',R.touchSummary.validCount],['平均触控响应时间(ms)',round(R.touchSummary.mean,1)],['算法版本',CONFIG.version],['技术组件','MediaPipe FaceMesh + BlazePose + OpenCV.js + Web Audio API + IndexedDB + SheetJS'],['结果边界','仅反映当前视频情境中的学习行为通道倾向，不作医学诊断或固定标签']];
+    const basic=[['字段','内容'],['匿名编号',G.participant.id],['年龄组',G.participant.ageGroup||'未填写'],['测试项目分类方式','三项测试视频综合分析'],['分析模式',G.captureMode==='screen-recording'?'录屏 / 画中画':'实体平板拍摄'],['视频文件',G.fileName],['视频时长（秒）',R.videoInfo.duration],['视频分辨率',R.videoInfo.resolution],['模型推理分辨率',R.videoInfo.analysisResolution||''],['点击后启动用时（秒）',round(R.videoInfo.startupSeconds,2)],['模型接入状态',R.videoInfo.modelState||''],['FaceMesh诊断',R.videoInfo.faceDiag||''],['跳过/超时帧数',R.videoInfo.frameErrors||0],['备注',G.participant.notes||''],['屏幕区域来源',G.screenDetectedBy||'未标定'],['触控响应事件数',R.touchSummary.validCount],['平均触控响应时间(ms)',round(R.touchSummary.mean,1)],['算法版本',CONFIG.version],['技术组件','MediaPipe FaceMesh + BlazePose + OpenCV.js（连通区域/局部位移） + Web Audio API + IndexedDB + SheetJS'],['结果边界','仅反映当前视频情境中的学习行为通道倾向，不作医学诊断或固定标签']];
     appendAoa(wb,'基本信息',basic,[18,50]);
-    const score=[['维度','原始得分','相对百分比','权重结构'],['视觉 V',round(R.scores.visual,3),round(R.scores.visual_pct,2),'注视稳定性50% / EAR30% / 眨眼频率20%'],['听觉 A',round(R.scores.auditory,3),round(R.scores.auditory_pct,2),'Yaw偏转频率50% / Yaw标准差30% / Yaw绝对值20%'],['动觉 K',round(R.scores.kinesthetic,3),round(R.scores.kinesthetic_pct,2),'MI50% / 上肢轨迹30% / 2–4Hz能量占比20%'],['综合倾向',R.style.type,'','0.75为初始启发式混合倾向阈值'],['通道差异度',round(R.style.difference,2),'%','仅作辅助参考']];
+    const score=[['维度','原始得分','相对百分比','权重结构'],['视觉 V',round(R.scores.visual,3),round(R.scores.visual_pct,2),'注视稳定性50% / EAR30% / 眨眼频率20%'],['听觉 A',round(R.scores.auditory,3),round(R.scores.auditory_pct,2),'Yaw偏转频率50% / Yaw标准差30% / Yaw绝对值20%'],['动觉 K',round(R.scores.kinesthetic,3),round(R.scores.kinesthetic_pct,2),'MI50% / 上肢轨迹30% / 2–4Hz能量占比20%'],['综合倾向',R.style.type,'','仅显示得分最高的主导通道'],['通道差异度',round(R.style.difference,2),'%','仅作辅助参考']];
     appendAoa(wb,'VAK综合评分',score,[18,20,18,52]);
-    const metrics=[['维度','行为指标','数值','单位','数据来源','解释与限制'],...R.metricRows.map(r=>[r.dimension,r.metric,r.value??'',r.unit,r.source,r.note])];appendAoa(wb,'行为指标汇总',metrics,[16,32,16,18,28,58]);appendAoa(wb,'任务智能分段',taskSegmentsToAoa(R.taskSegments||[]),[8,24,14,14,14,16,28,14,16]);appendAoa(wb,'触控响应事件',touchEventsToAoa(R.touchEvents||[]),[8,22,17,17,17,16,55]);
+    const metrics=[['维度','行为指标','数值','单位','数据来源','解释与限制'],...R.metricRows.map(r=>[r.dimension,r.metric,r.value??'',r.unit,r.source,r.note])];appendAoa(wb,'行为指标汇总',metrics,[16,32,16,18,28,58]);appendAoa(wb,'测试项目手动分段',taskSegmentsToAoa(R.taskSegments||[]),[8,24,14,14,14,16,28,14,16]);appendAoa(wb,'交互响应事件',touchEventsToAoa(R.touchEvents||[]),[8,22,16,18,18,16,16,14,14,58]);
     const ts=G.sampleRows.length?XLSX.utils.json_to_sheet(G.sampleRows):XLSX.utils.aoa_to_sheet([['无逐时点数据']]);ts['!freeze']={xSplit:0,ySplit:1};ts['!autofilter']={ref:ts['!ref']||'A1:A1'};ts['!cols']=Object.keys(G.sampleRows[0]||{}).map(k=>({wch:Math.max(14,Math.min(28,k.length*2))}));XLSX.utils.book_append_sheet(wb,ts,'逐时点数据');
-    const taskSheetMap=[['visual','视觉任务数据'],['auditory','听觉任务数据'],['kinesthetic','动觉任务数据']];for(const [code,sheetName] of taskSheetMap){const rows=G.sampleRows.filter(r=>r['自动任务类别']===taskMeta(code).name);const ws=rows.length?XLSX.utils.json_to_sheet(rows):XLSX.utils.aoa_to_sheet([['当前视频未识别到该任务或数据不足']]);ws['!freeze']={xSplit:0,ySplit:1};ws['!autofilter']={ref:ws['!ref']||'A1:A1'};XLSX.utils.book_append_sheet(wb,ws,sheetName)}
-    const quality=[['指标','结果','判断'],['数据质量等级',R.quality.grade,R.quality.reason],['视频时长（秒）',round(R.quality.duration,2),R.quality.duration>=CONFIG.quality.minDurationSec?'达到':'不足'],['采样点数',G.sampledFrames,G.sampledFrames>=CONFIG.quality.minSamples?'达到':'不足'],['实际采样频率（Hz）',round(R.quality.actualHz,3),R.quality.actualHz>=5?'较稳定':'偏低'],['人脸有效检测率（%）',round(R.quality.faceRate,2),R.quality.faceRate>=CONFIG.quality.minFaceRate?'达到':'不足'],['姿态有效检测率（%）',round(R.quality.poseRate,2),R.quality.poseRate>=CONFIG.quality.minPoseRate?'达到':'不足'],['OpenCV有效调用',G.openCvUsed?'是':'否',G.openCvMessage]];appendAoa(wb,'数据质量',quality,[26,22,58]);
-    const params=[['参数','设定','说明'],['算法版本',CONFIG.version,'用于报告和复核'],['目标处理间隔',CONFIG.processIntervalMs+' ms','实际采样频率以视频时间戳计算'],['视觉权重','50% / 30% / 20%','初始启发式参数'],['听觉权重','50% / 30% / 20%','初始启发式参数'],['动觉权重','50% / 30% / 20%','初始启发式参数'],['混合倾向阈值',CONFIG.mixedThreshold,'第二高分/最高分超过该值时显示混合倾向'],['眨眼阈值',`关闭<${CONFIG.blink.close}，睁开>${CONFIG.blink.open}`,'采用状态机与最短间隔'],['Yaw事件阈值',CONFIG.yawEventDelta+'°','相邻有效样本变化阈值'],['OpenCV差分阈值',CONFIG.cv.diffThreshold,'用于全画面与屏幕内容变化'],['任务窗口',CONFIG.task.windowSec+' 秒','音频、屏幕、触控和上肢特征滑动窗口'],['触控响应配对窗口',CONFIG.touch.minResponseSec+'–'+CONFIG.touch.maxResponseSec+' 秒','刺激变化至触控开始'],['说明','权重、阈值与归一化尺度均需以后续样本校准','不是通用诊断标准']];appendAoa(wb,'算法参数说明',params,[25,35,68]);
-    const name=safeFileName(`${G.participant.id||'匿名'}_三任务自动识别_${new Date().toISOString().slice(0,10)}`)+'.xlsx';XLSX.writeFile(wb,name,{compression:true});
+    const taskSheetMap=taskCodes().map((code,i)=>[code,safeSheetName(`${i+1}_${taskMeta(code).name}`)]);for(const [code,sheetName] of taskSheetMap){const rows=G.sampleRows.filter(r=>r['手动任务类别']===taskMeta(code).name);const ws=rows.length?XLSX.utils.json_to_sheet(rows):XLSX.utils.aoa_to_sheet([['当前视频未手动划分到该测试项目']]);ws['!freeze']={xSplit:0,ySplit:1};ws['!autofilter']={ref:ws['!ref']||'A1:A1'};XLSX.utils.book_append_sheet(wb,ws,sheetName)}
+    const quality=[['指标','结果','判断'],['数据质量等级',R.quality.grade,R.quality.reason],['视频时长（秒）',round(R.quality.duration,2),R.quality.duration>=CONFIG.quality.minDurationSec?'达到':'不足'],['采样点数',G.sampledFrames,G.sampledFrames>=CONFIG.quality.minSamples?'达到':'不足'],['实际采样频率（Hz）',round(R.quality.actualHz,3),R.quality.actualHz>=5?'较稳定':'偏低'],['人脸有效检测率（%）',round(R.quality.faceRate,2),R.quality.faceRate>=CONFIG.quality.minFaceRate?'达到':'不足'],['姿态有效检测率（%）',round(R.quality.poseRate,2),R.quality.poseRate>=CONFIG.quality.minPoseRate?'达到':'不足'],['FaceMesh整帧命中',G.faceFullHits||0,`整帧未命中 ${G.faceFullMisses||0}`],['FaceMesh ROI命中',G.faceRoiHits||0,`ROI尝试 ${G.faceRoiAttempts||0}`],['FaceMesh连续未命中',G.faceNoHitStreak||0,'用于判断是否需要调整ROI'],['FaceMesh模型超时',G.faceModelTimeouts||0,'用于判断推理后端是否稳定'],['OpenCV有效调用',G.openCvUsed?'是':'否',G.openCvMessage],['分析模式',G.captureMode==='screen-recording'?'录屏 / 画中画':'实体平板拍摄',G.screenDetectedBy||'']];appendAoa(wb,'数据质量',quality,[26,22,58]);
+    const params=[['参数','设定','说明'],['算法版本',CONFIG.version,'用于报告和复核'],['目标处理间隔',CONFIG.processIntervalMs+' ms','实际采样频率以视频时间戳计算'],['视觉权重','50% / 30% / 20%','初始启发式参数'],['听觉权重','50% / 30% / 20%','初始启发式参数'],['动觉权重','50% / 30% / 20%','初始启发式参数'],['综合倾向输出','最高得分通道','只显示视觉、听觉、动觉中的单一主导通道'],['眨眼阈值','个体睁眼EAR基线自适应','采用状态机、快速下降/回升检测与最短间隔'],['Yaw事件阈值',CONFIG.yawEventDelta+'°','相邻有效样本变化阈值'],['OpenCV差分阈值',CONFIG.cv.diffThreshold,'用于全画面与屏幕内容变化'],['录屏局部运动阈值',CONFIG.cv.localMotionThreshold+'%','用于识别拼图图片等局部连续位移'],['录屏稳定等待时间',CONFIG.recording.stableSec+'秒','用于确定任务画面就绪时刻'],['测试分类方式','上传槽位固定分类','三个视频槽位分别对应无声动画、故事音频、拖拽拼图'],['触控响应配对窗口',CONFIG.touch.minResponseSec+'–'+CONFIG.touch.maxResponseSec+' 秒','刺激变化至触控开始'],['说明','权重、阈值与归一化尺度均需以后续样本校准','不是通用诊断标准']];appendAoa(wb,'算法参数说明',params,[25,35,68]);
+    const name=safeFileName(`${G.participant.id||'匿名'}_七类测试手动分类_${new Date().toISOString().slice(0,10)}`)+'.xlsx';XLSX.writeFile(wb,name,{compression:true});
 }
+function safeSheetName(v){return String(v||'测试数据').replace(/[\\\/\?\*\[\]:]/g,'_').slice(0,31)||'测试数据'}
 function appendAoa(wb,name,data,widths){const ws=XLSX.utils.aoa_to_sheet(data);ws['!cols']=widths.map(w=>({wch:w}));ws['!autofilter']={ref:ws['!ref']||'A1:A1'};XLSX.utils.book_append_sheet(wb,ws,name)}
 
 /* ---------- UI ---------- */
 function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));el(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
 function showErr(m){const e=el('errBox');e.textContent=m;e.classList.add('show')}
 function hideErr(){el('errBox').classList.remove('show')}
-function updateStartAvailability(){el('startBtn').disabled=!(G.file&&G.screenQuad&&el('consentCheck').checked&&el('singleCheck').checked&&!G.running)}
-function reset(){
-    cleanupAudio();if(_cvPrevGray){_cvPrevGray.delete();_cvPrevGray=null}if(_cvPrevScreenGray){_cvPrevScreenGray.delete();_cvPrevScreenGray=null}if(G.previewUrl)URL.revokeObjectURL(G.previewUrl);const fileInput=el('fileInput');if(fileInput)fileInput.value='';G=emptyState();
-    if(_previewVideo){try{_previewVideo.pause();_previewVideo.remove()}catch(_){}_previewVideo=null}el('screenSetup').classList.remove('show');el('screenStatus').textContent='上传视频后，系统将自动识别平板或显示屏四角。';el('uploadTitle').textContent='上传儿童行为视频';el('uploadDesc').textContent='上传同时包含儿童与任务屏幕的视频，系统将在浏览器本地完成分析';el('pbarFill').style.width='0';el('startBtn').disabled=true;hideErr();showView('viewUpload');updateStaticLibraryStatus();ensureOpenCV();
+function updateStartAvailability(){const ready=taskCodes().every(code=>G.multiFiles?.[code]);el('startBtn').disabled=!(ready&&el('consentCheck').checked&&el('singleCheck').checked&&!G.running)}
+async function reset(){
+    cleanupAudio();await resetMediaPipeRuntime('用户重置分析');if(_cvPrevGray){_cvPrevGray.delete();_cvPrevGray=null}if(_cvPrevScreenGray){_cvPrevScreenGray.delete();_cvPrevScreenGray=null}if(G.previewUrl)URL.revokeObjectURL(G.previewUrl);G=emptyState();
+    if(_previewVideo){try{_previewVideo.pause();_previewVideo.remove()}catch(_){}_previewVideo=null}document.querySelectorAll('[data-test-code].test-upload').forEach(card=>{card.classList.remove('ready');const n=el('fileName_'+card.dataset.testCode);if(n)n.textContent='未选择视频'});document.querySelectorAll('#multiUploadGrid input[type=file]').forEach(input=>input.value='');el('pbarFill').style.width='0';el('pbarPct').textContent='0%';el('pbarText').innerHTML='<span class="spin"></span>正在初始化...';el('canvasPerformance').textContent='等待视频信息';resetInitSteps();el('runtimeHint').textContent='系统将依次分析三个测试视频，并生成一份综合报告。';el('startBtn').disabled=true;hideErr();showView('viewUpload');updateStaticLibraryStatus();initializeManualTaskUI();ensureOpenCV();
 }
-const uploadBox=el('uploadBox'),fileInput=el('fileInput'),startBtn=el('startBtn');
-uploadBox.addEventListener('dragover',e=>{e.preventDefault();uploadBox.classList.add('over')});uploadBox.addEventListener('dragleave',()=>uploadBox.classList.remove('over'));uploadBox.addEventListener('drop',e=>{e.preventDefault();uploadBox.classList.remove('over');if(e.dataTransfer.files.length)handleFile(e.dataTransfer.files[0])});fileInput.addEventListener('change',e=>{if(e.target.files.length)handleFile(e.target.files[0])});
-['consentCheck','singleCheck'].forEach(id=>el(id).addEventListener('change',updateStartAvailability));startBtn.addEventListener('click',startAnalysis);el('exportBtn').addEventListener('click',exportExcel);el('autoScreenBtn').addEventListener('click',autoDetectScreen);el('manualScreenBtn').addEventListener('click',beginManualScreen);el('clearScreenBtn').addEventListener('click',clearScreen);el('screenPreviewCanvas').addEventListener('click',previewCanvasClick);el('historyNavBtn').addEventListener('click',()=>{showView('viewHistory');renderHistory()});el('refreshHistoryBtn').addEventListener('click',renderHistory);el('exportHistoryBtn').addEventListener('click',exportAllHistory);el('clearHistoryBtn').addEventListener('click',async()=>{if(confirm('确认清空当前浏览器中的全部实验记录？')){await clearSessions();renderHistory()}});
-function handleFile(f){
+const startBtn=el('startBtn');
+document.querySelectorAll('.test-upload').forEach(card=>{card.addEventListener('dragover',e=>{e.preventDefault();card.classList.add('over')});card.addEventListener('dragleave',()=>card.classList.remove('over'));card.addEventListener('drop',e=>{e.preventDefault();card.classList.remove('over');if(e.dataTransfer.files.length)handleFile(e.dataTransfer.files[0],card.dataset.testCode)})});
+document.querySelectorAll('#multiUploadGrid input[type=file]').forEach(input=>input.addEventListener('change',e=>{if(e.target.files.length)handleFile(e.target.files[0],e.target.dataset.testCode)}));
+['consentCheck','singleCheck'].forEach(id=>el(id).addEventListener('change',updateStartAvailability));
+document.querySelectorAll('#captureModeGrid .mode-option').forEach(b=>b.addEventListener('click',()=>setCaptureModePreference(b.dataset.mode)));startBtn.addEventListener('click',()=>{startAnalysis().catch(e=>{console.error(e);showAnalysisError(e.message||String(e));G.running=false;el('startBtn').disabled=false})});el('cancelAnalysisBtn').addEventListener('click',()=>{if(typeof G.runtimeCancel==='function')G.runtimeCancel(true);else{G.running=false;showView('viewUpload');updateStartAvailability()}});el('exportBtn').addEventListener('click',exportExcel);el('autoScreenBtn').addEventListener('click',autoDetectScreen);el('fullFrameBtn').addEventListener('click',()=>useFullFrameMode('用户点击：整帧录屏模式'));el('manualScreenBtn').addEventListener('click',beginManualScreen);el('clearScreenBtn').addEventListener('click',clearScreen);el('screenPreviewCanvas').addEventListener('click',previewCanvasClick);el('historyNavBtn').addEventListener('click',()=>{showView('viewHistory');renderHistory()});el('refreshHistoryBtn').addEventListener('click',renderHistory);el('exportHistoryBtn').addEventListener('click',exportAllHistory);el('clearHistoryBtn').addEventListener('click',async()=>{if(confirm('确认清空当前浏览器中的全部实验记录？')){await clearSessions();renderHistory()}});
+initializeManualTaskUI();
+function handleFile(f,code){
     const ext=(f.name.split('.').pop()||'').toLowerCase(),allowed=['mp4','webm','mov','m4v'];
     if(!(f.type.startsWith('video/')||allowed.includes(ext))){showErr('请选择可播放的视频文件，推荐 H.264 MP4 或 WebM');return}
-    G.file=f;G.fileName=f.name;el('uploadTitle').textContent='已选择：'+f.name;el('uploadDesc').textContent=`文件大小 ${(f.size/1024/1024).toFixed(1)} MB；正在准备屏幕区域识别`;hideErr();prepareScreenPreview(f);updateStartAvailability();
+    if(!taskCodes().includes(code))return;G.multiFiles[code]=f;const name=el('fileName_'+code),card=document.querySelector(`.test-upload[data-test-code="${code}"]`);if(name)name.textContent=f.name+' · '+(f.size/1024/1024).toFixed(1)+' MB';if(card)card.classList.add('ready');hideErr();updateStartAvailability();
 }
 </script>
 
