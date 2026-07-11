@@ -217,7 +217,7 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 
 <!-- 上传 -->
 <div id="viewUpload" class="view active">
-<div class="hero"><span class="hero-kicker">✦ ChildLab 3.0 · 三任务独立评分与不确定性版</span><h2>把儿童的观看、聆听与操作行为，转化为可复核的多模态实验数据</h2><p>系统兼容实体平板拍摄、电脑录屏和带摄像头画中画的视频。测试项目不再由算法自动判断，而由研究者手动选择；系统按你的选择，将逐时点数据、交互事件、VAK结果和Excel工作表归入对应测试项目。</p><p style="margin-top:8px"><strong>快速启动机制：</strong>点击开始后先启动视频、Canvas/OpenCV基础运动和音频分析；FaceMesh与BlazePose在后台预热并自动热接入。正常本地视频将在15秒内开始运行，网络较慢时不会被模型下载阻塞。</p><div class="stage-row"><span class="stage-pill"><b>1</b>上传视频</span><span class="stage-pill"><b>2</b>确认屏幕区域</span><span class="stage-pill"><b>3</b>手动切换测试</span><span class="stage-pill"><b>4</b>保存与导出</span></div></div>
+<div class="hero"><span class="hero-kicker">✦ ChildLab 3.2 · 单次拼图完成评分与VAK三分类版</span><h2>把儿童的观看、聆听与操作行为，转化为可复核的多模态实验数据</h2><p>系统兼容实体平板拍摄、电脑录屏和带摄像头画中画的视频。测试项目不再由算法自动判断，而由研究者手动选择；系统按你的选择，将逐时点数据、交互事件、VAK结果和Excel工作表归入对应测试项目。</p><p style="margin-top:8px"><strong>快速启动机制：</strong>点击开始后先启动视频、Canvas/OpenCV基础运动和音频分析；FaceMesh与BlazePose在后台预热并自动热接入。正常本地视频将在15秒内开始运行，网络较慢时不会被模型下载阻塞。</p><div class="stage-row"><span class="stage-pill"><b>1</b>上传视频</span><span class="stage-pill"><b>2</b>确认屏幕区域</span><span class="stage-pill"><b>3</b>手动切换测试</span><span class="stage-pill"><b>4</b>保存与导出</span></div></div>
 <div class="tech-strip" aria-label="技术组件状态">
 <div id="tech-mp" class="tech-badge loading"><span class="dot"></span><span>MediaPipe 加载中</span></div>
 <div id="tech-cv" class="tech-badge loading"><span class="dot"></span><span>OpenCV.js 加载中</span></div>
@@ -245,6 +245,12 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <div class="task-legend"><span>无声动画观看</span><span>故事音频聆听</span><span>拖拽拼图操作</span></div>
 <div class="manual-task-note">三项测试同时纳入本次报告：每个上传槽位固定对应一个测试项目，系统会依次分析三个视频，并输出三者合并后的综合 VAK 报告。</div>
 </div><small>任务类别来自上传槽位，不再依赖分析过程中的手动切换，避免拖拽拼图被误归入无声动画。</small></div>
+<div class="field full"><label>无声动画理解人工评分</label><div class="manual-task-box">
+<div class="custom-task-grid">
+<div class="mini-field"><label for="visualUnderstandingScore">动画理解/视觉问题得分（0—2）</label><select id="visualUnderstandingScore"><option value="">请选择</option><option value="0">0分：无法表述或表述错误</option><option value="1">1分：表述大致正确但不清晰</option><option value="2">2分：能够完整、清晰地表述</option></select></div>
+</div>
+<div class="manual-task-note">该得分自动换算为0—100分并占视觉总分40%；其余60%由注视稳定性、头部稳定性和有效观看覆盖构成。</div>
+</div><small>完成视觉问题评分后，系统才能开始正式分析。</small></div>
 <div class="field full"><label>故事聆听人工评分与时间轴对齐</label><div class="manual-task-box">
 <div class="custom-task-grid">
 <div class="mini-field"><label for="auditoryQ1Score">问题1得分（0—2）</label><select id="auditoryQ1Score"><option value="">请选择</option><option value="0">0分：错误/未答</option><option value="1">1分：部分正确</option><option value="2">2分：完整正确</option></select></div>
@@ -254,6 +260,12 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 </div>
 <div class="manual-task-note"><strong>采用你的录音时间轴：</strong>故事聆听阶段为4.85—46.20秒、63.25—83.15秒、97.60—117.80秒；提问与幼儿回答阶段不进入Yaw变化和聆听稳定性评分。三题总分6分，自动换算为音频任务表现（40%）。</div>
 </div><small>人工评分比浏览器自动识别幼儿口语答案更容易复核。三题均完成评分后才可开始正式分析。</small></div>
+<div class="field full"><label>拖拽拼图完成情况（1—6分）</label><div class="manual-task-box">
+<div class="custom-task-grid">
+<div class="mini-field"><label for="kinestheticCompletionScore">拼图完成总分</label><select id="kinestheticCompletionScore"><option value="">请选择</option><option value="1">1分</option><option value="2">2分</option><option value="3">3分</option><option value="4">4分</option><option value="5">5分</option><option value="6">6分</option></select><small>根据拼图整体完成情况选择一次，无需逐个拼图判断。</small></div>
+</div>
+<div class="manual-task-note">所选分数÷6后换算为0—100分，占动觉总分40%；其余60%由MI、上肢轨迹和2—4Hz节律构成。</div>
+</div><small>选择一个1—6分的总完成分后即可开始分析。</small></div>
 <div class="field"><label>交互响应时间</label><div class="screen-status"><span class="badge-auto">双模式估算</span> 实体触控或录屏交互</div><small>实体拍摄：刺激变化 → 指尖接触；录屏模式：任务画面稳定 → 首次拖拽/点击反馈。</small></div>
 <div class="field full"><label for="notes">实验备注</label><textarea id="notes" placeholder="可记录拍摄角度、遮挡情况、任务材料或异常事件。"></textarea></div>
 <div class="field full"><label class="check-row"><input id="consentCheck" type="checkbox"><span>已获得监护人或机构授权，同意将该视频用于教育观察或研究分析。</span></label></div>
@@ -280,7 +292,7 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <p><strong>MediaPipe：</strong>FaceMesh 追踪含虹膜在内的面部关键点，用于 EAR、注视相对坐标和头部姿态近似值；BlazePose 追踪 33 个身体关键点，用于归一化运动能量 MI、上肢轨迹和频域分析。</p>
 <p style="margin-top:8px"><strong>OpenCV.js：</strong>自动检测实体屏幕四边形；对录屏视频使用整帧工作区，屏蔽人物画中画后计算局部目标位移、屏幕内容变化和画面清晰度。实体拍摄与 MediaPipe 手指关键点联合估算触控，录屏则估算拖拽或点击反馈开始时刻。</p><p style="margin-top:8px"><strong>音频与手动分类：</strong>Web Audio API 继续提取音频 RMS/dBFS 作为实验行为指标；测试项目类别完全依据研究者的手动选择，系统按切换时间建立测试时间轴，不再用算法自动推断任务名称。</p><p style="margin-top:8px"><strong>记忆存储：</strong>分析报告、任务分段、交互事件与逐时点数据保存在浏览器 IndexedDB 中，可在“本机记录”页面查看与汇总导出。</p>
 <p style="margin-top:8px"><strong>双循环：</strong>requestAnimationFrame 负责流畅绘制视频与骨架，独立处理循环按约 100 ms 间隔执行模型推理；最终频率换算使用视频真实时间戳。</p>
-<div class="method-note"><strong>3.0评分原则：</strong>三项视频分别计算，不再把全部帧混合；故事音频仅在标记的“故事聆听”时间窗计入听觉行为，提问和回答阶段自动排除。权重与尺度仍属于待样本校准的初始参数。</div>
+<div class="method-note"><strong>3.2评分原则：</strong>三项视频分别计算；视觉、听觉、动觉均纳入人工任务表现。最终比较三个独立得分，最高者直接归类为视觉型、听觉型或动觉型。权重与尺度仍属于待样本校准的初始参数。</div>
 </div>
 </div>
 </div>
@@ -344,7 +356,7 @@ body:after{width:210px;height:210px;right:-90px;bottom:5%;background:linear-grad
 <div class="score-bg"><div class="sl"><span style="color:var(--v)">&#128065; 视觉 V</span><span id="rV">--</span></div><div class="sb"><div class="sf fill-v" id="rVBar" style="width:0"></div></div></div>
 <div class="score-bg"><div class="sl"><span style="color:var(--a)">&#128066; 听觉 A</span><span id="rA">--</span></div><div class="sb"><div class="sf fill-a" id="rABar" style="width:0"></div></div></div>
 <div class="score-bg"><div class="sl"><span style="color:var(--k)">&#129462; 动觉 K</span><span id="rK">--</span></div><div class="sb"><div class="sf fill-k" id="rKBar" style="width:0"></div></div></div>
-<div class="method-note">进度条和雷达图表示三个维度各自的独立绝对分数（0—100），不会因其他维度升高而被动降低；文字同时显示相对构成和95%区间。区间重叠或分差过小时，系统输出“多通道表现接近”，不强行贴单一标签。</div>
+<div class="method-note">进度条和雷达图表示三个维度各自的独立绝对分数（0—100），不会因其他维度升高而被动降低；文字同时显示相对构成和95%区间。最终以三个独立得分中的最高分直接输出视觉型（V）、听觉型（A）或动觉型（K）；95%区间仅作为结果波动参考。</div>
 </div></div></div>
 <div class="card fade-in"><h3>✅ 数据质量与结果有效性</h3><div class="quality-grid" id="rQuality"></div></div>
 <div class="card fade-in"><h3>📋 实验识别数据量表</h3>
@@ -377,7 +389,7 @@ function _onMPError(n){console.error('[VAK] '+n+' 脚本加载失败');}
 <script defer src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script>
 /* ======================================================================
-   VAK 浏览器分析系统 3.0
+   VAK 浏览器分析系统 3.2
    MediaPipe：面部与姿态关键点
    OpenCV.js：画面清晰度与帧间运动辅助质量指标
    SheetJS：多工作表 XLSX 导出
@@ -386,19 +398,18 @@ const LEFT_EYE=[33,160,158,133,153,144], RIGHT_EYE=[263,387,385,362,373,380];
 const JOINT_IDX=[11,12,13,14,15,16,23,24,25,26], ARM_IDX=[15,16,13,14];
 const STYLE_NAMES={visual:'视觉通道',auditory:'听觉通道',kinesthetic:'动觉通道'};
 const CONFIG={
-    version:'VAK-CHILDLAB-3.0-TASK-SEPARATED-CI',
+    version:'VAK-CHILDLAB-3.2-SINGLE-KINESTHETIC-SCORE-THREE-CLASS',
     targetSampleHz:10,
     processIntervalMs:125,
     performance:{analysisMaxWidth:720,compatAnalysisMaxWidth:640,stableFrameStepSec:.25,renderMaxWidth:1280,frameTimeoutMs:9000,roiTimeoutMs:2600,metadataTimeoutMs:10000,modelInitTimeoutMs:45000,watchdogMs:18000,startDeadlineMs:15000,modelJoinNoticeMs:12000},
-    decision:{minAbsoluteGap:8},
     yawEventDelta:3,
     yawEventCooldownSec:.30,
     blink:{close:.20,open:.25,minClosedSec:0,maxClosedSec:.80,minGapSec:.25},
     quality:{minDurationSec:5,minSamples:20,minFaceRate:35,minPoseRate:30,recordingMinFaceRate:25},
     weights:{
-      visual:{gazeStability:.55,headStability:.30,validCoverage:.15},
+      visual:{taskPerformance:.40,gazeStability:.30,headStability:.20,validCoverage:.10},
       auditory:{taskPerformance:.40,orientation:.25,yawStability:.20,listeningStability:.15},
-      kinesthetic:{mi:.50,arm:.35,rhythm:.15}
+      kinesthetic:{taskPerformance:.40,mi:.25,arm:.25,rhythm:.10}
     },
     scales:{gazeVar:.0015,headMad:8,yawMad:8,mi:.80,arm:.80},
     auditoryTimeline:{
@@ -426,7 +437,7 @@ const JNAMES={0:'Nose',11:'L.Shoulder',12:'R.Shoulder',13:'L.Elbow',14:'R.Elbow'
 
 function emptyState(){return{
     file:null,multiFiles:{visual:null,auditory:null,kinesthetic:null},running:false,finished:false,currentReport:null,
-    participant:{id:'',ageGroup:'',taskType:'手动分类',notes:'',taskMode:'multi',taskLabels:{},auditoryAnswerScores:[null,null,null],auditoryOffsetSec:0},
+    participant:{id:'',ageGroup:'',taskType:'手动分类',notes:'',taskMode:'multi',taskLabels:{},visualUnderstandingScore:null,auditoryAnswerScores:[null,null,null],auditoryOffsetSec:0,kinestheticCompletionScore:null},
     earArr:[],gazeXArr:[],gazeYArr:[],gazeXPxArr:[],gazeYPxArr:[],yawArr:[],pitchArr:[],rollArr:[],
     miArr:[],armTrajArr:[],miTimes:[],cvSharpArr:[],cvMotionArr:[],screenMotionArr:[],audioDbArr:[],sampleTimes:[],sampleRows:[],featureRows:[],
     blinkCount:0,blinkClosed:false,blinkCloseStart:null,blinkClosedSamples:0,lastBlinkTime:-Infinity,prevEAR:null,earOpenBaseline:null,
@@ -593,10 +604,11 @@ function scoreBlocks(rows,seconds,scoreFn){if(!rows?.length)return[];const group
 function visualComponents(rows){
   const gx=rows.map(r=>r.gazeX).filter(Number.isFinite),gy=rows.map(r=>r.gazeY).filter(Number.isFinite),yaws=rows.map(r=>r.yaw).filter(Number.isFinite),faceRows=rows.filter(r=>Number.isFinite(r.gazeX)&&Number.isFinite(r.gazeY));
   const gazeNormVar=gx.length>5?variance(gx)+variance(gy):null,headCenter=yaws.length?median(yaws):null,headMad=yaws.length?mad(yaws,headCenter):null;
+  const visualRaw=G.participant?.visualUnderstandingScore,taskPerformance=visualRaw!==null&&visualRaw!==''&&Number.isFinite(Number(visualRaw))?Number(visualRaw)/2*100:0;
   const gazeStability=Number.isFinite(gazeNormVar)?100*Math.exp(-gazeNormVar/CONFIG.scales.gazeVar):0;
   const headStability=Number.isFinite(headMad)?100*Math.exp(-headMad/CONFIG.scales.headMad):0;
   const validCoverage=rows.length?faceRows.length/rows.length*100:0,w=CONFIG.weights.visual;
-  return{score:clamp(gazeStability*w.gazeStability+headStability*w.headStability+validCoverage*w.validCoverage),gazeStability,headStability,validCoverage,gazeNormVar,headMad};
+  return{score:clamp(taskPerformance*w.taskPerformance+gazeStability*w.gazeStability+headStability*w.headStability+validCoverage*w.validCoverage),taskPerformance,gazeStability,headStability,validCoverage,gazeNormVar,headMad};
 }
 function scoreVisualRows(rows){
   const c=visualComponents(rows),blocks=scoreBlocks(rows,5,g=>visualComponents(g).score),ears=rows.map(r=>r.ear).filter(Number.isFinite),duration=Math.max(.1,localDuration(rows)),blinks=rows.filter(r=>r.blinkEvent).length;
@@ -618,8 +630,8 @@ function scoreAuditoryRows(rows){
   return{score,ci:ci95(units.map(u=>u.score),score),components:{performance,orientation,yawStability,listeningStability,baselineYaw,storyFaceCoverage:storyRows.length?storyRows.filter(r=>Number.isFinite(r.yaw)).length/storyRows.length*100:0,audioDb:audioVals.length?mean(audioVals):null,offset},units,storyRows};
 }
 function kinestheticComponents(rows){
-  const mis=rows.map(r=>r.mi).filter(Number.isFinite),arms=rows.map(r=>r.arm).filter(Number.isFinite),timeRows=rows.filter(r=>Number.isFinite(r.mi)&&Number.isFinite(r.localT)),freq=frequencyAnalysis(timeRows.map(r=>r.localT),timeRows.map(r=>r.mi)),avgMI=mis.length?mean(mis):null,avgArm=arms.length?mean(arms):null,miScore=Number.isFinite(avgMI)?expScore(avgMI,CONFIG.scales.mi):0,armScore=Number.isFinite(avgArm)?expScore(avgArm,CONFIG.scales.arm):0,rhythmScore=clamp(freq.bandRatio*100),w=CONFIG.weights.kinesthetic;
-  return{score:clamp(miScore*w.mi+armScore*w.arm+rhythmScore*w.rhythm),miScore,armScore,rhythmScore,avgMI,avgArm,dominantFreq:freq.dominantFreq,bandRatio:freq.bandRatio};
+  const mis=rows.map(r=>r.mi).filter(Number.isFinite),arms=rows.map(r=>r.arm).filter(Number.isFinite),timeRows=rows.filter(r=>Number.isFinite(r.mi)&&Number.isFinite(r.localT)),freq=frequencyAnalysis(timeRows.map(r=>r.localT),timeRows.map(r=>r.mi)),avgMI=mis.length?mean(mis):null,avgArm=arms.length?mean(arms):null,miScore=Number.isFinite(avgMI)?expScore(avgMI,CONFIG.scales.mi):0,armScore=Number.isFinite(avgArm)?expScore(avgArm,CONFIG.scales.arm):0,rhythmScore=clamp(freq.bandRatio*100),legacyResults=(G.participant?.kinestheticItemResults||[]).filter(v=>v!==null&&v!==''&&Number.isFinite(Number(v))).map(Number),rawCompletion=Number(G.participant?.kinestheticCompletionScore),completionScore=Number.isFinite(rawCompletion)&&rawCompletion>=1&&rawCompletion<=6?rawCompletion:(legacyResults.length===6?legacyResults.reduce((s,v)=>s+(v===1?1:0),0):null),taskPerformance=Number.isFinite(completionScore)?completionScore/6*100:0,w=CONFIG.weights.kinesthetic;
+  return{score:clamp(taskPerformance*w.taskPerformance+miScore*w.mi+armScore*w.arm+rhythmScore*w.rhythm),taskPerformance,completionScore,miScore,armScore,rhythmScore,avgMI,avgArm,dominantFreq:freq.dominantFreq,bandRatio:freq.bandRatio};
 }
 function scoreKinestheticRows(rows){const c=kinestheticComponents(rows),blocks=scoreBlocks(rows,5,g=>kinestheticComponents(g).score);return{score:c.score,ci:ci95(blocks,c.score),components:c,blockScores:blocks}}
 function scoreTaskRows(rows,code){if(code==='visual')return scoreVisualRows(rows);if(code==='auditory')return scoreAuditoryRows(rows);if(code==='kinesthetic')return scoreKinestheticRows(rows);return{score:0,ci:{low:0,high:0,n:0},components:{}}}
@@ -1065,9 +1077,9 @@ function drawHUD(ctx,w,h,fd){ctx.save();ctx.fillStyle='rgba(10,18,44,.68)';ctx.f
 /* ---------- 评分、质量与报告 ---------- */
 function taskQuality(){
   const vr=rowsForTask('visual'),ar=rowsForTask('auditory'),kr=rowsForTask('kinesthetic'),offset=Number(G.participant?.auditoryOffsetSec)||0,story=rowsInWindows(ar,CONFIG.auditoryTimeline.listening,offset),vFace=vr.length?vr.filter(r=>Number.isFinite(r.gazeX)&&Number.isFinite(r.gazeY)).length/vr.length*100:0,aFace=story.length?story.filter(r=>Number.isFinite(r.yaw)).length/story.length*100:0,kPose=kr.length?kr.filter(r=>Number.isFinite(r.mi)||Number.isFinite(r.arm)).length/kr.length*100:0,audio=story.map(r=>r.audioDb).filter(Number.isFinite),answers=(G.participant?.auditoryAnswerScores||[]).filter(Number.isFinite);
-  const visual={sufficient:vr.length>=CONFIG.quality.minSamples&&vFace>=CONFIG.quality.minFaceRate,samples:vr.length,validRate:vFace,reason:vr.length<CONFIG.quality.minSamples?'采样点不足':vFace<CONFIG.quality.minFaceRate?'人脸/注视有效率不足':'达到'};
+  const visualRaw=G.participant?.visualUnderstandingScore,visualScoreReady=visualRaw!==null&&visualRaw!==''&&Number.isFinite(Number(visualRaw)),visual={sufficient:vr.length>=CONFIG.quality.minSamples&&vFace>=CONFIG.quality.minFaceRate&&visualScoreReady,samples:vr.length,validRate:vFace,reason:!visualScoreReady?'视觉理解尚未评分':vr.length<CONFIG.quality.minSamples?'采样点不足':vFace<CONFIG.quality.minFaceRate?'人脸/注视有效率不足':'达到'};
   const auditory={sufficient:story.length>=CONFIG.quality.minSamples&&aFace>=CONFIG.quality.minFaceRate&&answers.length===3&&audio.length>0,samples:story.length,validRate:aFace,audioDb:audio.length?mean(audio):null,reason:answers.length<3?'三道题尚未完成评分':story.length<CONFIG.quality.minSamples?'有效故事聆听采样不足':aFace<CONFIG.quality.minFaceRate?'故事阶段人脸有效率不足':!audio.length?'未读取到音频电平':'达到'};
-  const kinesthetic={sufficient:kr.length>=CONFIG.quality.minSamples&&kPose>=CONFIG.quality.minPoseRate,samples:kr.length,validRate:kPose,reason:kr.length<CONFIG.quality.minSamples?'采样点不足':kPose<CONFIG.quality.minPoseRate?'姿态/运动有效率不足':'达到'};
+  const rawKScore=Number(G.participant?.kinestheticCompletionScore),legacyKResults=(G.participant?.kinestheticItemResults||[]).filter(v=>v!==null&&v!==''&&Number.isFinite(Number(v))).map(Number),kScoreReady=(Number.isFinite(rawKScore)&&rawKScore>=1&&rawKScore<=6)||legacyKResults.length===6,kinesthetic={sufficient:kr.length>=CONFIG.quality.minSamples&&kPose>=CONFIG.quality.minPoseRate&&kScoreReady,samples:kr.length,validRate:kPose,reason:!kScoreReady?'拼图完成总分尚未选择':kr.length<CONFIG.quality.minSamples?'采样点不足':kPose<CONFIG.quality.minPoseRate?'姿态/运动有效率不足':'达到'};
   return{visual,auditory,kinesthetic};
 }
 function qualityAssessment(){
@@ -1077,23 +1089,22 @@ function qualityAssessment(){
 function classifyVAK(){
   const visualDetail=scoreVisualRows(rowsForTask('visual')),auditoryDetail=scoreAuditoryRows(rowsForTask('auditory')),kinestheticDetail=scoreKinestheticRows(rowsForTask('kinesthetic')),visual=visualDetail.score,auditory=auditoryDetail.score,kinesthetic=kinestheticDetail.score,total=visual+auditory+kinesthetic||1;
   return{visual,auditory,kinesthetic,visual_pct:visual/total*100,auditory_pct:auditory/total*100,kinesthetic_pct:kinesthetic/total*100,ci:{visual:visualDetail.ci,auditory:auditoryDetail.ci,kinesthetic:kinestheticDetail.ci},details:{visual:visualDetail,auditory:auditoryDetail,kinesthetic:kinestheticDetail},meta:{
-    gazeNormVar:visualDetail.components.gazeNormVar,gazePxVar:null,avgEAR:visualDetail.aux.avgEAR,blinkRate:visualDetail.aux.blinkRate,visualGazeStability:visualDetail.components.gazeStability,visualHeadStability:visualDetail.components.headStability,visualCoverage:visualDetail.components.validCoverage,
+    gazeNormVar:visualDetail.components.gazeNormVar,gazePxVar:null,avgEAR:visualDetail.aux.avgEAR,blinkRate:visualDetail.aux.blinkRate,visualPerformance:visualDetail.components.taskPerformance,visualGazeStability:visualDetail.components.gazeStability,visualHeadStability:visualDetail.components.headStability,visualCoverage:visualDetail.components.validCoverage,
     auditoryPerformance:auditoryDetail.components.performance,auditoryOrientation:auditoryDetail.components.orientation,auditoryYawStability:auditoryDetail.components.yawStability,auditoryListeningStability:auditoryDetail.components.listeningStability,auditoryBaselineYaw:auditoryDetail.components.baselineYaw,auditoryFaceCoverage:auditoryDetail.components.storyFaceCoverage,auditoryAudioDb:auditoryDetail.components.audioDb,auditoryOffset:auditoryDetail.components.offset,
-    avgMI:kinestheticDetail.components.avgMI,avgArm:kinestheticDetail.components.avgArm,dominantFreq:kinestheticDetail.components.dominantFreq,bandRatio:kinestheticDetail.components.bandRatio,kMiScore:kinestheticDetail.components.miScore,kArmScore:kinestheticDetail.components.armScore,kRhythmScore:kinestheticDetail.components.rhythmScore,cvSharp:mean(G.cvSharpArr),cvMotion:mean(G.cvMotionArr)
+    kinestheticPerformance:kinestheticDetail.components.taskPerformance,kinestheticCompletionScore:kinestheticDetail.components.completionScore,avgMI:kinestheticDetail.components.avgMI,avgArm:kinestheticDetail.components.avgArm,dominantFreq:kinestheticDetail.components.dominantFreq,bandRatio:kinestheticDetail.components.bandRatio,kMiScore:kinestheticDetail.components.miScore,kArmScore:kinestheticDetail.components.armScore,kRhythmScore:kinestheticDetail.components.rhythmScore,cvSharp:mean(G.cvSharpArr),cvMotion:mean(G.cvMotionArr)
   }};
 }
 function determineStyle(scores,quality){
-  if(!quality.sufficient)return{type:'数据不足，暂不形成综合倾向',code:'insufficient',primary:null,secondary:null,difference:null,relativeDifference:null,dominantScore:null,ciOverlap:null};
-  const sorted=[['visual',scores.visual],['auditory',scores.auditory],['kinesthetic',scores.kinesthetic]].sort((a,b)=>b[1]-a[1]),top=sorted[0],second=sorted[1],topCI=scores.ci[top[0]],secondCI=scores.ci[second[0]],difference=top[1]-second[1],overlap=topCI.low<=secondCI.high;
-  if(overlap||difference<CONFIG.decision.minAbsoluteGap)return{type:'多通道表现接近（暂不形成单一倾向）',code:'mixed',primary:top[0],secondary:second[0],difference,relativeDifference:difference/(top[1]||1)*100,dominantScore:top[1],ciOverlap:overlap};
-  return{type:`${STYLE_NAMES[top[0]]}相对突出`,code:top[0],primary:top[0],secondary:second[0],difference,relativeDifference:difference/(top[1]||1)*100,dominantScore:top[1],ciOverlap:overlap};
+  const sorted=[['visual',scores.visual],['auditory',scores.auditory],['kinesthetic',scores.kinesthetic]].sort((a,b)=>b[1]-a[1]),top=sorted[0],second=sorted[1],difference=top[1]-second[1],classNames={visual:'视觉型（V）',auditory:'听觉型（A）',kinesthetic:'动觉型（K）'};
+  return{type:classNames[top[0]],code:top[0],primary:top[0],secondary:second[0],difference,relativeDifference:difference/(top[1]||1)*100,dominantScore:top[1],ciOverlap:false,qualitySufficient:quality.sufficient};
 }
 function buildMetricRows(sc,q){
   const m=sc.meta,ci=sc.ci;return[
     {dimension:'视觉 V',metric:'视觉独立得分（95%区间）',value:`${round(sc.visual,1)} [${round(ci.visual.low,1)}, ${round(ci.visual.high,1)}]`,unit:'分',source:'仅无声动画视频',note:'不与听觉、动觉帧混合'},
-    {dimension:'视觉 V',metric:'注视稳定性子分',value:round(m.visualGazeStability,2),unit:'分',source:'虹膜相对坐标方差',note:'权重55%；方差越小分数越高'},
-    {dimension:'视觉 V',metric:'头部稳定性子分',value:round(m.visualHeadStability,2),unit:'分',source:'Yaw稳健离散度',note:'权重30%；以任务内中位朝向为中心'},
-    {dimension:'视觉 V',metric:'有效观看覆盖子分',value:round(m.visualCoverage,2),unit:'%',source:'有效注视帧/视觉任务帧',note:'权重15%'},
+    {dimension:'视觉 V',metric:'动画理解/视觉问题表现',value:round(m.visualPerformance,2),unit:'分',source:'人工评分0—2分',note:'权重40%；0/1/2分换算为0/50/100分'},
+    {dimension:'视觉 V',metric:'注视稳定性子分',value:round(m.visualGazeStability,2),unit:'分',source:'虹膜相对坐标方差',note:'权重30%；方差越小分数越高'},
+    {dimension:'视觉 V',metric:'头部稳定性子分',value:round(m.visualHeadStability,2),unit:'分',source:'Yaw稳健离散度',note:'权重20%；以任务内中位朝向为中心'},
+    {dimension:'视觉 V',metric:'有效观看覆盖子分',value:round(m.visualCoverage,2),unit:'%',source:'有效注视帧/视觉任务帧',note:'权重10%'},
     {dimension:'视觉辅助',metric:'EAR均值 / 眨眼率',value:`${round(m.avgEAR,4)} / ${round(m.blinkRate,2)}`,unit:'比值 / 次每分',source:'FaceMesh',note:'仅作质量与疲劳辅助，不直接进入视觉总分'},
     {dimension:'听觉 A',metric:'听觉独立得分（95%区间）',value:`${round(sc.auditory,1)} [${round(ci.auditory.low,1)}, ${round(ci.auditory.high,1)}]`,unit:'分',source:'仅故事聆听有效时间窗',note:'提问和回答阶段已排除'},
     {dimension:'听觉 A',metric:'音频任务表现',value:round(m.auditoryPerformance,2),unit:'分',source:'三题人工评分（满分6分）',note:'权重40%'},
@@ -1102,9 +1113,10 @@ function buildMetricRows(sc,q){
     {dimension:'听觉 A',metric:'聆听稳定性',value:round(m.auditoryListeningStability,2),unit:'分',source:'故事阶段有效覆盖与±15°朝向比例',note:'权重15%'},
     {dimension:'听觉质量',metric:'基线Yaw / 故事人脸有效率 / 音频电平',value:`${round(m.auditoryBaselineYaw,2)}° / ${round(m.auditoryFaceCoverage,1)}% / ${round(m.auditoryAudioDb,1)} dBFS`,unit:'组合',source:'标记时间轴',note:`录音起点偏移 ${round(m.auditoryOffset,1)} 秒`},
     {dimension:'动觉 K',metric:'动觉独立得分（95%区间）',value:`${round(sc.kinesthetic,1)} [${round(ci.kinesthetic.low,1)}, ${round(ci.kinesthetic.high,1)}]`,unit:'分',source:'仅拖拽拼图视频',note:'按5秒时间块估计区间'},
-    {dimension:'动觉 K',metric:'MI子分',value:round(m.kMiScore,2),unit:'分',source:'主要关节位移',note:'权重50%'},
-    {dimension:'动觉 K',metric:'上肢轨迹子分',value:round(m.kArmScore,2),unit:'分',source:'手腕与肘部轨迹',note:'权重35%'},
-    {dimension:'动觉 K',metric:'2—4Hz节律子分',value:round(m.kRhythmScore,2),unit:'分',source:'MI时间序列频域分析',note:'权重15%'},
+    {dimension:'动觉 K',metric:'拼图完成表现',value:round(m.kinestheticPerformance,2),unit:'分',source:`拼图完成总分（${m.kinestheticCompletionScore}/6分）`,note:'权重40%'},
+    {dimension:'动觉 K',metric:'MI子分',value:round(m.kMiScore,2),unit:'分',source:'主要关节位移',note:'权重25%'},
+    {dimension:'动觉 K',metric:'上肢轨迹子分',value:round(m.kArmScore,2),unit:'分',source:'手腕与肘部轨迹',note:'权重25%'},
+    {dimension:'动觉 K',metric:'2—4Hz节律子分',value:round(m.kRhythmScore,2),unit:'分',source:'MI时间序列频域分析',note:'权重10%'},
     {dimension:'动觉 K',metric:'MI均值 / 上肢轨迹 / 主频',value:`${round(m.avgMI,4)} / ${round(m.avgArm,4)} / ${round(m.dominantFreq,3)}`,unit:'组合',source:'BlazePose',note:'原始指标用于复核'},
     {dimension:'数据质量',metric:'视觉/听觉/动觉有效率',value:`${round(q.tasks.visual.validRate,1)} / ${round(q.tasks.auditory.validRate,1)} / ${round(q.tasks.kinesthetic.validRate,1)}`,unit:'%',source:'按任务分别计算',note:q.reason},
     {dimension:'数据质量',metric:'实际综合采样频率',value:round(q.actualHz,3),unit:'Hz',source:'视频时间戳',note:'频域分析使用各自视频的localT'}
@@ -1114,12 +1126,12 @@ function buildReport(video){
   const scores=classifyVAK(),quality=qualityAssessment(),style=determineStyle(scores,quality);G.taskSegments=buildTaskSegments();const metricRows=buildMetricRows(scores,quality),duration=G.videoInfos.reduce((s,v)=>s+(v.duration||0),0)||G.videoDuration,validResponses=G.touchEvents.map(e=>e.responseMs).filter(Number.isFinite),faceDiag=`整帧命中 ${G.faceFullHits||0} / ROI命中 ${G.faceRoiHits||0} / ROI尝试 ${G.faceRoiAttempts||0} / 连续未命中 ${G.faceNoHitStreak||0} / 超时 ${G.faceModelTimeouts||0}`;
   const videoInfo={duration:duration.toFixed(1),resolution:(G.videoInfos&&G.videoInfos.length?G.videoInfos.length+' 个测试视频':G.videoWidth+'×'+G.videoHeight),sampledFrames:G.sampledFrames,analyzeFps:quality.actualHz.toFixed(2),faceFrames:G.faceFrames,poseFrames:G.poseFrames,faceRate:quality.faceRate.toFixed(1),poseRate:quality.poseRate.toFixed(1),quality:quality.grade,opencv:G.openCvUsed?'已调用':'未获取有效指标',screen:G.screenDetectedBy||'未标定',mode:'三视频独立任务分析',analysisResolution:'逐视频自适应',frameErrors:G.frameErrorCount,startupSeconds:Number.isFinite(G.startupElapsedMs)?G.startupElapsedMs/1000:null,modelState:`FaceMesh ${_faceReady?'已接入':'未接入'} / BlazePose ${_poseReady?'已接入':'未接入'}`,faceDiag};
   for(const e of G.touchEvents){const seg=G.taskSegments.find(x=>e.touchTime>=x.start&&e.touchTime<=x.end);if(seg){e.task=seg.code;e.taskName=seg.name}}
-  const primary=style.code==='mixed'?'mixed':(style.primary||'insufficient'),report={style,scores,quality,videoInfo,metricRows,taskSegments:G.taskSegments,touchEvents:G.touchEvents,touchSummary:{count:G.touchEvents.length,validCount:validResponses.length,mean:validResponses.length?mean(validResponses):null,median:validResponses.length?median(validResponses):null,min:validResponses.length?Math.min(...validResponses):null,max:validResponses.length?Math.max(...validResponses):null},suggestions:genSug(primary),explanation:genExpl(primary,null)};
+  const primary=style.primary,report={style,scores,quality,videoInfo,metricRows,taskSegments:G.taskSegments,touchEvents:G.touchEvents,touchSummary:{count:G.touchEvents.length,validCount:validResponses.length,mean:validResponses.length?mean(validResponses):null,median:validResponses.length?median(validResponses):null,min:validResponses.length?Math.min(...validResponses):null,max:validResponses.length?Math.max(...validResponses):null},suggestions:genSug(primary),explanation:genExpl(primary,null)};
   const ci=scores.ci;report.summary=`本次系统分别分析无声动画、故事音频和拖拽拼图三段视频，不再将三项任务的全部帧合并计算。视觉独立得分 ${scores.visual.toFixed(1)} 分（95%区间 ${ci.visual.low.toFixed(1)}—${ci.visual.high.toFixed(1)}）；听觉独立得分 ${scores.auditory.toFixed(1)} 分（${ci.auditory.low.toFixed(1)}—${ci.auditory.high.toFixed(1)}）；动觉独立得分 ${scores.kinesthetic.toFixed(1)} 分（${ci.kinesthetic.low.toFixed(1)}—${ci.kinesthetic.high.toFixed(1)}）。
 
-故事音频采用研究者录音时间轴，只在三个故事聆听阶段计算头部行为；指导语、缓冲、提问和幼儿回答阶段均不进入主要听觉行为评分。三题人工得分为 ${(G.participant.auditoryAnswerScores||[]).join('、')}，音频任务表现换算为 ${scores.meta.auditoryPerformance.toFixed(1)} 分。
+故事音频采用研究者录音时间轴，只在三个故事聆听阶段计算头部行为；指导语、缓冲、提问和幼儿回答阶段均不进入主要听觉行为评分。视觉理解人工得分为 ${G.participant.visualUnderstandingScore}/2，视觉任务表现换算为 ${scores.meta.visualPerformance.toFixed(1)} 分；故事三题人工得分为 ${(G.participant.auditoryAnswerScores||[]).join('、')}，音频任务表现换算为 ${scores.meta.auditoryPerformance.toFixed(1)} 分；拼图完成总分为 ${scores.meta.kinestheticCompletionScore}/6 分，动觉任务表现换算为 ${scores.meta.kinestheticPerformance.toFixed(1)} 分。
 
-三维度相对构成为视觉 ${scores.visual_pct.toFixed(1)}%、听觉 ${scores.auditory_pct.toFixed(1)}%、动觉 ${scores.kinesthetic_pct.toFixed(1)}%，该比例只用于描述构成，不代表识别概率。本次结论为【${style.type}】。${style.code==='mixed'?'最高两项的区间重叠或绝对分差小于'+CONFIG.decision.minAbsoluteGap+'分，因此不输出单一类型。':''}
+三维度相对构成为视觉 ${scores.visual_pct.toFixed(1)}%、听觉 ${scores.auditory_pct.toFixed(1)}%、动觉 ${scores.kinesthetic_pct.toFixed(1)}%，该比例只用于描述构成，不代表识别概率。本次结论为【${style.type}】。系统按照三个独立得分中的最高分进行V/A/K三分类；95%区间和数据质量仅作为解释与复核依据。
 
 数据质量：${quality.reason}。权重、尺度和决策界限仍需使用正式样本、人工编码金标准及外部验证进一步校准；结果只反映当前任务情境中的行为通道表现。`;return report;
 }
@@ -1128,8 +1140,6 @@ function genExpl(p,s){
         visual:{name:'视觉通道行为倾向说明',traits:['本次任务中的注视位置波动相对较小','眼部开合与眨眼行为提供了视觉活动的辅助证据','可结合儿童对图像、图表、动画和示范材料的反应继续观察','该结果只代表当前视频情境，不等同于稳定不变的学习者类型']},
         auditory:{name:'听觉通道行为倾向说明',traits:['本次任务中头部水平转动与姿态变化相对明显','头部朝向变化只能间接反映声音接收过程，不能单独证明听觉偏好','可结合故事聆听、讨论和口头指令任务进行交叉验证','该结果只代表当前视频情境，不等同于稳定不变的学习者类型']},
         kinesthetic:{name:'动觉通道行为倾向说明',traits:['本次任务中的主要关节位移和上肢活动相对明显','身体活动可能参与信息加工，也可能受到任务要求、座位和拍摄范围影响','可结合操作、拼搭、实验和角色扮演任务继续观察','身体活动不能被直接解释为注意力不足或医学意义上的多动']},
-        mixed:{name:'多通道表现接近说明',traits:['三个维度均按各自任务独立计算，最高两项目前没有形成足够稳定的分离','最高两项的95%区间重叠或绝对分差未达到预设最低界限','建议增加重复测量，并结合教师观察和任务完成情况再判断','该结果比强行选择单一主导通道更能反映当前证据的不确定性']},
-        insufficient:{name:'数据不足说明',traits:['当前视频尚未达到综合倾向输出所需的数据质量条件','请优先检查面部与身体是否完整入镜、光线是否充足、视频是否过短','建议重新录制或补充其他任务视频后再进行比较','现有数值可用于技术复核，但不宜据此形成儿童类型判断']}
     };
     return {...E[p]};
 }
@@ -1138,8 +1148,6 @@ function genSug(p){
         visual:{teach:['增加图片、流程图、实物示范和动画等视觉支架','口头讲解时同步呈现关键词或步骤图','鼓励儿童用绘画、符号或排序卡表达理解'],env:['保证观看材料时视线清晰，减少无关视觉干扰','控制屏幕使用时长，并注意照明与观看距离'],act:['图片排序、找不同、观察记录','绘画表征、实物模型与视频回看'],note:['建议在多个任务和不同时间重复观察，不依据单次视频定型']},
         auditory:{teach:['增加故事讲述、节奏语言、讨论和复述环节','重要指令采用清晰、简短且有停顿的口头表达','允许儿童通过说一说来整理思路'],env:['减少无关噪声，为聆听活动提供相对安静区域','观察头部转向是否与声源位置及任务要求一致'],act:['故事复述、声音辨别、节奏模仿','同伴讨论、口头汇报与角色对话'],note:['头部偏转只是间接行为证据，需要与任务表现和教师观察结合']},
         kinesthetic:{teach:['增加动手操作、实物探索和边做边说的机会','采用动静交替的活动结构，避免长时间单一静坐','将抽象内容转化为可操作材料和身体动作'],env:['提供安全、可移动和可操作的材料空间','保证摄像范围覆盖主要身体关节，避免遮挡'],act:['拼搭、科学实验、角色扮演和动作游戏','触觉创作、分类搬运和情境模拟'],note:['身体活跃不应被直接标签化；应结合任务完成度、持续参与和多次观察综合判断']},
-        mixed:{teach:['采用视觉、听觉和操作材料相结合的多通道教学方式','避免根据一次测试把儿童固定划分为单一学习类型'],env:['保持三项任务的设备、时长和环境条件一致','安排重复测量并记录儿童当天状态'],act:['图像观察、故事聆听和动手操作交替开展','通过多种表达方式观察儿童在不同任务中的稳定表现'],note:['当前证据支持多通道表现接近，不宜强行贴单一标签']},
-        insufficient:{teach:['暂不依据本次结果调整儿童类型化教学方案','先补充清晰、稳定且任务说明完整的视频数据'],env:['确保单人入镜、光线充足并覆盖面部及主要身体关节','建议视频时长不少于 10 秒，避免严重遮挡和快速镜头移动'],act:['可分别补充视觉、听觉和操作任务视频进行交叉观察'],note:['数据不足时不输出确定性倾向，现有结果只用于检查采集和识别过程']}
     };
     return D[p]||D.visual;
 }
@@ -1149,9 +1157,9 @@ async function startAnalysis(){
     const codes=taskCodes(),files=G.multiFiles||{};
     if(G.running)return;
     if(!codes.every(code=>files[code])){showErr('请分别上传无声动画观看、故事音频聆听、拖拽拼图操作三个视频。');return}
-    if(!el('consentCheck').checked||!el('singleCheck').checked){showErr('请先确认授权和视频构图要求。');return}if(!['auditoryQ1Score','auditoryQ2Score','auditoryQ3Score'].every(id=>el(id).value!=='')){showErr('请先完成故事聆听三道题的人工评分。');return}
+    if(!el('consentCheck').checked||!el('singleCheck').checked){showErr('请先确认授权和视频构图要求。');return}const requiredScores=['visualUnderstandingScore','auditoryQ1Score','auditoryQ2Score','auditoryQ3Score','kinestheticCompletionScore'];if(!requiredScores.every(id=>el(id).value!=='')){showErr('请先完成视觉理解、故事聆听和拼图完成总分的人工评分。');return}
     const clickStarted=performance.now(),initialFiles={...files};let activeVideo=null,stopFlag=false;
-    G=Object.assign(emptyState(),{multiFiles:initialFiles,participant:{id:el('participantId').value.trim()||'匿名对象',ageGroup:el('ageGroup').value,taskType:'三项测试独立评分',taskMode:'three-video',taskLabels:{visual:TASK_META.visual.name,auditory:TASK_META.auditory.name,kinesthetic:TASK_META.kinesthetic.name},captureMode:G.captureModePreference,notes:el('notes').value.trim(),auditoryAnswerScores:['auditoryQ1Score','auditoryQ2Score','auditoryQ3Score'].map(id=>Number(el(id).value)),auditoryOffsetSec:Number(el('auditoryOffsetSec').value)||0},libraryStatus:G.libraryStatus,openCvReady:G.openCvReady,openCvMessage:G.openCvMessage,captureModePreference:G.captureModePreference,running:true,finished:false,cancelRequested:false,videoInfos:[],globalTimeOffset:0,fileName:codes.map(code=>initialFiles[code].name).join(' / '),screenDetectedBy:'三项测试视频按上传槽位固定分类'});
+    G=Object.assign(emptyState(),{multiFiles:initialFiles,participant:{id:el('participantId').value.trim()||'匿名对象',ageGroup:el('ageGroup').value,taskType:'三项测试独立评分',taskMode:'three-video',taskLabels:{visual:TASK_META.visual.name,auditory:TASK_META.auditory.name,kinesthetic:TASK_META.kinesthetic.name},captureMode:G.captureModePreference,notes:el('notes').value.trim(),visualUnderstandingScore:Number(el('visualUnderstandingScore').value),auditoryAnswerScores:['auditoryQ1Score','auditoryQ2Score','auditoryQ3Score'].map(id=>Number(el(id).value)),auditoryOffsetSec:Number(el('auditoryOffsetSec').value)||0,kinestheticCompletionScore:Number(el('kinestheticCompletionScore').value)},libraryStatus:G.libraryStatus,openCvReady:G.openCvReady,openCvMessage:G.openCvMessage,captureModePreference:G.captureModePreference,running:true,finished:false,cancelRequested:false,videoInfos:[],globalTimeOffset:0,fileName:codes.map(code=>initialFiles[code].name).join(' / '),screenDetectedBy:'三项测试视频按上传槽位固定分类'});
     el('startBtn').disabled=true;hideErr();resetInitSteps();showView('viewAnalyze');
     const canvas=el('mainCanvas'),ctx=canvas.getContext('2d',{alpha:false});
     const stopRuntime=(returnUpload=true)=>{stopFlag=true;G.cancelRequested=true;cleanupAudio();if(activeVideo)cleanupVideo(activeVideo);G.running=false;G.runtimeVideo=null;G.runtimeCancel=null;el('startBtn').disabled=false;if(returnUpload){showView('viewUpload');updateStartAvailability()}};G.runtimeCancel=stopRuntime;
@@ -1247,9 +1255,9 @@ function cleanupVideo(video){cleanupAudio();try{video.pause()}catch(_){}if(G.obj
 
 /* ---------- 报告渲染 ---------- */
 function renderReport(R){
-    const colors={visual:'linear-gradient(135deg,#4cc9f0,#4895ef)',auditory:'linear-gradient(135deg,#f72585,#b5179e)',kinesthetic:'linear-gradient(135deg,#4ade80,#16a34a)',mixed:'linear-gradient(135deg,#4361ee,#3a0ca3)',insufficient:'linear-gradient(135deg,#64748b,#334155)'};
-    el('verdict').style.background=colors[R.style.code]||colors.mixed;el('rStyle').textContent=R.style.type;
-    el('rConf').textContent=R.style.code==='insufficient'?`数据质量：${R.quality.grade}｜${R.quality.reason}`:R.style.code==='mixed'?`最高两项绝对分差：${R.style.difference.toFixed(1)}分｜95%区间${R.style.ciOverlap?'重叠':'接近'}｜数据质量：${R.quality.grade}`:`最高两项绝对分差：${R.style.difference.toFixed(1)}分｜数据质量：${R.quality.grade}`;
+    const colors={visual:'linear-gradient(135deg,#4cc9f0,#4895ef)',auditory:'linear-gradient(135deg,#f72585,#b5179e)',kinesthetic:'linear-gradient(135deg,#4ade80,#16a34a)'};
+    el('verdict').style.background=colors[R.style.code]||colors.visual;el('rStyle').textContent=R.style.type;
+    el('rConf').textContent=`最高两项绝对分差：${R.style.difference.toFixed(1)}分｜按最高分归类｜数据质量：${R.quality.grade}${R.quality.sufficient?'':'（结果需谨慎解释）'}`;
     const vi=R.videoInfo,opencvInfo=G.openCvUsed?infoItem(vi.opencv,'OpenCV 状态'):'';
     el('rVideoInfo').innerHTML=
         infoItem(vi.duration+'s','视频时长')+infoItem(vi.resolution,'视频分辨率')+infoItem(vi.analysisResolution||vi.resolution,'模型推理分辨率')+infoItem(vi.mode,'分析模式')+infoItem(vi.sampledFrames,'分析采样点')+infoItem(vi.analyzeFps+' Hz','实际采样频率')+infoItem(vi.faceFrames+' ('+vi.faceRate+'%)','人脸有效帧')+infoItem(vi.poseFrames+' ('+vi.poseRate+'%)','姿态有效帧')+infoItem(vi.quality,'数据质量')+opencvInfo+infoItem(Number.isFinite(vi.startupSeconds)?vi.startupSeconds.toFixed(1)+'s':'--','点击后启动用时')+infoItem(vi.modelState||'--','模型接入状态')+infoItem(vi.faceDiag||'--','FaceMesh诊断')+infoItem(vi.frameErrors||0,'跳过/超时帧')+infoItem(vi.screen,'屏幕区域');
@@ -1278,9 +1286,9 @@ function renderMetricTable(rows){
 function renderMetricCards(R){
     const m=R.scores.meta;
     el('rMetrics').innerHTML=`
-    <div class="mc"><div class="mh"><div class="mi" style="background:#e0f7fa;color:#0097a7">👁</div><h4>视觉维度 V</h4></div><div class="mi-row"><span>注视稳定性（55%）</span><span class="mv">${valueOrDash(m.visualGazeStability,1)}</span></div><div class="mi-row"><span>头部稳定性（30%）</span><span class="mv">${valueOrDash(m.visualHeadStability,1)}</span></div><div class="mi-row"><span>有效观看覆盖（15%）</span><span class="mv">${valueOrDash(m.visualCoverage,1)}%</span></div><div class="mi-desc">只使用无声动画视频。EAR和眨眼率保留为辅助质量指标，不再直接抬高或压低视觉总分。</div></div>
+    <div class="mc"><div class="mh"><div class="mi" style="background:#e0f7fa;color:#0097a7">👁</div><h4>视觉维度 V</h4></div><div class="mi-row"><span>动画理解表现（40%）</span><span class="mv">${valueOrDash(m.visualPerformance,1)}</span></div><div class="mi-row"><span>注视稳定性（30%）</span><span class="mv">${valueOrDash(m.visualGazeStability,1)}</span></div><div class="mi-row"><span>头部稳定性（20%）</span><span class="mv">${valueOrDash(m.visualHeadStability,1)}</span></div><div class="mi-row"><span>有效观看覆盖（10%）</span><span class="mv">${valueOrDash(m.visualCoverage,1)}%</span></div><div class="mi-desc">只使用无声动画视频。EAR和眨眼率保留为辅助质量指标，不再直接抬高或压低视觉总分。</div></div>
     <div class="mc"><div class="mh"><div class="mi" style="background:#fce4ec;color:#c62828">👂</div><h4>听觉维度 A</h4></div><div class="mi-row"><span>音频任务表现（40%）</span><span class="mv">${valueOrDash(m.auditoryPerformance,1)}</span></div><div class="mi-row"><span>声源朝向响应（25%）</span><span class="mv">${valueOrDash(m.auditoryOrientation,1)}</span></div><div class="mi-row"><span>Yaw变化控制（20%）</span><span class="mv">${valueOrDash(m.auditoryYawStability,1)}</span></div><div class="mi-row"><span>聆听稳定性（15%）</span><span class="mv">${valueOrDash(m.auditoryListeningStability,1)}</span></div><div class="mi-desc">只计算你的录音中三个故事段；提问和幼儿回答阶段被自动排除。</div></div>
-    <div class="mc"><div class="mh"><div class="mi" style="background:#e8f5e9;color:#2e7d32">🦶</div><h4>动觉维度 K</h4></div><div class="mi-row"><span>MI子分（50%）</span><span class="mv">${valueOrDash(m.kMiScore,1)}</span></div><div class="mi-row"><span>上肢轨迹（35%）</span><span class="mv">${valueOrDash(m.kArmScore,1)}</span></div><div class="mi-row"><span>2—4Hz节律（15%）</span><span class="mv">${valueOrDash(m.kRhythmScore,1)}</span></div><div class="mi-desc">只使用拖拽拼图视频；拼图时长不再决定另外两个任务的统计权重。</div></div>`;
+    <div class="mc"><div class="mh"><div class="mi" style="background:#e8f5e9;color:#2e7d32">🦶</div><h4>动觉维度 K</h4></div><div class="mi-row"><span>拼图完成表现（40%）</span><span class="mv">${valueOrDash(m.kinestheticPerformance,1)}（${valueOrDash(m.kinestheticCompletionScore,0)}/6分）</span></div><div class="mi-row"><span>MI子分（25%）</span><span class="mv">${valueOrDash(m.kMiScore,1)}</span></div><div class="mi-row"><span>上肢轨迹（25%）</span><span class="mv">${valueOrDash(m.kArmScore,1)}</span></div><div class="mi-row"><span>2—4Hz节律（10%）</span><span class="mv">${valueOrDash(m.kRhythmScore,1)}</span></div><div class="mi-desc">只使用拖拽拼图视频；拼图完成总分只需选择一次。</div></div>`;
 }
 function drawRadar(sc){
     const c=el('radarCanvas'),ctx=c.getContext('2d'),cx=150,cy=150,mr=110;ctx.clearRect(0,0,300,300);
@@ -1294,15 +1302,15 @@ function drawRadar(sc){
 function exportExcel(){
     if(!G.currentReport){showErr('尚无可导出的分析结果');return}if(typeof XLSX==='undefined'){alert('Excel 导出组件未加载，请检查网络后刷新页面');return}
     const R=G.currentReport,wb=XLSX.utils.book_new();wb.Props={Title:'儿童VAK学习行为倾向分析数据',Subject:'MediaPipe + OpenCV.js 多模态浏览器分析',Author:'VAK浏览器识别系统',CreatedDate:new Date()};
-    const basic=[['字段','内容'],['匿名编号',G.participant.id],['年龄组',G.participant.ageGroup||'未填写'],['测试项目分类方式','三项测试视频分别独立评分'],['分析模式',G.captureMode==='screen-recording'?'录屏 / 画中画':'实体平板拍摄'],['视频文件',G.fileName],['视频时长（秒）',R.videoInfo.duration],['视频分辨率',R.videoInfo.resolution],['模型推理分辨率',R.videoInfo.analysisResolution||''],['点击后启动用时（秒）',round(R.videoInfo.startupSeconds,2)],['模型接入状态',R.videoInfo.modelState||''],['FaceMesh诊断',R.videoInfo.faceDiag||''],['跳过/超时帧数',R.videoInfo.frameErrors||0],['备注',G.participant.notes||''],['屏幕区域来源',G.screenDetectedBy||'未标定'],['触控响应事件数',R.touchSummary.validCount],['平均触控响应时间(ms)',round(R.touchSummary.mean,1)],['算法版本',CONFIG.version],['技术组件','MediaPipe FaceMesh + BlazePose + OpenCV.js（连通区域/局部位移） + Web Audio API + IndexedDB + SheetJS'],['故事题目人工得分',(G.participant.auditoryAnswerScores||[]).join(' / ')],['故事录音起点偏移(秒)',G.participant.auditoryOffsetSec||0],['结果边界','仅反映当前任务情境中的行为通道表现；相对构成不是识别概率，不作医学诊断或固定标签']];
+    const basic=[['字段','内容'],['匿名编号',G.participant.id],['年龄组',G.participant.ageGroup||'未填写'],['测试项目分类方式','三项测试表现与视频行为独立评分'],['分析模式',G.captureMode==='screen-recording'?'录屏 / 画中画':'实体平板拍摄'],['视频文件',G.fileName],['视频时长（秒）',R.videoInfo.duration],['视频分辨率',R.videoInfo.resolution],['模型推理分辨率',R.videoInfo.analysisResolution||''],['点击后启动用时（秒）',round(R.videoInfo.startupSeconds,2)],['模型接入状态',R.videoInfo.modelState||''],['FaceMesh诊断',R.videoInfo.faceDiag||''],['跳过/超时帧数',R.videoInfo.frameErrors||0],['备注',G.participant.notes||''],['屏幕区域来源',G.screenDetectedBy||'未标定'],['触控响应事件数',R.touchSummary.validCount],['平均触控响应时间(ms)',round(R.touchSummary.mean,1)],['算法版本',CONFIG.version],['技术组件','MediaPipe FaceMesh + BlazePose + OpenCV.js（连通区域/局部位移） + Web Audio API + IndexedDB + SheetJS'],['视觉理解人工得分',G.participant.visualUnderstandingScore],['故事题目人工得分',(G.participant.auditoryAnswerScores||[]).join(' / ')],['拼图完成总分',`${G.participant.kinestheticCompletionScore}/6分`],['故事录音起点偏移(秒)',G.participant.auditoryOffsetSec||0],['结果边界','仅反映当前任务情境中的行为通道表现；相对构成不是识别概率，不作医学诊断或固定标签']];
     appendAoa(wb,'基本信息',basic,[18,50]);
-    const score=[['维度','独立得分(0-100)','95%区间下限','95%区间上限','相对构成(%)','权重结构'],['视觉 V',round(R.scores.visual,3),round(R.scores.ci.visual.low,2),round(R.scores.ci.visual.high,2),round(R.scores.visual_pct,2),'注视稳定性55% / 头部稳定性30% / 有效观看覆盖15%'],['听觉 A',round(R.scores.auditory,3),round(R.scores.ci.auditory.low,2),round(R.scores.ci.auditory.high,2),round(R.scores.auditory_pct,2),'音频任务表现40% / 声源朝向响应25% / Yaw变化控制20% / 聆听稳定性15%'],['动觉 K',round(R.scores.kinesthetic,3),round(R.scores.ci.kinesthetic.low,2),round(R.scores.ci.kinesthetic.high,2),round(R.scores.kinesthetic_pct,2),'MI50% / 上肢轨迹35% / 2–4Hz能量占比15%'],['综合结论',R.style.type,'','','','区间重叠或分差小于8分时不强行分类'],['最高两项绝对分差',round(R.style.difference,2),'分','','','辅助参考']];
+    const score=[['维度','独立得分(0-100)','95%区间下限','95%区间上限','相对构成(%)','权重结构'],['视觉 V',round(R.scores.visual,3),round(R.scores.ci.visual.low,2),round(R.scores.ci.visual.high,2),round(R.scores.visual_pct,2),'动画理解40% / 注视稳定性30% / 头部稳定性20% / 有效观看覆盖10%'],['听觉 A',round(R.scores.auditory,3),round(R.scores.ci.auditory.low,2),round(R.scores.ci.auditory.high,2),round(R.scores.auditory_pct,2),'音频任务表现40% / 声源朝向响应25% / Yaw变化控制20% / 聆听稳定性15%'],['动觉 K',round(R.scores.kinesthetic,3),round(R.scores.ci.kinesthetic.low,2),round(R.scores.ci.kinesthetic.high,2),round(R.scores.kinesthetic_pct,2),'拼图完成40% / MI25% / 上肢轨迹25% / 2–4Hz能量占比10%'],['综合结论',R.style.type,'','','','三个独立得分中最高者直接归入V/A/K三类'],['最高两项绝对分差',round(R.style.difference,2),'分','','','辅助参考']];
     appendAoa(wb,'VAK综合评分',score,[18,20,18,18,18,62]);
     const metrics=[['维度','行为指标','数值','单位','数据来源','解释与限制'],...R.metricRows.map(r=>[r.dimension,r.metric,r.value??'',r.unit,r.source,r.note])];appendAoa(wb,'行为指标汇总',metrics,[16,32,16,18,28,58]);appendAoa(wb,'测试项目手动分段',taskSegmentsToAoa(R.taskSegments||[]),[8,24,14,14,14,16,28,14,16]);appendAoa(wb,'交互响应事件',touchEventsToAoa(R.touchEvents||[]),[8,22,16,18,18,16,16,14,14,58]);
     const ts=G.sampleRows.length?XLSX.utils.json_to_sheet(G.sampleRows):XLSX.utils.aoa_to_sheet([['无逐时点数据']]);ts['!freeze']={xSplit:0,ySplit:1};ts['!autofilter']={ref:ts['!ref']||'A1:A1'};ts['!cols']=Object.keys(G.sampleRows[0]||{}).map(k=>({wch:Math.max(14,Math.min(28,k.length*2))}));XLSX.utils.book_append_sheet(wb,ts,'逐时点数据');
     const taskSheetMap=taskCodes().map((code,i)=>[code,safeSheetName(`${i+1}_${taskMeta(code).name}`)]);for(const [code,sheetName] of taskSheetMap){const rows=G.sampleRows.filter(r=>r['手动任务类别']===taskMeta(code).name);const ws=rows.length?XLSX.utils.json_to_sheet(rows):XLSX.utils.aoa_to_sheet([['当前视频未手动划分到该测试项目']]);ws['!freeze']={xSplit:0,ySplit:1};ws['!autofilter']={ref:ws['!ref']||'A1:A1'};XLSX.utils.book_append_sheet(wb,ws,sheetName)}
     const quality=[['指标','结果','判断'],['数据质量等级',R.quality.grade,R.quality.reason],['视频时长（秒）',round(R.quality.duration,2),R.quality.duration>=CONFIG.quality.minDurationSec?'达到':'不足'],['采样点数',G.sampledFrames,G.sampledFrames>=CONFIG.quality.minSamples?'达到':'不足'],['实际采样频率（Hz）',round(R.quality.actualHz,3),R.quality.actualHz>=5?'较稳定':'偏低'],['人脸有效检测率（%）',round(R.quality.faceRate,2),R.quality.faceRate>=CONFIG.quality.minFaceRate?'达到':'不足'],['姿态有效检测率（%）',round(R.quality.poseRate,2),R.quality.poseRate>=CONFIG.quality.minPoseRate?'达到':'不足'],['FaceMesh整帧命中',G.faceFullHits||0,`整帧未命中 ${G.faceFullMisses||0}`],['FaceMesh ROI命中',G.faceRoiHits||0,`ROI尝试 ${G.faceRoiAttempts||0}`],['FaceMesh连续未命中',G.faceNoHitStreak||0,'用于判断是否需要调整ROI'],['FaceMesh模型超时',G.faceModelTimeouts||0,'用于判断推理后端是否稳定'],['OpenCV有效调用',G.openCvUsed?'是':'否',G.openCvMessage],['分析模式',G.captureMode==='screen-recording'?'录屏 / 画中画':'实体平板拍摄',G.screenDetectedBy||'']];appendAoa(wb,'数据质量',quality,[26,22,58]);
-    const params=[['参数','设定','说明'],['算法版本',CONFIG.version,'用于报告和复核'],['任务计算方式','三视频分别计算','不再合并全部帧；视频时长差异不会改变其他维度权重'],['视觉权重','55% / 30% / 15%','注视稳定性 / 头部稳定性 / 有效观看覆盖'],['听觉权重','40% / 25% / 20% / 15%','任务表现 / 固定前方声源朝向响应 / Yaw变化控制 / 聆听稳定性'],['动觉权重','50% / 35% / 15%','MI / 上肢轨迹 / 2—4Hz能量占比'],['听觉有效时间窗','4.85—46.20；63.25—83.15；97.60—117.80秒','加上用户填写的录音起点偏移；问题与回答阶段排除'],['综合倾向输出','区间分离且分差≥8分才输出相对突出','否则输出多通道表现接近'],['区间估计','视觉/动觉按5秒块；听觉按3个故事单元','样本很少时区间较宽，应结合重复测量'],['说明','权重、阈值与归一化尺度需以后续正式样本校准','不是通用诊断标准']];appendAoa(wb,'算法参数说明',params,[25,42,76]);
+    const params=[['参数','设定','说明'],['算法版本',CONFIG.version,'用于报告和复核'],['任务计算方式','三视频分别计算','不再合并全部帧；视频时长差异不会改变其他维度权重'],['视觉权重','40% / 30% / 20% / 10%','动画理解 / 注视稳定性 / 头部稳定性 / 有效观看覆盖'],['听觉权重','40% / 25% / 20% / 15%','任务表现 / 固定前方声源朝向响应 / Yaw变化控制 / 聆听稳定性'],['动觉权重','40% / 25% / 25% / 10%','拼图完成表现 / MI / 上肢轨迹 / 2—4Hz能量占比'],['听觉有效时间窗','4.85—46.20；63.25—83.15；97.60—117.80秒','加上用户填写的录音起点偏移；问题与回答阶段排除'],['综合倾向输出','最高独立得分直接分类','只输出视觉型、听觉型或动觉型；区间仅供复核'],['区间估计','视觉/动觉按5秒块；听觉按3个故事单元','样本很少时区间较宽，应结合重复测量'],['说明','权重、阈值与归一化尺度需以后续正式样本校准','不是通用诊断标准']];appendAoa(wb,'算法参数说明',params,[25,42,76]);
     const name=safeFileName(`${G.participant.id||'匿名'}_三任务独立评分_${new Date().toISOString().slice(0,10)}`)+'.xlsx';XLSX.writeFile(wb,name,{compression:true});
 }
 function safeSheetName(v){return String(v||'测试数据').replace(/[\\\/\?\*\[\]:]/g,'_').slice(0,31)||'测试数据'}
@@ -1312,15 +1320,15 @@ function appendAoa(wb,name,data,widths){const ws=XLSX.utils.aoa_to_sheet(data);w
 function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));el(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
 function showErr(m){const e=el('errBox');e.textContent=m;e.classList.add('show')}
 function hideErr(){el('errBox').classList.remove('show')}
-function updateStartAvailability(){const ready=taskCodes().every(code=>G.multiFiles?.[code]),answers=['auditoryQ1Score','auditoryQ2Score','auditoryQ3Score'].every(id=>el(id).value!==''),offset=Number(el('auditoryOffsetSec').value);el('startBtn').disabled=!(ready&&answers&&Number.isFinite(offset)&&offset>=0&&el('consentCheck').checked&&el('singleCheck').checked&&!G.running)}
+function updateStartAvailability(){const ready=taskCodes().every(code=>G.multiFiles?.[code]),scoreIds=['visualUnderstandingScore','auditoryQ1Score','auditoryQ2Score','auditoryQ3Score','kinestheticCompletionScore'],scoresReady=scoreIds.every(id=>el(id).value!==''),offset=Number(el('auditoryOffsetSec').value);el('startBtn').disabled=!(ready&&scoresReady&&Number.isFinite(offset)&&offset>=0&&el('consentCheck').checked&&el('singleCheck').checked&&!G.running)}
 async function reset(){
     cleanupAudio();await resetMediaPipeRuntime('用户重置分析');if(_cvPrevGray){_cvPrevGray.delete();_cvPrevGray=null}if(_cvPrevScreenGray){_cvPrevScreenGray.delete();_cvPrevScreenGray=null}if(G.previewUrl)URL.revokeObjectURL(G.previewUrl);G=emptyState();
-    if(_previewVideo){try{_previewVideo.pause();_previewVideo.remove()}catch(_){}_previewVideo=null}document.querySelectorAll('[data-test-code].test-upload').forEach(card=>{card.classList.remove('ready');const n=el('fileName_'+card.dataset.testCode);if(n)n.textContent='未选择视频'});document.querySelectorAll('#multiUploadGrid input[type=file]').forEach(input=>input.value='');el('pbarFill').style.width='0';el('pbarPct').textContent='0%';el('pbarText').innerHTML='<span class="spin"></span>正在初始化...';el('canvasPerformance').textContent='等待视频信息';resetInitSteps();el('runtimeHint').textContent='系统将依次分析三个测试视频，并生成一份综合报告。';['auditoryQ1Score','auditoryQ2Score','auditoryQ3Score'].forEach(id=>el(id).value='');el('auditoryOffsetSec').value='0';el('startBtn').disabled=true;hideErr();showView('viewUpload');updateStaticLibraryStatus();initializeManualTaskUI();ensureOpenCV();
+    if(_previewVideo){try{_previewVideo.pause();_previewVideo.remove()}catch(_){}_previewVideo=null}document.querySelectorAll('[data-test-code].test-upload').forEach(card=>{card.classList.remove('ready');const n=el('fileName_'+card.dataset.testCode);if(n)n.textContent='未选择视频'});document.querySelectorAll('#multiUploadGrid input[type=file]').forEach(input=>input.value='');el('pbarFill').style.width='0';el('pbarPct').textContent='0%';el('pbarText').innerHTML='<span class="spin"></span>正在初始化...';el('canvasPerformance').textContent='等待视频信息';resetInitSteps();el('runtimeHint').textContent='系统将依次分析三个测试视频，并生成一份综合报告。';['visualUnderstandingScore','auditoryQ1Score','auditoryQ2Score','auditoryQ3Score','kinestheticCompletionScore'].forEach(id=>el(id).value='');el('auditoryOffsetSec').value='0';el('startBtn').disabled=true;hideErr();showView('viewUpload');updateStaticLibraryStatus();initializeManualTaskUI();ensureOpenCV();
 }
 const startBtn=el('startBtn');
 document.querySelectorAll('.test-upload').forEach(card=>{card.addEventListener('dragover',e=>{e.preventDefault();card.classList.add('over')});card.addEventListener('dragleave',()=>card.classList.remove('over'));card.addEventListener('drop',e=>{e.preventDefault();card.classList.remove('over');if(e.dataTransfer.files.length)handleFile(e.dataTransfer.files[0],card.dataset.testCode)})});
 document.querySelectorAll('#multiUploadGrid input[type=file]').forEach(input=>input.addEventListener('change',e=>{if(e.target.files.length)handleFile(e.target.files[0],e.target.dataset.testCode)}));
-['consentCheck','singleCheck','auditoryQ1Score','auditoryQ2Score','auditoryQ3Score','auditoryOffsetSec'].forEach(id=>el(id).addEventListener(id==='auditoryOffsetSec'?'input':'change',updateStartAvailability));
+['consentCheck','singleCheck','visualUnderstandingScore','auditoryQ1Score','auditoryQ2Score','auditoryQ3Score','kinestheticCompletionScore','auditoryOffsetSec'].forEach(id=>el(id).addEventListener(id==='auditoryOffsetSec'?'input':'change',updateStartAvailability));
 document.querySelectorAll('#captureModeGrid .mode-option').forEach(b=>b.addEventListener('click',()=>setCaptureModePreference(b.dataset.mode)));startBtn.addEventListener('click',()=>{startAnalysis().catch(e=>{console.error(e);showAnalysisError(e.message||String(e));G.running=false;el('startBtn').disabled=false})});el('cancelAnalysisBtn').addEventListener('click',()=>{if(typeof G.runtimeCancel==='function')G.runtimeCancel(true);else{G.running=false;showView('viewUpload');updateStartAvailability()}});el('exportBtn').addEventListener('click',exportExcel);el('autoScreenBtn').addEventListener('click',autoDetectScreen);el('fullFrameBtn').addEventListener('click',()=>useFullFrameMode('用户点击：整帧录屏模式'));el('manualScreenBtn').addEventListener('click',beginManualScreen);el('clearScreenBtn').addEventListener('click',clearScreen);el('screenPreviewCanvas').addEventListener('click',previewCanvasClick);el('historyNavBtn').addEventListener('click',()=>{showView('viewHistory');renderHistory()});el('refreshHistoryBtn').addEventListener('click',renderHistory);el('exportHistoryBtn').addEventListener('click',exportAllHistory);el('clearHistoryBtn').addEventListener('click',async()=>{if(confirm('确认清空当前浏览器中的全部实验记录？')){await clearSessions();renderHistory()}});
 initializeManualTaskUI();
 function handleFile(f,code){
